@@ -1,3 +1,26 @@
+# Visual Studio y compilación
 .vs/
 [Bb]in/
 [Oo]bj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Paquetes y archivos temporales
+packages/
+*.nupkg
+*.log
+*.tmp
+*.bak
+
+# Configuración local
+.env
+.env.*
+!.env.example
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
