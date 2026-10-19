@@ -88,6 +88,24 @@
     <Compile Include="Presentacion\frmBitacora.Designer.cs">
       <DependentUpon>frmBitacora.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentacion\frmReporteConsumosFechas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\frmReporteConsumosFechas.Designer.cs">
+      <DependentUpon>frmReporteConsumosFechas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\frmReporteConsumosEmpleado.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\frmReporteConsumosEmpleado.Designer.cs">
+      <DependentUpon>frmReporteConsumosEmpleado.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Presentacion\frmReporteOperaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\frmReporteOperaciones.Designer.cs">
+      <DependentUpon>frmReporteOperaciones.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -116,6 +134,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Presentacion\frmBitacora.resx">
       <DependentUpon>frmBitacora.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\frmReporteConsumosFechas.resx">
+      <DependentUpon>frmReporteConsumosFechas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\frmReporteConsumosEmpleado.resx">
+      <DependentUpon>frmReporteConsumosEmpleado.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\frmReporteOperaciones.resx">
+      <DependentUpon>frmReporteOperaciones.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
