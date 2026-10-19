@@ -17,10 +17,11 @@ namespace ControlViaticos.Presentacion
             InitializeComponent();
         }
 
-        //--por ahora solo es la interfaz grafica, la validacion del acceso se hace despues
+        //--por ahora solo abre el menu, la validacion del acceso se hace despues
         private void Ok_Click(object sender, EventArgs e)
         {
-
+            frmPrincipal prc = new frmPrincipal();
+            prc.ShowDialog();
         }
 
         private void Salir_Click(object sender, EventArgs e)
