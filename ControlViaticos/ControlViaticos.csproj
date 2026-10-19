@@ -82,6 +82,12 @@
     <Compile Include="Presentacion\frmLiquidaciones.Designer.cs">
       <DependentUpon>frmLiquidaciones.cs</DependentUpon>
     </Compile>
+    <Compile Include="Presentacion\frmBitacora.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Presentacion\frmBitacora.Designer.cs">
+      <DependentUpon>frmBitacora.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -107,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Presentacion\frmLiquidaciones.resx">
       <DependentUpon>frmLiquidaciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Presentacion\frmBitacora.resx">
+      <DependentUpon>frmBitacora.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
