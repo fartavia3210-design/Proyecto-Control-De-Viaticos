@@ -53,6 +53,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Logica\Estructuras.cs" />
+    <Compile Include="Logica\LogicaLiquidaciones.cs" />
     <Compile Include="Objetos\DetalleLiquidacion.cs" />
     <Compile Include="Objetos\Liquidacion.cs" />
     <Compile Include="Presentacion\frmLogin.cs">

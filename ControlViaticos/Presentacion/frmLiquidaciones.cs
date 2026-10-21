@@ -19,8 +19,8 @@ namespace ControlViaticos.Presentacion
             InitializeComponent();
         }
 
-        //Instancia de la clase Estructuras para poder usar sus metodos (lista de liquidaciones)
-        Estructuras almacen = new Estructuras();
+        //Instancia de la lógica para trabajar con las liquidaciones y sus detalles.
+        LogicaLiquidaciones almacen = new LogicaLiquidaciones();
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             if (txtConsecutivo.Text.Equals(""))
