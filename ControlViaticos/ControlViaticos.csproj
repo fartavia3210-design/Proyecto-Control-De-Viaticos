@@ -56,6 +56,10 @@
     <Compile Include="Logica\LogicaLiquidaciones.cs" />
     <Compile Include="Objetos\DetalleLiquidacion.cs" />
     <Compile Include="Objetos\Liquidacion.cs" />
+    <Compile Include="Objetos\Usuario.cs" />
+    <Compile Include="Objetos\Empleado.cs" />
+    <Compile Include="Objetos\TipoViatico.cs" />
+    <Compile Include="Objetos\RegistroBitacora.cs" />
     <Compile Include="Presentacion\frmLogin.cs">
       <SubType>Form</SubType>
     </Compile>

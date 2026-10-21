@@ -10,12 +10,12 @@ namespace ControlViaticos.Logica
 
         public void AgregarLiquidacion(Liquidacion miLiquidacion)
         {
-            Estructuras.ListaLiquidaciones.Add(miLiquidacion);
+            Estructuras.listaLiquidaciones.Add(miLiquidacion);
         }
 
         public Liquidacion buscarLiquidacion(int id)
         {
-            foreach (Liquidacion miLiquidacion in Estructuras.ListaLiquidaciones)
+            foreach (Liquidacion miLiquidacion in Estructuras.listaLiquidaciones)
             {
                 if (miLiquidacion.id == id)
                 {
@@ -43,19 +43,19 @@ namespace ControlViaticos.Logica
             Liquidacion encontrado = buscarLiquidacion(id);
             if (encontrado != null)
             {
-                Estructuras.ListaLiquidaciones.Remove(encontrado);
+                Estructuras.listaLiquidaciones.Remove(encontrado);
 
                 //--Tambien se borran sus detalles para que no queden sueltos
                 foreach (DetalleLiquidacion miDetalle in ObtenerDetalles(id))
                 {
-                    Estructuras.ListaDetalles.Remove(miDetalle);
+                    Estructuras.listaDetalles.Remove(miDetalle);
                 }
             }
         }
 
         public List<Liquidacion> ObtenerLiquidaciones()
         {
-            return new List<Liquidacion>(Estructuras.ListaLiquidaciones);
+            return new List<Liquidacion>(Estructuras.listaLiquidaciones);
             //Copia de la lista real
         }
 
@@ -63,13 +63,13 @@ namespace ControlViaticos.Logica
 
         public void AgregarDetalle(DetalleLiquidacion miDetalle)
         {
-            Estructuras.ListaDetalles.Add(miDetalle);
+            Estructuras.listaDetalles.Add(miDetalle);
         }
 
         public List<DetalleLiquidacion> ObtenerDetalles(int idLiquidacion) //-- Solo los de esa liquidacion --\\
         {
             List<DetalleLiquidacion> resultado = new List<DetalleLiquidacion>();
-            foreach (DetalleLiquidacion miDetalle in Estructuras.ListaDetalles)
+            foreach (DetalleLiquidacion miDetalle in Estructuras.listaDetalles)
             {
                 if (miDetalle.idLiquidacion == idLiquidacion)
                 {
@@ -81,11 +81,11 @@ namespace ControlViaticos.Logica
 
         public void eliminarDetalle(int idLiquidacion, int idViatico)
         {
-            foreach (DetalleLiquidacion miDetalle in Estructuras.ListaDetalles)
+            foreach (DetalleLiquidacion miDetalle in Estructuras.listaDetalles)
             {
                 if (miDetalle.idLiquidacion == idLiquidacion && miDetalle.idViatico == idViatico)
                 {
-                    Estructuras.ListaDetalles.Remove(miDetalle);
+                    Estructuras.listaDetalles.Remove(miDetalle);
                     return;
                 }
             }

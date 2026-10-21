@@ -5,17 +5,13 @@ namespace ControlViaticos.Logica
 {
     internal class Estructuras
     {
-        private static readonly List<Liquidacion> listaLiquidaciones = new List<Liquidacion>();
-        private static readonly List<DetalleLiquidacion> listaDetalles = new List<DetalleLiquidacion>();
+        internal static List<Liquidacion> listaLiquidaciones = new List<Liquidacion>();
+        internal static List<DetalleLiquidacion> listaDetalles = new List<DetalleLiquidacion>();
+        internal static List<Usuario> listaUsuarios = new List<Usuario>();
+        internal static List<Empleado> listaEmpleados = new List<Empleado>();
+        internal static List<TipoViatico> listaTiposViatico = new List<TipoViatico>();
+        internal static List<RegistroBitacora> listaBitacora = new List<RegistroBitacora>();
 
-        internal static List<Liquidacion> ListaLiquidaciones
-        {
-            get { return listaLiquidaciones; }
-        }
-
-        internal static List<DetalleLiquidacion> ListaDetalles
-        {
-            get { return listaDetalles; }
-        }
+       
     }
 }
