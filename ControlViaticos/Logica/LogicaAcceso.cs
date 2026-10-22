@@ -19,7 +19,7 @@ namespace ControlViaticos.Logica
             }
 
             LogicaUsuarios logicaUsuarios = new LogicaUsuarios();
-            return logicaUsuarios.AgregarUsuario(administrador);
+            return logicaUsuarios.AgregarPrimerAdministrador(administrador);
         }
 
         // Devuelve el usuario autorizado o null cuando el acceso es rechazado.

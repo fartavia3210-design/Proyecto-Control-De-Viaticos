@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using System.Windows.Forms;
+using ControlViaticos.Logica;
 
 namespace ControlViaticos.Presentacion
 {
@@ -17,11 +11,37 @@ namespace ControlViaticos.Presentacion
             InitializeComponent();
         }
 
-        //--por ahora solo abre el menu, la validacion del acceso se hace despues
         private void Ok_Click(object sender, EventArgs e)
         {
-            frmPrincipal prc = new frmPrincipal();
-            prc.ShowDialog();
+            if (string.IsNullOrWhiteSpace(txtUsuario.Text) ||
+                string.IsNullOrWhiteSpace(txtClave.Text))
+            {
+                MessageBox.Show("Debe completar usuario y contraseña.");
+                return;
+            }
+
+            if (!SesionActual.IniciarSesion(txtUsuario.Text, txtClave.Text))
+            {
+                MessageBox.Show("Usuario o contraseña incorrectos, o cuenta inactiva.");
+                txtClave.Clear();
+                txtClave.Focus();
+                return;
+            }
+
+            Hide();
+            frmPrincipal principal = new frmPrincipal();
+            try
+            {
+                principal.ShowDialog();
+            }
+            finally
+            {
+                principal.Dispose();
+                SesionActual.CerrarSesion();
+                txtClave.Clear();
+                Show();
+                txtClave.Focus();
+            }
         }
 
         private void Salir_Click(object sender, EventArgs e)

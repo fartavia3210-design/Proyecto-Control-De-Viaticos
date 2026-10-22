@@ -8,7 +8,12 @@ namespace ControlViaticos.Logica
         // Devuelve -1 si no tiene permiso; en otro caso, la cantidad de registros agregados.
         public int EjecutarCargaInicial(Usuario administrador)
         {
-            if (administrador == null)
+            if (!SesionActual.EsAdministrador() || administrador == null)
+            {
+                return -1;
+            }
+
+            if (administrador.id != SesionActual.usuarioActual.id)
             {
                 return -1;
             }

@@ -16,6 +16,16 @@ namespace ControlViaticos
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            if (Logica.Estructuras.listaUsuarios.Count == 0)
+            {
+                Presentacion.frmRegistroAdministrador registro = new Presentacion.frmRegistroAdministrador();
+                DialogResult resultado = registro.ShowDialog();
+                registro.Dispose();
+                if (resultado != DialogResult.OK)
+                {
+                    return;
+                }
+            }
             Application.Run(new Presentacion.frmLogin());
         }
     }

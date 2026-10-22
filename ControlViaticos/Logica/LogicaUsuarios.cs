@@ -9,6 +9,28 @@ namespace ControlViaticos.Logica
         // Devuelve false si los datos no son válidos o ya existe el usuario.
         public bool AgregarUsuario(Usuario miUsuario)
         {
+            if (!SesionActual.EsAdministrador())
+            {
+                return false;
+            }
+
+            return AgregarUsuarioValidado(miUsuario);
+        }
+
+        // Excepción limitada a la configuración inicial, antes de poder iniciar sesión.
+        internal bool AgregarPrimerAdministrador(Usuario administrador)
+        {
+            if (Estructuras.listaUsuarios.Count > 0 || administrador == null ||
+                administrador.tipo != "Administrador" || !administrador.activo)
+            {
+                return false;
+            }
+
+            return AgregarUsuarioValidado(administrador);
+        }
+
+        private bool AgregarUsuarioValidado(Usuario miUsuario)
+        {
             if (miUsuario == null || miUsuario.id <= 0 ||
                 string.IsNullOrWhiteSpace(miUsuario.nombreCompleto) ||
                 string.IsNullOrWhiteSpace(miUsuario.nombreUsuario) ||
@@ -48,6 +70,11 @@ namespace ControlViaticos.Logica
 
         public bool ModificarUsuario(Usuario miUsuario)
         {
+            if (!SesionActual.EsAdministrador())
+            {
+                return false;
+            }
+
             if (miUsuario == null || miUsuario.id <= 0 ||
                 string.IsNullOrWhiteSpace(miUsuario.nombreCompleto) ||
                 string.IsNullOrWhiteSpace(miUsuario.nombreUsuario) ||
@@ -83,6 +110,11 @@ namespace ControlViaticos.Logica
 
         public bool EliminarUsuario(int id)
         {
+            if (!SesionActual.EsAdministrador())
+            {
+                return false;
+            }
+
             Usuario encontrado = BuscarUsuario(id);
             if (encontrado == null)
             {

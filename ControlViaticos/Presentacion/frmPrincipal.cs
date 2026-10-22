@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ControlViaticos.Logica;
 
 namespace ControlViaticos.Presentacion
 {
@@ -15,11 +16,65 @@ namespace ControlViaticos.Presentacion
         public frmPrincipal()
         {
             InitializeComponent();
+            btnUsuarios.Enabled = SesionActual.EsAdministrador();
+            btnCargaInicial.Enabled = SesionActual.EsAdministrador();
+            this.Load += new EventHandler(frmPrincipal_Load);
+            this.FormClosed += new FormClosedEventHandler(frmPrincipal_FormClosed);
+        }
+
+        private void frmPrincipal_Load(object sender, EventArgs e)
+        {
+            ValidarSesion();
+        }
+
+        private bool ValidarSesion()
+        {
+            if (!SesionActual.HaySesionActiva())
+            {
+                MessageBox.Show("Debe iniciar sesión para utilizar el menú.");
+                Close();
+                return false;
+            }
+
+            btnUsuarios.Enabled = SesionActual.EsAdministrador();
+            btnCargaInicial.Enabled = SesionActual.EsAdministrador();
+            return true;
+        }
+
+        private bool ValidarAdministrador()
+        {
+            if (!ValidarSesion())
+            {
+                return false;
+            }
+
+            if (!SesionActual.EsAdministrador())
+            {
+                MessageBox.Show("Esta opción solo está disponible para administradores.");
+                return false;
+            }
+
+            return true;
+        }
+
+        private void frmPrincipal_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            SesionActual.CerrarSesion();
         }
 
         //metodo para abrir ventanas dentro del panel
         private void abrirFormHija(object formHija)
         {
+            if (!ValidarSesion())
+            {
+                Form formulario = formHija as Form;
+                if (formulario != null)
+                {
+                    formulario.Dispose();
+                }
+                return;
+            }
+
             if (this.pnlContenedor.Controls.Count > 0)
             {
                 this.pnlContenedor.Controls.RemoveAt(0);
@@ -35,6 +90,11 @@ namespace ControlViaticos.Presentacion
 
         private void btnUsuarios_Click(object sender, EventArgs e)
         {
+            if (!ValidarAdministrador())
+            {
+                return;
+            }
+
             pnlSubReportes.Visible = false;
             abrirFormHija(new frmUsuarios());
         }
@@ -65,6 +125,11 @@ namespace ControlViaticos.Presentacion
 
         private void btnReportes_Click(object sender, EventArgs e)
         {
+            if (!ValidarSesion())
+            {
+                return;
+            }
+
             pnlSubReportes.Visible = !pnlSubReportes.Visible;
         }
 
@@ -88,6 +153,11 @@ namespace ControlViaticos.Presentacion
 
         private void btnCargaInicial_Click(object sender, EventArgs e)
         {
+            if (!ValidarAdministrador())
+            {
+                return;
+            }
+
             pnlSubReportes.Visible = false;
             abrirFormHija(new frmCargaInicial());
         }
