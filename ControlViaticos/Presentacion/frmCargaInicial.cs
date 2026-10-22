@@ -25,6 +25,24 @@ namespace ControlViaticos.Presentacion
             {
                 return;
             }
+
+            LogicaCargaInicial logicaCargaInicial = new LogicaCargaInicial();
+            int agregados = logicaCargaInicial.EjecutarCargaInicial(SesionActual.usuarioActual);
+
+            if (agregados == -1)
+            {
+                MessageBox.Show("No tiene permiso para ejecutar la carga inicial.");
+                return;
+            }
+
+            if (agregados == 0)
+            {
+                MessageBox.Show("Los datos iniciales ya existen. No se agregaron ni modificaron registros.");
+                return;
+            }
+
+            MessageBox.Show("Carga inicial completada. Se agregaron " + agregados +
+                " registros entre usuarios, empleados y tipos de viático. Los registros existentes se conservaron.");
         }
 
         private void frmCargaInicial_Load(object sender, EventArgs e)
