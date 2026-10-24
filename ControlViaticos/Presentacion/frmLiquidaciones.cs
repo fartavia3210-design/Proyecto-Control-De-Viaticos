@@ -53,7 +53,7 @@ namespace ControlViaticos.Presentacion
             //--Si el empleado ya está inactivo se agrega al combo para poder mostrar la liquidación
             List<Empleado> empleados = almacen.ObtenerEmpleadosActivos();
             Empleado empleado = almacen.buscarEmpleado(encontrado.idEmpleado);
-            if (empleado != null && !empleados.Contains(empleado))
+            if (empleado != null && !empleado.activo)
             {
                 empleados.Add(empleado);
             }
@@ -251,18 +251,9 @@ namespace ControlViaticos.Presentacion
             }
         }
 
-        private void cmbEmpleado_Format(object sender, ListControlConvertEventArgs e)
-        {
-            Empleado empleado = e.ListItem as Empleado;
-            if (empleado != null)
-            {
-                e.Value = empleado.nombre + " " + empleado.apellido1 + " " + empleado.apellido2;
-            }
-        }
-
         private void ConfigurarTablas()
         {
-            cmbEmpleado.Format += new ListControlConvertEventHandler(cmbEmpleado_Format);
+            cmbEmpleado.DisplayMember = "nombre";
             cmbTipoViatico.DisplayMember = "nombre";
 
             grdDetalle.AutoGenerateColumns = false;
@@ -353,7 +344,7 @@ namespace ControlViaticos.Presentacion
             cmbEmpleado.SelectedIndex = -1;
             cmbTipoViatico.DataSource = almacen.ObtenerTiposActivos();
             cmbTipoViatico.SelectedIndex = -1;
-            dtpFechaConsumo.Value = DateTime.Today;
+            dtpFechaConsumo.Value = DateTime.Now;
             detallesPreparados = new List<DetalleLiquidacion>();
             MostrarDetalles();
         }

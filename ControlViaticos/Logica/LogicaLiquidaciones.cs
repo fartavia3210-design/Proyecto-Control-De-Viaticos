@@ -209,7 +209,6 @@ namespace ControlViaticos.Logica
                 return false;
             }
 
-            List<DetalleLiquidacion> guardados = ObtenerDetalles(miLiquidacion.id);
             foreach (DetalleLiquidacion miDetalle in detalles)
             {
                 TipoViatico tipo = buscarTipoViatico(miDetalle.idViatico);
@@ -226,7 +225,7 @@ namespace ControlViaticos.Logica
                 }
 
                 //--Un detalle con id debe ser uno ya guardado de esta misma liquidacion
-                if (miDetalle.id != 0 && !guardados.Contains(miDetalle))
+                if (miDetalle.id != 0 && miDetalle.idLiquidacion != miLiquidacion.id)
                 {
                     ultimoError = "Un detalle no pertenece a esta liquidación.";
                     return false;
@@ -241,8 +240,7 @@ namespace ControlViaticos.Logica
 
                 if (!cumpleHorario(tipo.nombre, miLiquidacion.inicio, miLiquidacion.fin, miDetalle.fechaConsumo))
                 {
-                    ultimoError = "El horario del viaje no permite " + tipo.nombre + " el " +
-                        miDetalle.fechaConsumo.ToString("dd/MM/yyyy") + ".";
+                    ultimoError = "El horario del viaje no permite " + tipo.nombre + " en la fecha elegida.";
                     return false;
                 }
             }
