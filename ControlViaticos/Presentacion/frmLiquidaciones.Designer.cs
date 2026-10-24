@@ -46,6 +46,8 @@
             this.lblMonto = new System.Windows.Forms.Label();
             this.txtMonto = new System.Windows.Forms.TextBox();
             this.btnAgregarDetalle = new System.Windows.Forms.Button();
+            this.lblFechaConsumo = new System.Windows.Forms.Label();
+            this.dtpFechaConsumo = new System.Windows.Forms.DateTimePicker();
             this.grdDetalle = new System.Windows.Forms.DataGridView();
             this.btnQuitarDetalle = new System.Windows.Forms.Button();
             this.lblTotal = new System.Windows.Forms.Label();
@@ -116,10 +118,6 @@
             this.cmbEmpleado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEmpleado.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbEmpleado.FormattingEnabled = true;
-            this.cmbEmpleado.Items.AddRange(new object[] {
-            "Duva",
-            "Fabigey",
-            "Mangu"});
             this.cmbEmpleado.Location = new System.Drawing.Point(170, 75);
             this.cmbEmpleado.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmbEmpleado.Name = "cmbEmpleado";
@@ -218,10 +216,6 @@
             this.cmbTipoViatico.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbTipoViatico.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbTipoViatico.FormattingEnabled = true;
-            this.cmbTipoViatico.Items.AddRange(new object[] {
-            "Desayuno",
-            "Almuerzo",
-            "Cena"});
             this.cmbTipoViatico.Location = new System.Drawing.Point(170, 187);
             this.cmbTipoViatico.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmbTipoViatico.Name = "cmbTipoViatico";
@@ -263,12 +257,34 @@
             this.btnAgregarDetalle.UseVisualStyleBackColor = true;
             this.btnAgregarDetalle.Click += new System.EventHandler(this.btnAgregarDetalle_Click);
             // 
+            // lblFechaConsumo
+            // 
+            this.lblFechaConsumo.AutoSize = true;
+            this.lblFechaConsumo.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFechaConsumo.Location = new System.Drawing.Point(15, 220);
+            this.lblFechaConsumo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblFechaConsumo.Name = "lblFechaConsumo";
+            this.lblFechaConsumo.Size = new System.Drawing.Size(137, 17);
+            this.lblFechaConsumo.TabIndex = 25;
+            this.lblFechaConsumo.Text = "Fecha de consumo:";
+            // 
+            // dtpFechaConsumo
+            // 
+            this.dtpFechaConsumo.CustomFormat = "dd/MM/yyyy";
+            this.dtpFechaConsumo.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dtpFechaConsumo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpFechaConsumo.Location = new System.Drawing.Point(170, 218);
+            this.dtpFechaConsumo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dtpFechaConsumo.Name = "dtpFechaConsumo";
+            this.dtpFechaConsumo.Size = new System.Drawing.Size(137, 24);
+            this.dtpFechaConsumo.TabIndex = 26;
+            // 
             // grdDetalle
             // 
             this.grdDetalle.AllowUserToAddRows = false;
             this.grdDetalle.AllowUserToDeleteRows = false;
             this.grdDetalle.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdDetalle.Location = new System.Drawing.Point(15, 218);
+            this.grdDetalle.Location = new System.Drawing.Point(15, 248);
             this.grdDetalle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grdDetalle.Name = "grdDetalle";
             this.grdDetalle.ReadOnly = true;
@@ -280,7 +296,7 @@
             // btnQuitarDetalle
             // 
             this.btnQuitarDetalle.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnQuitarDetalle.Location = new System.Drawing.Point(390, 218);
+            this.btnQuitarDetalle.Location = new System.Drawing.Point(390, 248);
             this.btnQuitarDetalle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnQuitarDetalle.Name = "btnQuitarDetalle";
             this.btnQuitarDetalle.Size = new System.Drawing.Size(165, 29);
@@ -293,7 +309,7 @@
             // 
             this.lblTotal.AutoSize = true;
             this.lblTotal.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotal.Location = new System.Drawing.Point(387, 277);
+            this.lblTotal.Location = new System.Drawing.Point(387, 307);
             this.lblTotal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblTotal.Name = "lblTotal";
             this.lblTotal.Size = new System.Drawing.Size(48, 17);
@@ -304,7 +320,7 @@
             // 
             this.lblMontoTotal.AutoSize = true;
             this.lblMontoTotal.Font = new System.Drawing.Font("Tahoma", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblMontoTotal.Location = new System.Drawing.Point(442, 272);
+            this.lblMontoTotal.Location = new System.Drawing.Point(442, 302);
             this.lblMontoTotal.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblMontoTotal.Name = "lblMontoTotal";
             this.lblMontoTotal.Size = new System.Drawing.Size(51, 29);
@@ -315,7 +331,7 @@
             // 
             this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.btnGuardar.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardar.Location = new System.Drawing.Point(170, 339);
+            this.btnGuardar.Location = new System.Drawing.Point(170, 369);
             this.btnGuardar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(95, 29);
@@ -328,7 +344,7 @@
             // 
             this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
             this.btnEliminar.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEliminar.Location = new System.Drawing.Point(315, 339);
+            this.btnEliminar.Location = new System.Drawing.Point(315, 369);
             this.btnEliminar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(95, 29);
@@ -342,7 +358,7 @@
             this.grdLiquidaciones.AllowUserToAddRows = false;
             this.grdLiquidaciones.AllowUserToDeleteRows = false;
             this.grdLiquidaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdLiquidaciones.Location = new System.Drawing.Point(15, 385);
+            this.grdLiquidaciones.Location = new System.Drawing.Point(15, 415);
             this.grdLiquidaciones.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.grdLiquidaciones.Name = "grdLiquidaciones";
             this.grdLiquidaciones.ReadOnly = true;
@@ -355,7 +371,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(582, 555);
+            this.ClientSize = new System.Drawing.Size(582, 585);
             this.Controls.Add(this.grdLiquidaciones);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnGuardar);
@@ -364,6 +380,8 @@
             this.Controls.Add(this.btnQuitarDetalle);
             this.Controls.Add(this.grdDetalle);
             this.Controls.Add(this.btnAgregarDetalle);
+            this.Controls.Add(this.dtpFechaConsumo);
+            this.Controls.Add(this.lblFechaConsumo);
             this.Controls.Add(this.txtMonto);
             this.Controls.Add(this.lblMonto);
             this.Controls.Add(this.cmbTipoViatico);
@@ -414,6 +432,8 @@
         private System.Windows.Forms.Label lblMonto;
         private System.Windows.Forms.TextBox txtMonto;
         private System.Windows.Forms.Button btnAgregarDetalle;
+        private System.Windows.Forms.Label lblFechaConsumo;
+        private System.Windows.Forms.DateTimePicker dtpFechaConsumo;
         private System.Windows.Forms.DataGridView grdDetalle;
         private System.Windows.Forms.Button btnQuitarDetalle;
         private System.Windows.Forms.Label lblTotal;

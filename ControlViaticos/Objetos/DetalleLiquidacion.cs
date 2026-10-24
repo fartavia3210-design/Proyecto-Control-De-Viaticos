@@ -8,8 +8,10 @@ namespace ControlViaticos.Objetos
 {
     internal class DetalleLiquidacion
     {
+        public int id { get; set; }
         public int idLiquidacion { get; set; }
         public int idViatico { get; set; }
         public int monto { get; set; }
+        public DateTime fechaConsumo { get; set; }
     }
 }

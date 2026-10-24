@@ -17,86 +17,87 @@ namespace ControlViaticos.Presentacion
         public frmLiquidaciones()
         {
             InitializeComponent();
+            ConfigurarTablas();
         }
 
         //Instancia de la lógica para trabajar con las liquidaciones y sus detalles.
         LogicaLiquidaciones almacen = new LogicaLiquidaciones();
+        LogicaBitacora logicaBitacora = new LogicaBitacora();
+
+        //--Detalles que se preparan en pantalla; solo pasan a la lista compartida al Guardar
+        List<DetalleLiquidacion> detallesPreparados = new List<DetalleLiquidacion>();
+
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (txtConsecutivo.Text.Equals(""))
+            if (!ValidarSesion())
             {
-                MessageBox.Show("Debe escribir el consecutivo", "AVISO",
+                return;
+            }
+
+            int idLiquidacion;
+            if (!int.TryParse(txtConsecutivo.Text, out idLiquidacion) || idLiquidacion <= 0)
+            {
+                MessageBox.Show("El consecutivo debe ser un número entero positivo", "AVISO",
                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
+
+            Liquidacion encontrado = almacen.buscarLiquidacion(idLiquidacion);
+            if (encontrado == null)
             {
-                int idLiquidacion = int.Parse(txtConsecutivo.Text);
-                Liquidacion encontrado = almacen.buscarLiquidacion(idLiquidacion);
-
-                if (encontrado == null)
-                {
-                    MessageBox.Show("No existe una liquidacion con ese consecutivo", "AVISO",
-                       MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    //--Se pasan los datos guardados a la pantalla
-                    cmbEmpleado.SelectedIndex = encontrado.idEmpleado;
-                    dtpInicio.Value = encontrado.inicio;
-                    dtpFin.Value = encontrado.fin;
-                    txtJustificacion.Text = encontrado.justificacion;
-
-                    grdDetalle.DataSource = almacen.ObtenerDetalles(idLiquidacion);
-                    lblMontoTotal.Text = "₡ " + almacen.calcularTotal(idLiquidacion);
-                }
+                MessageBox.Show("No existe una liquidacion con ese consecutivo", "AVISO",
+                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
+            //--Si el empleado ya está inactivo se agrega al combo para poder mostrar la liquidación
+            List<Empleado> empleados = almacen.ObtenerEmpleadosActivos();
+            Empleado empleado = almacen.buscarEmpleado(encontrado.idEmpleado);
+            if (empleado != null && !empleados.Contains(empleado))
+            {
+                empleados.Add(empleado);
+            }
+            cmbEmpleado.DataSource = empleados;
+            cmbEmpleado.SelectedItem = empleado;
+
+            //--Se pasan los datos guardados a la pantalla
+            dtpInicio.Value = encontrado.inicio;
+            dtpFin.Value = encontrado.fin;
+            txtJustificacion.Text = encontrado.justificacion;
+
+            detallesPreparados = almacen.ObtenerDetalles(idLiquidacion);
+            MostrarDetalles();
         }
 
         private void btnAgregarDetalle_Click(object sender, EventArgs e)
         {
-            string error = "";
-
-            if (txtConsecutivo.Text.Equals(""))
+            TipoViatico tipo = cmbTipoViatico.SelectedItem as TipoViatico;
+            if (tipo == null)
             {
-                error = error + " -Consecutivo- ";
-            }
-            if (cmbTipoViatico.SelectedIndex == -1)
-            {
-                error = error + " -Tipo de viatico- ";
-            }
-
-            if (!error.Equals(""))
-            {
-                MessageBox.Show("Debe completar los campos de: " + error, "AVISO",
+                MessageBox.Show("Debe seleccionar el tipo de viatico", "AVISO",
                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            else if (almacen.buscarLiquidacion(int.Parse(txtConsecutivo.Text)) == null)
+            else if (dtpFechaConsumo.Value.Date < dtpInicio.Value.Date ||
+                     dtpFechaConsumo.Value.Date > dtpFin.Value.Date)
             {
-                MessageBox.Show("Primero guarde la liquidacion", "AVISO",
+                MessageBox.Show("La fecha de consumo debe estar entre el inicio y el fin del viaje", "AVISO",
+                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else if (!almacen.cumpleHorario(tipo.nombre, dtpInicio.Value, dtpFin.Value, dtpFechaConsumo.Value))
+            {
+                MessageBox.Show("El horario del viaje no permite " + tipo.nombre + " ese día", "AVISO",
                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             else
             {
-                int idLiquidacion = int.Parse(txtConsecutivo.Text);
-                Liquidacion miLiquidacion = almacen.buscarLiquidacion(idLiquidacion);
+                //--id 0 indica un detalle nuevo; la lógica le asigna su id al guardar
+                DetalleLiquidacion miDetalle = new DetalleLiquidacion();
+                miDetalle.idViatico = tipo.id;
+                miDetalle.monto = tipo.monto;
+                miDetalle.fechaConsumo = dtpFechaConsumo.Value.Date;
 
-                if (!almacen.cumpleHorario(cmbTipoViatico.Text, miLiquidacion.inicio, miLiquidacion.fin))
-                {
-                    MessageBox.Show("El horario del viaje no permite " + cmbTipoViatico.Text, "AVISO",
-                       MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    DetalleLiquidacion miDetalle = new DetalleLiquidacion();
-                    miDetalle.idLiquidacion = idLiquidacion;
-                    miDetalle.idViatico = cmbTipoViatico.SelectedIndex;
-                    miDetalle.monto = int.Parse(txtMonto.Text);
-
-                    almacen.AgregarDetalle(miDetalle);
-
-                    grdDetalle.DataSource = almacen.ObtenerDetalles(idLiquidacion);
-                    lblMontoTotal.Text = "₡ " + almacen.calcularTotal(idLiquidacion);
-                }
+                detallesPreparados.Add(miDetalle);
+                MostrarDetalles();
             }
         }
 
@@ -112,26 +113,30 @@ namespace ControlViaticos.Presentacion
                 //--El objeto que esta detras de la fila seleccionada
                 DetalleLiquidacion seleccionado = (DetalleLiquidacion)grdDetalle.CurrentRow.DataBoundItem;
 
-                almacen.eliminarDetalle(seleccionado.idLiquidacion, seleccionado.idViatico);
-
-                grdDetalle.DataSource = almacen.ObtenerDetalles(seleccionado.idLiquidacion);
-                lblMontoTotal.Text = "₡ " + almacen.calcularTotal(seleccionado.idLiquidacion);
+                detallesPreparados.Remove(seleccionado);
+                MostrarDetalles();
             }
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            string error = "";
+            if (!ValidarSesion())
+            {
+                return;
+            }
 
-            if (txtConsecutivo.Text.Equals(""))
+            string error = "";
+            int idLiquidacion;
+
+            if (!int.TryParse(txtConsecutivo.Text, out idLiquidacion) || idLiquidacion <= 0)
             {
                 error = error + " -Consecutivo- ";
             }
-            if (cmbEmpleado.SelectedIndex == -1)
+            if (cmbEmpleado.SelectedItem == null)
             {
                 error = error + " -Empleado- ";
             }
-            if (txtJustificacion.Text.Equals(""))
+            if (txtJustificacion.Text.Trim().Equals(""))
             {
                 error = error + " -Justificacion- ";
             }
@@ -140,46 +145,67 @@ namespace ControlViaticos.Presentacion
             {
                 MessageBox.Show("Debe completar los campos de: " + error, "AVISO",
                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else if (dtpFin.Value <= dtpInicio.Value)
+
+            Liquidacion miLiquidacion = new Liquidacion();
+            miLiquidacion.id = idLiquidacion;
+            miLiquidacion.idEmpleado = ((Empleado)cmbEmpleado.SelectedItem).id;
+            miLiquidacion.inicio = dtpInicio.Value;
+            miLiquidacion.fin = dtpFin.Value;
+            miLiquidacion.justificacion = txtJustificacion.Text;
+
+            bool esNuevo = almacen.buscarLiquidacion(idLiquidacion) == null;
+            bool guardado;
+            if (esNuevo)
             {
-                MessageBox.Show("La fecha de fin debe ser posterior al inicio", "AVISO",
-                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                guardado = almacen.AgregarLiquidacion(miLiquidacion, detallesPreparados);
             }
             else
             {
-                Liquidacion miLiquidacion = new Liquidacion();
-                miLiquidacion.id = int.Parse(txtConsecutivo.Text);
-                miLiquidacion.idEmpleado = cmbEmpleado.SelectedIndex;
-                miLiquidacion.inicio = dtpInicio.Value;
-                miLiquidacion.fin = dtpFin.Value;
-                miLiquidacion.justificacion = txtJustificacion.Text;
-
-                if (almacen.buscarLiquidacion(miLiquidacion.id) == null)
-                {
-                    almacen.AgregarLiquidacion(miLiquidacion);
-                    MessageBox.Show("Liquidacion guardada", "AVISO",
-                       MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else
-                {
-                    almacen.modificarLiquidacion(miLiquidacion);
-                    MessageBox.Show("Liquidacion modificada", "AVISO",
-                       MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
-                grdLiquidaciones.DataSource = almacen.ObtenerLiquidaciones();
+                guardado = almacen.modificarLiquidacion(miLiquidacion, detallesPreparados);
             }
+
+            if (!guardado)
+            {
+                MessageBox.Show(almacen.ultimoError, "AVISO",
+                   MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (esNuevo)
+            {
+                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Liquidaciones",
+                    "Creó liquidación " + idLiquidacion);
+                MessageBox.Show("Liquidacion guardada", "AVISO",
+                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Liquidaciones",
+                    "Modificó liquidación " + idLiquidacion);
+                MessageBox.Show("Liquidacion modificada", "AVISO",
+                   MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            ActualizarTabla();
+            LimpiarCampos();
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (txtConsecutivo.Text.Equals(""))
+            if (!ValidarSesion())
             {
-                MessageBox.Show("Debe escribir el consecutivo", "AVISO",
+                return;
+            }
+
+            int idLiquidacion;
+            if (!int.TryParse(txtConsecutivo.Text, out idLiquidacion) || idLiquidacion <= 0)
+            {
+                MessageBox.Show("El consecutivo debe ser un número entero positivo", "AVISO",
                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            else if (almacen.buscarLiquidacion(int.Parse(txtConsecutivo.Text)) == null)
+            else if (almacen.buscarLiquidacion(idLiquidacion) == null)
             {
                 MessageBox.Show("No existe una liquidacion con ese consecutivo", "AVISO",
                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -187,16 +213,13 @@ namespace ControlViaticos.Presentacion
             else if (MessageBox.Show("¿Eliminar la liquidacion y todos sus detalles?", "CONFIRMAR",
                         MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                almacen.eliminarLiquidacion(int.Parse(txtConsecutivo.Text));
+                almacen.eliminarLiquidacion(idLiquidacion);
 
-                //--Se limpia la pantalla
-                txtConsecutivo.Text = "";
-                txtJustificacion.Text = "";
-                cmbEmpleado.SelectedIndex = -1;
-                grdDetalle.DataSource = null;
-                lblMontoTotal.Text = "₡ 0";
+                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Liquidaciones",
+                    "Eliminó liquidación " + idLiquidacion);
 
-                grdLiquidaciones.DataSource = almacen.ObtenerLiquidaciones();
+                ActualizarTabla();
+                LimpiarCampos();
             }
         }
 
@@ -207,25 +230,143 @@ namespace ControlViaticos.Presentacion
 
         private void frmLiquidaciones_Load(object sender, EventArgs e)
         {
-
+            if (ValidarSesion())
+            {
+                LimpiarCampos();
+                ActualizarTabla();
+            }
         }
 
         private void cmbTipoViatico_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //Precios de prueba
-            if (cmbTipoViatico.Text.Equals("Desayuno"))
+            //--Monto actual del catalogo
+            TipoViatico tipo = cmbTipoViatico.SelectedItem as TipoViatico;
+            if (tipo != null)
             {
-                txtMonto.Text = "3000";
+                txtMonto.Text = tipo.monto.ToString();
             }
-            else if (cmbTipoViatico.Text.Equals("Almuerzo"))
+            else
             {
-                txtMonto.Text = "7000";
-            }
-            else if (cmbTipoViatico.Text.Equals("Cena"))
-            {
-                txtMonto.Text = "10000";
+                txtMonto.Text = "";
             }
         }
-    
+
+        private void cmbEmpleado_Format(object sender, ListControlConvertEventArgs e)
+        {
+            Empleado empleado = e.ListItem as Empleado;
+            if (empleado != null)
+            {
+                e.Value = empleado.nombre + " " + empleado.apellido1 + " " + empleado.apellido2;
+            }
+        }
+
+        private void ConfigurarTablas()
+        {
+            cmbEmpleado.Format += new ListControlConvertEventHandler(cmbEmpleado_Format);
+            cmbTipoViatico.DisplayMember = "nombre";
+
+            grdDetalle.AutoGenerateColumns = false;
+            grdDetalle.Columns.Clear();
+            grdDetalle.MultiSelect = false;
+            grdDetalle.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+            string[] propiedades = { "fechaConsumo", "idViatico", "monto" };
+            string[] titulos = { "Fecha", "Tipo de viático", "Monto" };
+            for (int i = 0; i < propiedades.Length; i++)
+            {
+                DataGridViewTextBoxColumn columna = new DataGridViewTextBoxColumn();
+                columna.Name = propiedades[i];
+                columna.DataPropertyName = propiedades[i];
+                columna.HeaderText = titulos[i];
+                grdDetalle.Columns.Add(columna);
+            }
+            grdDetalle.Columns["fechaConsumo"].DefaultCellStyle.Format = "dd/MM/yyyy";
+
+            grdLiquidaciones.AutoGenerateColumns = false;
+            grdLiquidaciones.Columns.Clear();
+            grdLiquidaciones.MultiSelect = false;
+            grdLiquidaciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+            string[] propiedadesLiq = { "id", "idEmpleado", "inicio", "fin", "justificacion" };
+            string[] titulosLiq = { "Consecutivo", "Empleado", "Inicio", "Fin", "Justificación" };
+            for (int i = 0; i < propiedadesLiq.Length; i++)
+            {
+                DataGridViewTextBoxColumn columna = new DataGridViewTextBoxColumn();
+                columna.Name = propiedadesLiq[i];
+                columna.DataPropertyName = propiedadesLiq[i];
+                columna.HeaderText = titulosLiq[i];
+                grdLiquidaciones.Columns.Add(columna);
+            }
+            grdLiquidaciones.Columns["inicio"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+            grdLiquidaciones.Columns["fin"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+
+            grdDetalle.CellFormatting += new DataGridViewCellFormattingEventHandler(grdDetalle_CellFormatting);
+            grdLiquidaciones.CellFormatting += new DataGridViewCellFormattingEventHandler(grdLiquidaciones_CellFormatting);
+        }
+
+        //--Se muestra el nombre en lugar del id, sin cambiar el id guardado
+        private void grdDetalle_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.ColumnIndex >= 0 && grdDetalle.Columns[e.ColumnIndex].Name == "idViatico" && e.Value is int)
+            {
+                TipoViatico tipo = almacen.buscarTipoViatico((int)e.Value);
+                if (tipo != null)
+                {
+                    e.Value = tipo.nombre;
+                    e.FormattingApplied = true;
+                }
+            }
+        }
+
+        private void grdLiquidaciones_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.ColumnIndex >= 0 && grdLiquidaciones.Columns[e.ColumnIndex].Name == "idEmpleado" && e.Value is int)
+            {
+                Empleado empleado = almacen.buscarEmpleado((int)e.Value);
+                if (empleado != null)
+                {
+                    e.Value = empleado.nombre + " " + empleado.apellido1 + " " + empleado.apellido2;
+                    e.FormattingApplied = true;
+                }
+            }
+        }
+
+        private void MostrarDetalles()
+        {
+            grdDetalle.DataSource = null;
+            grdDetalle.DataSource = detallesPreparados;
+            lblMontoTotal.Text = "₡ " + almacen.calcularTotal(detallesPreparados);
+        }
+
+        private void ActualizarTabla()
+        {
+            grdLiquidaciones.DataSource = almacen.ObtenerLiquidaciones();
+            grdLiquidaciones.ClearSelection();
+        }
+
+        //--Deja la pantalla lista para una liquidación nueva, con los catálogos activos
+        private void LimpiarCampos()
+        {
+            txtConsecutivo.Text = "";
+            txtJustificacion.Text = "";
+            cmbEmpleado.DataSource = almacen.ObtenerEmpleadosActivos();
+            cmbEmpleado.SelectedIndex = -1;
+            cmbTipoViatico.DataSource = almacen.ObtenerTiposActivos();
+            cmbTipoViatico.SelectedIndex = -1;
+            dtpFechaConsumo.Value = DateTime.Today;
+            detallesPreparados = new List<DetalleLiquidacion>();
+            MostrarDetalles();
+        }
+
+        private bool ValidarSesion()
+        {
+            if (!SesionActual.HaySesionActiva())
+            {
+                MessageBox.Show("Debe iniciar sesión para trabajar con liquidaciones.");
+                Close();
+                return false;
+            }
+            return true;
+        }
     }
-}       
+}
