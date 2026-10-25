@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 Set-Location $root
 New-Item -ItemType Directory -Force screenshots | Out-Null
@@ -49,7 +49,7 @@ foreach ($version in @('despues','antes')) {
         $sources = @(Get-ChildItem ControlViaticos -Recurse -Filter '*.cs' | Where-Object {$_.FullName -notmatch '[\\/](obj|bin)[\\/]'} | ForEach-Object {$_.FullName})
     }
     $executable = Join-Path $sourceRoot 'Capture.exe'
-    & $compiler /nologo /target:exe /main:Capture "/out:$executable" /r:System.Windows.Forms.dll /r:System.Drawing.dll /r:System.Data.dll /r:System.Configuration.dll $sources $harnessPath
+    & $compiler /nologo /codepage:65001 /target:exe /main:Capture "/out:$executable" /r:System.Windows.Forms.dll /r:System.Drawing.dll /r:System.Data.dll /r:System.Configuration.dll $sources $harnessPath
     if ($LASTEXITCODE -ne 0) {throw 'Compilation failed'}
     & $executable $version "$root/screenshots"
     if ($LASTEXITCODE -ne 0) {throw 'Capture failed'}
