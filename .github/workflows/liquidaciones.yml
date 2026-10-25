@@ -16,9 +16,18 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: microsoft/setup-msbuild@v2
       - name: Compilar aplicación .NET Framework
         run: msbuild ControlViaticos/ControlViaticos.csproj /p:Configuration=Release /verbosity:minimal
       - name: Comprobar lógica y formularios
         shell: powershell
         run: ./tests/Run-Regression.ps1
+      - name: Capturar antes y despues
+        shell: powershell
+        run: ./tests/Capture-Comparison.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: comparacion-visual
+          path: screenshots/*.png
