@@ -1,0 +1,24 @@
+name: Validar liquidaciones
+on:
+  push:
+    branches: [fix/issues-1-2-liquidaciones]
+  pull_request:
+    paths:
+      - 'ControlViaticos/**'
+      - 'tests/**'
+      - '.github/workflows/liquidaciones.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: microsoft/setup-msbuild@v2
+      - name: Compilar aplicación .NET Framework
+        run: msbuild ControlViaticos/ControlViaticos.csproj /p:Configuration=Release /verbosity:minimal
+      - name: Comprobar lógica y formularios
+        shell: powershell
+        run: ./tests/Run-Regression.ps1
