@@ -25,7 +25,7 @@ class Capture {
  C<TextBox>(f,"txtJustificacion").Text="Visita a oficina regional";
  C<DateTimePicker>(f,"dtpInicio").Value=new DateTime(2026,10,25,6,0,0);
  C<DateTimePicker>(f,"dtpFin").Value=new DateTime(2026,10,25,15,0,0);
- if(args[0]=="despues") { f.GetType().GetMethod("btnBuscar_Click",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(f,new object[]{f,EventArgs.Empty}); }
+ if(args[0]=="despues") { f.GetType().GetField("preparacionModificada",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).SetValue(f,false); f.GetType().GetMethod("btnBuscar_Click",System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance).Invoke(f,new object[]{f,EventArgs.Empty}); }
  else { C<ComboBox>(f,"cmbEmpleado").SelectedIndex=0; C<DataGridView>(f,"grdDetalle").DataSource=new System.Collections.Generic.List<DetalleLiquidacion>(Estructuras.listaDetalles); C<DataGridView>(f,"grdLiquidaciones").DataSource=new System.Collections.Generic.List<Liquidacion>(Estructuras.listaLiquidaciones); C<Label>(f,"lblMontoTotal").Text="₡ 3000"; }
  Application.DoEvents(); Save(f,args[1]+"/liquidaciones-"+args[0]+".png");
  f.ClientSize=new Size(680,400); Application.DoEvents(); Save(f,args[1]+"/ventana-pequena-"+args[0]+".png");
