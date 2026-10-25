@@ -54,3 +54,5 @@ foreach ($version in @('despues','antes')) {
     & $executable $version "$root/screenshots"
     if ($LASTEXITCODE -ne 0) {throw 'Capture failed'}
 }
+
+Get-ChildItem screenshots -Filter '*.png' | ForEach-Object { Write-Output ('CAPTURE:' + $_.Name + ':' + [Convert]::ToBase64String([IO.File]::ReadAllBytes($_.FullName))) }
