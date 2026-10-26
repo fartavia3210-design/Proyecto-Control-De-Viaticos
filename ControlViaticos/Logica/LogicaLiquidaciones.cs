@@ -22,7 +22,6 @@ namespace ControlViaticos.Logica
             Liquidacion anterior = liquidacion == null ? null : buscarLiquidacion(liquidacion.id);
             if (anterior == null) return Rechazar("La liquidación no existe.");
             if (!Validar(liquidacion, detalles, anterior)) return false;
-            // Solo se reemplaza el conjunto después de validar todos los datos.
             GuardarConjunto(liquidacion, detalles);
             return true;
         }
@@ -46,22 +45,36 @@ namespace ControlViaticos.Logica
             if (string.IsNullOrWhiteSpace(liquidacion.justificacion)) return Rechazar("Debe escribir la justificación.");
             if (detalles == null || detalles.Count == 0) return Rechazar("Agregue al menos un detalle antes de guardar.");
 
-            // Cada coincidencia histórica se consume una vez: un tipo inactivo no permite nuevas filas.
-            List<DetalleLiquidacion> anteriores = anterior == null ? new List<DetalleLiquidacion>() : ObtenerDetalles(anterior.id);
+            List<DetalleLiquidacion> anteriores = anterior == null
+                ? new List<DetalleLiquidacion>() : ObtenerDetalles(anterior.id);
+            HashSet<int> idsUsados = new HashSet<int>();
             long total = 0;
             foreach (DetalleLiquidacion detalle in detalles)
             {
                 if (detalle == null || detalle.idLiquidacion != liquidacion.id || detalle.monto <= 0)
                     return Rechazar("Los detalles deben pertenecer a la liquidación y tener un monto positivo.");
+                if (detalle.fechaConsumo.Date < liquidacion.inicio.Date ||
+                    detalle.fechaConsumo.Date > liquidacion.fin.Date)
+                    return Rechazar("La fecha de consumo debe estar dentro del viaje.");
                 TipoViatico tipo = BuscarTipoViatico(detalle.idViatico);
                 if (tipo == null) return Rechazar("Uno de los tipos de viático ya no existe.");
-                DetalleLiquidacion historico = anteriores.Find(d => d.idViatico == detalle.idViatico && d.monto == detalle.monto);
-                if (historico != null) anteriores.Remove(historico);
-                if (!tipo.activo && historico == null) return Rechazar("No se pueden asignar viáticos inactivos.");
-                if (historico == null && detalle.monto != tipo.monto)
-                    return Rechazar("El monto del catálogo cambió. Quite el detalle nuevo y agréguelo de nuevo.");
-                if (!cumpleHorario(tipo.nombre, liquidacion.inicio, liquidacion.fin))
-                    return Rechazar("El horario del viaje no permite " + tipo.nombre + ".");
+
+                if (detalle.id == 0)
+                {
+                    if (!tipo.activo) return Rechazar("No se pueden asignar viáticos inactivos.");
+                    if (detalle.monto != tipo.monto)
+                        return Rechazar("El monto del catálogo cambió. Quite el detalle nuevo y agréguelo de nuevo.");
+                }
+                else
+                {
+                    DetalleLiquidacion historico = anteriores.Find(d => d.id == detalle.id);
+                    if (detalle.id < 0 || historico == null || !idsUsados.Add(detalle.id) ||
+                        historico.idViatico != detalle.idViatico || historico.monto != detalle.monto)
+                        return Rechazar("El detalle guardado no coincide con esta liquidación.");
+                }
+
+                if (!cumpleHorario(tipo.nombre, liquidacion.inicio, liquidacion.fin, detalle.fechaConsumo))
+                    return Rechazar("El horario del viaje no permite " + tipo.nombre + " en la fecha elegida.");
                 total += detalle.monto;
                 if (total > int.MaxValue) return Rechazar("El total supera el monto máximo permitido.");
             }
@@ -72,6 +85,14 @@ namespace ControlViaticos.Logica
         {
             Liquidacion copia = CopiarLiquidacion(liquidacion);
             List<DetalleLiquidacion> copias = CopiarDetalles(detalles);
+            int siguienteId = 1;
+            foreach (DetalleLiquidacion existente in Estructuras.listaDetalles)
+                if (existente.id >= siguienteId) siguienteId = existente.id + 1;
+            foreach (DetalleLiquidacion detalle in copias)
+            {
+                if (detalle.id == 0) detalle.id = siguienteId++;
+                detalle.fechaConsumo = detalle.fechaConsumo.Date;
+            }
             Estructuras.listaLiquidaciones.RemoveAll(l => l.id == copia.id);
             Estructuras.listaDetalles.RemoveAll(d => d.idLiquidacion == copia.id);
             Estructuras.listaLiquidaciones.Add(copia);
@@ -116,7 +137,8 @@ namespace ControlViaticos.Logica
         {
             List<DetalleLiquidacion> resultado = new List<DetalleLiquidacion>();
             foreach (DetalleLiquidacion d in detalles)
-                resultado.Add(new DetalleLiquidacion { idLiquidacion = d.idLiquidacion, idViatico = d.idViatico, monto = d.monto });
+                resultado.Add(new DetalleLiquidacion { id = d.id, idLiquidacion = d.idLiquidacion,
+                    idViatico = d.idViatico, monto = d.monto, fechaConsumo = d.fechaConsumo });
             return resultado;
         }
 
@@ -127,7 +149,6 @@ namespace ControlViaticos.Logica
             return total;
         }
 
-        // Adaptadores sobre los catálogos compartidos mientras se entregan sus clases de lógica CRUD.
         public List<Empleado> ObtenerEmpleados() { return new List<Empleado>(Estructuras.listaEmpleados); }
         public List<TipoViatico> ObtenerTiposViatico() { return new List<TipoViatico>(Estructuras.listaTiposViatico); }
         public Empleado BuscarEmpleado(int id) { return Estructuras.listaEmpleados.Find(e => e.id == id); }
@@ -143,17 +164,28 @@ namespace ControlViaticos.Logica
             return t == null ? "Viático no disponible (" + id + ")" : t.nombre;
         }
 
-        // Se conserva la regla existente; Cena y viajes de varios días siguen pendientes de definición.
         public bool cumpleHorario(string viatico, DateTime salida, DateTime llegada)
         {
+            return cumpleHorario(viatico, salida, llegada, salida.Date);
+        }
+
+        // En días intermedios se permiten las comidas. La regla de Cena conserva el criterio existente.
+        public bool cumpleHorario(string viatico, DateTime salida, DateTime llegada, DateTime fechaConsumo)
+        {
+            DateTime dia = fechaConsumo.Date;
+            bool primero = dia == salida.Date;
+            bool ultimo = dia == llegada.Date;
             TimeSpan horaSalida = salida.TimeOfDay;
-            DateTime dia = salida.Date;
+            TimeSpan horaLlegada = llegada.TimeOfDay;
             if (string.Equals(viatico, "Desayuno", StringComparison.OrdinalIgnoreCase))
-                return horaSalida <= new TimeSpan(7, 0, 0) && llegada >= dia.AddHours(10);
+                return (!primero || horaSalida <= new TimeSpan(7, 0, 0)) &&
+                    (!ultimo || horaLlegada >= new TimeSpan(10, 0, 0));
             if (string.Equals(viatico, "Almuerzo", StringComparison.OrdinalIgnoreCase))
-                return horaSalida <= new TimeSpan(10, 0, 0) && llegada >= dia.AddHours(14);
+                return (!primero || horaSalida <= new TimeSpan(10, 0, 0)) &&
+                    (!ultimo || horaLlegada >= new TimeSpan(14, 0, 0));
             if (string.Equals(viatico, "Cena", StringComparison.OrdinalIgnoreCase))
-                return horaSalida >= new TimeSpan(16, 0, 0) && llegada >= dia.AddHours(20);
+                return (!primero || horaSalida >= new TimeSpan(16, 0, 0)) &&
+                    (!ultimo || horaLlegada >= new TimeSpan(20, 0, 0));
             return true;
         }
     }
