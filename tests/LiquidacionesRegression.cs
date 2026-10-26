@@ -22,7 +22,7 @@ internal static class LiquidacionesRegression
     }
     private static List<DetalleLiquidacion> Detalles(int id)
     {
-        return new List<DetalleLiquidacion> { new DetalleLiquidacion { idLiquidacion = id, idViatico = 83, monto = 3000 } };
+        return new List<DetalleLiquidacion> { new DetalleLiquidacion { idLiquidacion = id, idViatico = 83, monto = 3000, fechaConsumo = Viaje(id).inicio.Date } };
     }
     private static T Control<T>(Form f, string nombre) where T : System.Windows.Forms.Control
     {
@@ -56,7 +56,7 @@ internal static class LiquidacionesRegression
             Liquidacion modificada = Viaje(1);
             modificada.justificacion = "No debe persistir";
             List<DetalleLiquidacion> invalidos = Detalles(1);
-            invalidos.Add(new DetalleLiquidacion { idLiquidacion = 1, idViatico = 999, monto = 500 });
+            invalidos.Add(new DetalleLiquidacion { idLiquidacion = 1, idViatico = 999, monto = 500, fechaConsumo = Viaje(1).inicio.Date });
             Verificar(!logica.modificarLiquidacion(modificada, invalidos) && logica.buscarLiquidacion(1).justificacion == "Visita de trabajo", "Un detalle inválido conserva toda la cabecera anterior");
             Liquidacion copia = logica.buscarLiquidacion(1);
             copia.justificacion = "Cambio no guardado";
@@ -108,6 +108,47 @@ internal static class LiquidacionesRegression
             Verificar(logica.buscarLiquidacion(3) == null && Estructuras.listaDetalles.Count == 2, "Cerrar borrador nuevo no deja registros parciales");
             Verificar(Estructuras.listaBitacora.Count == 0, "Preparación, consultas y cancelaciones no registran éxitos");
             Verificar(logica.eliminarLiquidacion(1) && logica.buscarLiquidacion(1) == null && logica.ObtenerDetalles(1).Count == 0, "Eliminar borra cabecera y detalles conjuntamente");
+            Liquidacion viajeLargo = Viaje(4);
+            viajeLargo.inicio = new DateTime(2026, 10, 25, 8, 0, 0);
+            viajeLargo.fin = new DateTime(2026, 10, 27, 21, 0, 0);
+            List<DetalleLiquidacion> primerDia = new List<DetalleLiquidacion> {
+                new DetalleLiquidacion { idLiquidacion = 4, idViatico = 83, monto = 3000,
+                    fechaConsumo = new DateTime(2026, 10, 25) } };
+            Verificar(!logica.AgregarLiquidacion(viajeLargo, primerDia),
+                "Rechaza desayuno del primer día cuando la salida es después de las siete");
+            List<DetalleLiquidacion> diasValidos = new List<DetalleLiquidacion> {
+                new DetalleLiquidacion { idLiquidacion = 4, idViatico = 83, monto = 3000,
+                    fechaConsumo = new DateTime(2026, 10, 26) },
+                new DetalleLiquidacion { idLiquidacion = 4, idViatico = 83, monto = 3000,
+                    fechaConsumo = new DateTime(2026, 10, 27) } };
+            Verificar(logica.AgregarLiquidacion(viajeLargo, diasValidos),
+                "Guarda viáticos en días intermedio y final del viaje");
+            List<DetalleLiquidacion> historicos = logica.ObtenerDetalles(4);
+            Verificar(historicos.Count == 2 && historicos[0].id > 0 &&
+                historicos[1].id > historicos[0].id && historicos[0].fechaConsumo.Day == 26,
+                "Asigna identificadores distintos y conserva fechas por detalle");
+            List<DetalleLiquidacion> fueraDeViaje = logica.ObtenerDetalles(4);
+            fueraDeViaje[0].fechaConsumo = new DateTime(2026, 10, 28);
+            Verificar(!logica.modificarLiquidacion(viajeLargo, fueraDeViaje) &&
+                logica.ObtenerDetalles(4)[0].fechaConsumo.Day == 26,
+                "Rechaza fecha fuera del viaje sin alterar lo guardado");
+            List<DetalleLiquidacion> idDuplicado = logica.ObtenerDetalles(4);
+            idDuplicado[1].id = idDuplicado[0].id;
+            Verificar(!logica.modificarLiquidacion(viajeLargo, idDuplicado),
+                "Rechaza la repetición de un identificador histórico");
+            LogicaReportesConsumo reportes = new LogicaReportesConsumo();
+            Verificar(reportes.ConsultarConsumosPorFechas(new DateTime(2026, 10, 26),
+                new DateTime(2026, 10, 26)).Count == 1,
+                "Consulta consumos por fecha incluyendo ambos límites");
+            Verificar(reportes.ConsultarConsumosPorFechas(new DateTime(2026, 10, 28),
+                new DateTime(2026, 10, 25)).Count == 0,
+                "Un rango invertido no produce consumos");
+            Verificar(reportes.ConsultarConsumosPorEmpleado(42).Count == 3,
+                "Consulta todos los consumos del empleado por su ID real");
+            desayuno.monto = 4500;
+            Verificar(reportes.ConsultarConsumosPorEmpleado(42)[0].monto == 3000,
+                "El reporte conserva el monto histórico del detalle");
+            desayuno.monto = 3000;
             Console.WriteLine(comprobaciones + " comprobaciones correctas.");
             return 0;
         }
