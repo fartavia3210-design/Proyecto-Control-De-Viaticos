@@ -185,7 +185,8 @@ namespace ControlViaticos.Presentacion
         private void MarcarCambio(object sender, EventArgs e) { preparacionModificada = true; }
         private void InicioCambiado(object sender, EventArgs e)
         {
-            if (dtpFechaConsumo.Value.Date < dtpInicio.Value.Date ||
+            if (detallesPreparados.Count == 0 ||
+                dtpFechaConsumo.Value.Date < dtpInicio.Value.Date ||
                 dtpFechaConsumo.Value.Date > dtpFin.Value.Date)
                 dtpFechaConsumo.Value = dtpInicio.Value.Date;
             preparacionModificada = true;
