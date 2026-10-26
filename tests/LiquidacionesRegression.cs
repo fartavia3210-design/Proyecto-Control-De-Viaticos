@@ -149,6 +149,28 @@ internal static class LiquidacionesRegression
             Verificar(reportes.ConsultarConsumosPorEmpleado(42)[0].monto == 3000,
                 "El reporte conserva el monto histórico del detalle");
             desayuno.monto = 3000;
+            TipoViatico cena = new TipoViatico { id = 84, nombre = "Cena", monto = 5000, activo = true };
+            Estructuras.listaTiposViatico.Add(cena);
+            Liquidacion viajeCena = Viaje(5);
+            viajeCena.inicio = new DateTime(2026, 10, 25, 16, 0, 0);
+            viajeCena.fin = new DateTime(2026, 10, 25, 20, 0, 0);
+            List<DetalleLiquidacion> detallesCena = new List<DetalleLiquidacion> {
+                new DetalleLiquidacion { idLiquidacion = 5, idViatico = 84, monto = 5000,
+                    fechaConsumo = new DateTime(2026, 10, 25) } };
+            Verificar(logica.AgregarLiquidacion(viajeCena, detallesCena),
+                "Cena admite salida exactamente a las 16:00 y llegada a las 20:00");
+            Liquidacion salidaTarde = Viaje(6);
+            salidaTarde.inicio = new DateTime(2026, 10, 25, 16, 1, 0);
+            salidaTarde.fin = new DateTime(2026, 10, 25, 20, 0, 0);
+            detallesCena[0].idLiquidacion = 6;
+            Verificar(!logica.AgregarLiquidacion(salidaTarde, detallesCena),
+                "Cena rechaza salida posterior a las 16:00");
+            Liquidacion llegadaTemprana = Viaje(7);
+            llegadaTemprana.inicio = new DateTime(2026, 10, 25, 16, 0, 0);
+            llegadaTemprana.fin = new DateTime(2026, 10, 25, 19, 59, 0);
+            detallesCena[0].idLiquidacion = 7;
+            Verificar(!logica.AgregarLiquidacion(llegadaTemprana, detallesCena),
+                "Cena rechaza llegada anterior a las 20:00");
             Console.WriteLine(comprobaciones + " comprobaciones correctas.");
             return 0;
         }
