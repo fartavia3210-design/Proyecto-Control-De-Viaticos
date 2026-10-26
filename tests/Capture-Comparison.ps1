@@ -35,6 +35,12 @@ class Capture {
    Application.DoEvents(); Save(f,args[1]+"/liquidaciones-escala-simulada-125.png");
    f.Scale(new SizeF(1.2f,1.2f)); f.ClientSize=new Size(900,700);
    Application.DoEvents(); Save(f,args[1]+"/liquidaciones-escala-simulada-150.png");
+   f.ScrollControlIntoView(C<DataGridView>(f,"grdLiquidaciones"));
+   Application.DoEvents(); Save(f,args[1]+"/liquidaciones-escala-simulada-150-inferior.png");
+   f.WindowState=FormWindowState.Maximized;
+   Application.DoEvents(); Save(f,args[1]+"/liquidaciones-maximizada.png");
+   f.WindowState=FormWindowState.Normal; f.ClientSize=new Size(900,700);
+   Application.DoEvents(); Save(f,args[1]+"/liquidaciones-restaurada.png");
  }
  }
  using(Form f=new frmUsuarios()) {f.FormBorderStyle=FormBorderStyle.FixedSingle;f.StartPosition=FormStartPosition.Manual;f.Location=new Point(10,10);f.ClientSize=new Size(700,430);f.Show();Application.DoEvents();C<ComboBox>(f,"cmbTipo").Text="Administrador";Application.DoEvents();Save(f,args[1]+"/usuarios-"+args[0]+".png");}
