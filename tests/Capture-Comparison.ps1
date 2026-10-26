@@ -18,7 +18,10 @@ class Capture {
  Estructuras.listaEmpleados.Add(new Empleado {id=42,nombre="Ana",apellido1="Mora",apellido2="Solis",activo=true});
  Estructuras.listaTiposViatico.Add(new TipoViatico {id=83,nombre="Desayuno",monto=3000,activo=true});
  Estructuras.listaLiquidaciones.Add(new Liquidacion {id=101,idEmpleado=42,inicio=new DateTime(2026,10,25,6,0,0),fin=new DateTime(2026,10,25,15,0,0),justificacion="Visita a oficina regional"});
- Estructuras.listaDetalles.Add(new DetalleLiquidacion {idLiquidacion=101,idViatico=83,monto=3000});
+ DetalleLiquidacion muestra=new DetalleLiquidacion {idLiquidacion=101,idViatico=83,monto=3000};
+ var fecha=typeof(DetalleLiquidacion).GetProperty("fechaConsumo");
+ if(fecha!=null) fecha.SetValue(muestra,new DateTime(2026,10,25),null);
+ Estructuras.listaDetalles.Add(muestra);
  using(Form f=new frmLiquidaciones()) {
  f.FormBorderStyle=FormBorderStyle.FixedSingle; f.StartPosition=FormStartPosition.Manual; f.Location=new Point(10,10); f.ClientSize=new Size(900,700); f.Show(); Application.DoEvents();
  C<TextBox>(f,"txtConsecutivo").Text="101";

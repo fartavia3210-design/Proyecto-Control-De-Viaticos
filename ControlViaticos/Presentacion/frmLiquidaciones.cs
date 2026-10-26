@@ -52,6 +52,7 @@ namespace ControlViaticos.Presentacion
             txtJustificacion.Text = encontrada.justificacion;
             detallesPreparados.Clear();
             detallesPreparados.AddRange(almacen.ObtenerDetalles(id));
+            dtpFechaConsumo.Value = detallesPreparados.Count == 0 ? encontrada.inicio.Date : detallesPreparados[0].fechaConsumo.Date;
             txtConsecutivo.ReadOnly = true;
             ActualizarDetalles();
             preparacionModificada = false;
@@ -66,9 +67,12 @@ namespace ControlViaticos.Presentacion
             TipoViatico tipo = cmbTipoViatico.SelectedItem as TipoViatico;
             if (tipo == null || !tipo.activo || tipo.monto <= 0)
             { Avisar("Seleccione un tipo de viático activo con monto positivo."); return; }
-            if (dtpFin.Value <= dtpInicio.Value || !almacen.cumpleHorario(tipo.nombre, dtpInicio.Value, dtpFin.Value))
-            { Avisar("Revise las fechas y el horario permitido para " + tipo.nombre + "."); return; }
-            detallesPreparados.Add(new DetalleLiquidacion { idLiquidacion = id, idViatico = tipo.id, monto = tipo.monto });
+            DateTime fecha = dtpFechaConsumo.Value.Date;
+            if (dtpFin.Value <= dtpInicio.Value || fecha < dtpInicio.Value.Date ||
+                fecha > dtpFin.Value.Date || !almacen.cumpleHorario(tipo.nombre, dtpInicio.Value, dtpFin.Value, fecha))
+            { Avisar("Revise la fecha de consumo y el horario permitido para " + tipo.nombre + "."); return; }
+            detallesPreparados.Add(new DetalleLiquidacion { idLiquidacion = id, idViatico = tipo.id,
+                monto = tipo.monto, fechaConsumo = fecha });
             txtConsecutivo.ReadOnly = true;
             preparacionModificada = true;
             ActualizarDetalles();
@@ -134,6 +138,7 @@ namespace ControlViaticos.Presentacion
             cmbTipoViatico.SelectedIndex = -1;
             dtpInicio.Value = DateTime.Now;
             dtpFin.Value = dtpInicio.Value;
+            dtpFechaConsumo.Value = dtpInicio.Value.Date;
             ActualizarDetalles();
             preparacionModificada = false;
         }
@@ -160,6 +165,7 @@ namespace ControlViaticos.Presentacion
             grdLiquidaciones.CellFormatting += FormatearLiquidacion;
             ConfigurarTabla(grdDetalle);
             AgregarColumna(grdDetalle, "idViatico", "Tipo de viático");
+            AgregarColumna(grdDetalle, "fechaConsumo", "Fecha de consumo", "dd/MM/yyyy");
             AgregarColumna(grdDetalle, "monto", "Monto (₡)", "N0");
             grdDetalle.CellFormatting += FormatearDetalle;
             cmbEmpleado.Format += (s, args) => { Empleado empleado = args.ListItem as Empleado;
@@ -172,11 +178,19 @@ namespace ControlViaticos.Presentacion
             ActualizarListado();
             txtJustificacion.TextChanged += MarcarCambio;
             cmbEmpleado.SelectedIndexChanged += MarcarCambio;
-            dtpInicio.ValueChanged += MarcarCambio;
+            dtpInicio.ValueChanged += InicioCambiado;
             dtpFin.ValueChanged += MarcarCambio;
         }
 
         private void MarcarCambio(object sender, EventArgs e) { preparacionModificada = true; }
+        private void InicioCambiado(object sender, EventArgs e)
+        {
+            if (detallesPreparados.Count == 0 ||
+                dtpFechaConsumo.Value.Date < dtpInicio.Value.Date ||
+                dtpFechaConsumo.Value.Date > dtpFin.Value.Date)
+                dtpFechaConsumo.Value = dtpInicio.Value.Date;
+            preparacionModificada = true;
+        }
         private void ActualizarListado() { grdLiquidaciones.DataSource = almacen.ObtenerLiquidaciones(); }
         private void ActualizarDetalles()
         {

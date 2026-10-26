@@ -54,12 +54,14 @@
     </Compile>
     <Compile Include="Logica\Estructuras.cs" />
     <Compile Include="Logica\LogicaLiquidaciones.cs" />
+    <Compile Include="Logica\LogicaReportesConsumo.cs" />
     <Compile Include="Logica\LogicaUsuarios.cs" />
     <Compile Include="Logica\LogicaAcceso.cs" />
     <Compile Include="Logica\LogicaBitacora.cs" />
     <Compile Include="Logica\LogicaCargaInicial.cs" />
     <Compile Include="Logica\SesionActual.cs" />
     <Compile Include="Objetos\DetalleLiquidacion.cs" />
+    <Compile Include="Objetos\ConsumoReporte.cs" />
     <Compile Include="Objetos\Liquidacion.cs" />
     <Compile Include="Objetos\Usuario.cs" />
     <Compile Include="Objetos\Empleado.cs" />
