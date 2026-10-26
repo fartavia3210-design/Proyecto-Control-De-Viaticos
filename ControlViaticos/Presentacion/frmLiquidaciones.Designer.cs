@@ -73,6 +73,15 @@ namespace ControlViaticos.Presentacion
             cmbTipoViatico.Name = "cmbTipoViatico";
             cmbTipoViatico.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipoViatico.Width = 270;
+            lblFechaConsumo = new Label();
+            lblFechaConsumo.Name = "lblFechaConsumo";
+            lblFechaConsumo.AutoSize = true;
+            lblFechaConsumo.Margin = new Padding(6, 10, 6, 6);
+            dtpFechaConsumo = new DateTimePicker();
+            dtpFechaConsumo.Name = "dtpFechaConsumo";
+            dtpFechaConsumo.Format = DateTimePickerFormat.Custom;
+            dtpFechaConsumo.CustomFormat = "dd/MM/yyyy";
+            dtpFechaConsumo.Width = 150;
             lblMonto = new Label();
             lblMonto.Name = "lblMonto";
             lblMonto.AutoSize = true;
@@ -132,6 +141,7 @@ namespace ControlViaticos.Presentacion
             lblJustificacion.Text = "Justificación:";
             lblDetalle.Text = "Preparación de los viáticos (se aplica al guardar)";
             lblTipoViatico.Text = "Tipo de viático:";
+            lblFechaConsumo.Text = "Fecha de consumo:";
             lblMonto.Text = "Monto (₡):";
             btnAgregarDetalle.Text = "Agregar";
             btnQuitarDetalle.Text = "Quitar detalle";
@@ -187,7 +197,7 @@ namespace ControlViaticos.Presentacion
             contenido.Controls.Add(lblDetalle, 0, 6);
             contenido.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             FlowLayoutPanel fila7 = new FlowLayoutPanel { AutoSize = true, Dock = DockStyle.Fill, WrapContents = true, Margin = new Padding(0) };
-            fila7.Controls.AddRange(new Control[] { lblTipoViatico, cmbTipoViatico, lblMonto, txtMonto, btnAgregarDetalle });
+            fila7.Controls.AddRange(new Control[] { lblTipoViatico, cmbTipoViatico, lblFechaConsumo, dtpFechaConsumo, lblMonto, txtMonto, btnAgregarDetalle });
             contenido.Controls.Add(fila7, 0, 7);
             contenido.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             contenido.Controls.Add(grdDetalle, 0, 8);
@@ -230,6 +240,8 @@ namespace ControlViaticos.Presentacion
         private Label lblDetalle;
         private Label lblTipoViatico;
         private ComboBox cmbTipoViatico;
+        private Label lblFechaConsumo;
+        private DateTimePicker dtpFechaConsumo;
         private Label lblMonto;
         private TextBox txtMonto;
         private Button btnAgregarDetalle;
