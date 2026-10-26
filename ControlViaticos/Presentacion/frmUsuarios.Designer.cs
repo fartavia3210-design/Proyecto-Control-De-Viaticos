@@ -171,7 +171,7 @@
             this.cmbTipo.Location = new System.Drawing.Point(458, 86);
             this.cmbTipo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cmbTipo.Name = "cmbTipo";
-            this.cmbTipo.Size = new System.Drawing.Size(104, 24);
+            this.cmbTipo.Size = new System.Drawing.Size(170, 24);
             this.cmbTipo.TabIndex = 11;
             // 
             // lblEstado
@@ -240,7 +240,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(570, 394);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(650, 394);
             this.Controls.Add(this.grdUsuarios);
             this.Controls.Add(this.btnEliminar);
             this.Controls.Add(this.btnGuardar);
@@ -290,3 +291,4 @@
         private System.Windows.Forms.DataGridView grdUsuarios;
     }
 }
+
