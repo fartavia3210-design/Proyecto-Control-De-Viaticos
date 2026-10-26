@@ -29,6 +29,13 @@ class Capture {
  else { C<ComboBox>(f,"cmbEmpleado").SelectedIndex=0; C<DataGridView>(f,"grdDetalle").DataSource=new System.Collections.Generic.List<DetalleLiquidacion>(Estructuras.listaDetalles); C<DataGridView>(f,"grdLiquidaciones").DataSource=new System.Collections.Generic.List<Liquidacion>(Estructuras.listaLiquidaciones); C<Label>(f,"lblMontoTotal").Text="₡ 3000"; }
  Application.DoEvents(); Save(f,args[1]+"/liquidaciones-"+args[0]+".png");
  f.ClientSize=new Size(680,400); Application.DoEvents(); Save(f,args[1]+"/ventana-pequena-"+args[0]+".png");
+ if(args[0]=="despues") {
+   f.ClientSize=new Size(900,700);
+   f.Scale(new SizeF(1.25f,1.25f)); f.ClientSize=new Size(900,700);
+   Application.DoEvents(); Save(f,args[1]+"/liquidaciones-escala-simulada-125.png");
+   f.Scale(new SizeF(1.2f,1.2f)); f.ClientSize=new Size(900,700);
+   Application.DoEvents(); Save(f,args[1]+"/liquidaciones-escala-simulada-150.png");
+ }
  }
  using(Form f=new frmUsuarios()) {f.FormBorderStyle=FormBorderStyle.FixedSingle;f.StartPosition=FormStartPosition.Manual;f.Location=new Point(10,10);f.ClientSize=new Size(700,430);f.Show();Application.DoEvents();C<ComboBox>(f,"cmbTipo").Text="Administrador";Application.DoEvents();Save(f,args[1]+"/usuarios-"+args[0]+".png");}
  }
