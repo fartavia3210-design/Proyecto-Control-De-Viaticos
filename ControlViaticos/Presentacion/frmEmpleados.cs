@@ -172,7 +172,7 @@ namespace ControlViaticos.Presentacion
             grdEmpleados.AllowUserToAddRows = false;
             grdEmpleados.AllowUserToDeleteRows = false;
             grdEmpleados.MultiSelect = false;
-            grdEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            grdEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             string[] propiedades = { "id", "cedula", "nombre", "apellido1", "apellido2", "telefono", "direccion", "activo" };
             string[] titulos = { "Identificación", "Cédula", "Nombre", "Primer apellido", "Segundo apellido", "Teléfono", "Dirección", "Estado" };
@@ -184,6 +184,9 @@ namespace ControlViaticos.Presentacion
                 columna.HeaderText = titulos[i];
                 grdEmpleados.Columns.Add(columna);
             }
+
+            grdEmpleados.Columns["id"].FillWeight = 150;
+            grdEmpleados.Columns["direccion"].FillWeight = 130;
 
             grdEmpleados.CellFormatting += new DataGridViewCellFormattingEventHandler(grdEmpleados_CellFormatting);
         }

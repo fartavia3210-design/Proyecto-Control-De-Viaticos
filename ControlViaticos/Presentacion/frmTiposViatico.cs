@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -180,6 +181,7 @@ namespace ControlViaticos.Presentacion
                 grdTiposViatico.Columns.Add(columna);
             }
             grdTiposViatico.Columns["monto"].DefaultCellStyle.Format = "N0";
+            grdTiposViatico.Columns["monto"].DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("es-CR");
 
             grdTiposViatico.CellFormatting += new DataGridViewCellFormattingEventHandler(grdTiposViatico_CellFormatting);
         }
