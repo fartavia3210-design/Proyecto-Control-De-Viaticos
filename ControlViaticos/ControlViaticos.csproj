@@ -56,6 +56,7 @@
     <Compile Include="Logica\LogicaLiquidaciones.cs" />
     <Compile Include="Logica\LogicaReportesConsumo.cs" />
     <Compile Include="Logica\LogicaEmpleados.cs" />
+    <Compile Include="Logica\LogicaTiposViatico.cs" />
     <Compile Include="Logica\LogicaUsuarios.cs" />
     <Compile Include="Logica\LogicaAcceso.cs" />
     <Compile Include="Logica\LogicaBitacora.cs" />
