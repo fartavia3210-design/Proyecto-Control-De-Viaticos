@@ -1,7 +1,7 @@
-name: Validar liquidaciones
+name: Validar proyecto completo
 on:
   push:
-    branches: [fix/issues-1-2-liquidaciones]
+    branches: [main, 'release/**']
   pull_request:
     paths:
       - 'ControlViaticos/**'
@@ -15,7 +15,7 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - uses: microsoft/setup-msbuild@v2
@@ -24,10 +24,10 @@ jobs:
       - name: Comprobar lógica y formularios
         shell: powershell
         run: ./tests/Run-Regression.ps1
-      - name: Capturar antes y despues
+      - name: Capturar módulos y tamaños de ventana
         shell: powershell
         run: ./tests/Capture-Comparison.ps1
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
-          name: comparacion-visual
+          name: revision-visual-final
           path: screenshots/*.png
