@@ -13,8 +13,7 @@ namespace ControlViaticos.Logica
             if (!Validar(liquidacion, detalles, null)) return false;
             if (buscarLiquidacion(liquidacion.id) != null)
                 return Rechazar("Ya existe una liquidación con ese consecutivo.");
-            GuardarConjunto(liquidacion, detalles);
-            return true;
+            return GuardarConjunto(liquidacion, detalles);
         }
 
         public bool modificarLiquidacion(Liquidacion liquidacion, List<DetalleLiquidacion> detalles)
@@ -22,8 +21,7 @@ namespace ControlViaticos.Logica
             Liquidacion anterior = liquidacion == null ? null : buscarLiquidacion(liquidacion.id);
             if (anterior == null) return Rechazar("La liquidación no existe.");
             if (!Validar(liquidacion, detalles, anterior)) return false;
-            GuardarConjunto(liquidacion, detalles);
-            return true;
+            return GuardarConjunto(liquidacion, detalles);
         }
 
         private bool Rechazar(string mensaje)
@@ -81,22 +79,26 @@ namespace ControlViaticos.Logica
             return true;
         }
 
-        private void GuardarConjunto(Liquidacion liquidacion, List<DetalleLiquidacion> detalles)
+        private bool GuardarConjunto(Liquidacion liquidacion, List<DetalleLiquidacion> detalles)
         {
             Liquidacion copia = CopiarLiquidacion(liquidacion);
             List<DetalleLiquidacion> copias = CopiarDetalles(detalles);
-            int siguienteId = 1;
-            foreach (DetalleLiquidacion existente in Estructuras.listaDetalles)
-                if (existente.id >= siguienteId) siguienteId = existente.id + 1;
+            List<DetalleLiquidacion> ocupados = new List<DetalleLiquidacion>(Estructuras.listaDetalles);
             foreach (DetalleLiquidacion detalle in copias)
             {
-                if (detalle.id == 0) detalle.id = siguienteId++;
+                if (detalle.id == 0)
+                {
+                    detalle.id = Identificadores.Siguiente(ocupados, d => d.id);
+                    if (detalle.id == 0) return Rechazar("No quedan identificadores de detalle disponibles.");
+                    ocupados.Add(detalle);
+                }
                 detalle.fechaConsumo = detalle.fechaConsumo.Date;
             }
             Estructuras.listaLiquidaciones.RemoveAll(l => l.id == copia.id);
             Estructuras.listaDetalles.RemoveAll(d => d.idLiquidacion == copia.id);
             Estructuras.listaLiquidaciones.Add(copia);
             Estructuras.listaDetalles.AddRange(copias);
+            return true;
         }
 
         public bool eliminarLiquidacion(int id)

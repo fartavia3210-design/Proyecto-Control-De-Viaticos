@@ -22,14 +22,8 @@ namespace ControlViaticos.Logica
                 return false;
             }
 
-            int consecutivo = 1;
-            foreach (RegistroBitacora registro in Estructuras.listaBitacora)
-            {
-                if (registro.id >= consecutivo)
-                {
-                    consecutivo = registro.id + 1;
-                }
-            }
+            int consecutivo = Identificadores.Siguiente(Estructuras.listaBitacora, r => r.id);
+            if (consecutivo == 0) return false;
 
             RegistroBitacora nuevoRegistro = new RegistroBitacora();
             nuevoRegistro.id = consecutivo;

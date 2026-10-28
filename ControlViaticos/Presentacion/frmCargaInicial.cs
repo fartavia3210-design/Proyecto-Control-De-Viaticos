@@ -35,6 +35,12 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
+            if (agregados == -2)
+            {
+                MessageBox.Show(logicaCargaInicial.ultimoError);
+                return;
+            }
+
             if (agregados == 0)
             {
                 MessageBox.Show("Los datos iniciales ya existen. No se agregaron ni modificaron registros.");
