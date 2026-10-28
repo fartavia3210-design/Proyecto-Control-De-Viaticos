@@ -88,6 +88,19 @@ namespace ControlViaticos.Logica
                 }
             }
 
+            // Cambiar una comida por otra categoría reinterpretaría detalles anteriores.
+            if (ReglasViaticos.Categoria(encontrado.nombre) != ReglasViaticos.Categoria(miTipo.nombre))
+            {
+                foreach (DetalleLiquidacion detalle in Estructuras.listaDetalles)
+                {
+                    if (detalle.idViatico == miTipo.id)
+                    {
+                        ultimoError = "El tipo tiene consumos. Para cambiar su categoría de horario, cree otro tipo de viático.";
+                        return false;
+                    }
+                }
+            }
+
             // Solo cambia el catálogo: los detalles ya guardados conservan su monto.
             encontrado.nombre = miTipo.nombre.Trim();
             encontrado.monto = miTipo.monto;

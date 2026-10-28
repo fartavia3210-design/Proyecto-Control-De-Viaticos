@@ -169,24 +169,9 @@ namespace ControlViaticos.Logica
             return cumpleHorario(viatico, salida, llegada, salida.Date);
         }
 
-        // En días intermedios se permiten las comidas. Los límites de Cena siguen el enunciado escrito.
         public bool cumpleHorario(string viatico, DateTime salida, DateTime llegada, DateTime fechaConsumo)
         {
-            DateTime dia = fechaConsumo.Date;
-            bool primero = dia == salida.Date;
-            bool ultimo = dia == llegada.Date;
-            TimeSpan horaSalida = salida.TimeOfDay;
-            TimeSpan horaLlegada = llegada.TimeOfDay;
-            if (string.Equals(viatico, "Desayuno", StringComparison.OrdinalIgnoreCase))
-                return (!primero || horaSalida <= new TimeSpan(7, 0, 0)) &&
-                    (!ultimo || horaLlegada >= new TimeSpan(10, 0, 0));
-            if (string.Equals(viatico, "Almuerzo", StringComparison.OrdinalIgnoreCase))
-                return (!primero || horaSalida <= new TimeSpan(10, 0, 0)) &&
-                    (!ultimo || horaLlegada >= new TimeSpan(14, 0, 0));
-            if (string.Equals(viatico, "Cena", StringComparison.OrdinalIgnoreCase))
-                return (!primero || horaSalida <= new TimeSpan(16, 0, 0)) &&
-                    (!ultimo || horaLlegada >= new TimeSpan(20, 0, 0));
-            return true;
+            return ReglasViaticos.Cumple(viatico, salida, llegada, fechaConsumo);
         }
     }
 }
