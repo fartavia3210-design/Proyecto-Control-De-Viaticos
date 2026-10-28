@@ -11,15 +11,24 @@ try {
         $dialogs = Join-Path $PSScriptRoot 'DialogosPrueba.cs'
         & $compiler /nologo /codepage:65001 /target:exe "/main:$suite" "/out:$output" /r:System.Windows.Forms.dll /r:System.Drawing.dll /r:System.Data.dll /r:System.Configuration.dll $sources $regressionSource $dialogs
         if ($LASTEXITCODE -ne 0) { throw "Falló la compilación de $suite." }
-        $log = Join-Path $env:TEMP ($suite + '.stdout.log')
-        $errors = Join-Path $env:TEMP ($suite + '.stderr.log')
         Write-Output "INICIO: $suite"
-        $process = Start-Process -FilePath $output -PassThru -NoNewWindow -RedirectStandardOutput $log -RedirectStandardError $errors
+        $process = New-Object System.Diagnostics.Process
+        $process.StartInfo.FileName = $output
+        $process.StartInfo.UseShellExecute = $false
+        $process.StartInfo.RedirectStandardOutput = $true
+        $process.StartInfo.RedirectStandardError = $true
+        $process.StartInfo.StandardOutputEncoding = [Text.Encoding]::UTF8
+        $process.StartInfo.StandardErrorEncoding = [Text.Encoding]::UTF8
+        [void]$process.Start()
+        $stdout = $process.StandardOutput.ReadToEndAsync()
+        $stderr = $process.StandardError.ReadToEndAsync()
         $finished = $process.WaitForExit(120000)
         if (!$finished) { $process.Kill(); $process.WaitForExit() }
-        Get-Content $log
-        Get-Content $errors
+        Write-Output $stdout.Result
+        Write-Output $stderr.Result
+        $exitCode = $process.ExitCode
+        $process.Dispose()
         if (!$finished) { throw "$suite excedió dos minutos; revisar la última comprobación del registro." }
-        if ($process.ExitCode -ne 0) { throw "Fallaron las pruebas de $suite." }
+        if ($exitCode -ne 0) { throw "Fallaron las pruebas de $suite (código $exitCode)." }
     }
 } finally { Pop-Location }

@@ -25,6 +25,7 @@ internal static class CierreRegression
     static void FillTipo(Form f, int id, string n, string m) { C<TextBox>(f,"txtIdentificador").Text=id.ToString(); C<TextBox>(f,"txtNombre").Text=n; C<TextBox>(f,"txtMonto").Text=m; }
     [STAThread] static int Main() {
         try {
+            Console.OutputEncoding = new System.Text.UTF8Encoding(false);
             Application.EnableVisualStyles();
             var timer = new System.Windows.Forms.Timer(); timer.Interval = 30;
             timer.Tick += delegate { DialogosPrueba.Responder(respuesta); }; timer.Start();

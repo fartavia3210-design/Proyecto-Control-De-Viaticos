@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
@@ -37,6 +37,7 @@ internal static class LiquidacionesRegression
     {
         try
         {
+            Console.OutputEncoding = new System.Text.UTF8Encoding(false);
             Usuario autor = new Usuario { id = 1, nombreCompleto = "Prueba", nombreUsuario = "prueba", clave = "prueba", tipo = "Administrador", activo = true };
             Estructuras.listaUsuarios.Add(autor);
             SesionActual.usuarioActual = autor;

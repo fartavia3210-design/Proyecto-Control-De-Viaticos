@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Reflection;
 using System.Windows.Forms;
 using ControlViaticos.Logica;
@@ -17,6 +17,7 @@ internal static class AccesoUsuariosRegression
     {
         try
         {
+            Console.OutputEncoding = new System.Text.UTF8Encoding(false);
             Application.EnableVisualStyles();
             System.Windows.Forms.Timer dialogos = new System.Windows.Forms.Timer { Interval = 30 };
             dialogos.Tick += delegate { DialogosPrueba.Responder(DialogResult.OK); }; dialogos.Start();
