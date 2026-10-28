@@ -5,6 +5,7 @@ on:
   pull_request:
     paths:
       - 'ControlViaticos/**'
+      - 'ControlViaticos.sln'
       - 'tests/**'
       - '.github/workflows/liquidaciones.yml'
   workflow_dispatch:
@@ -20,7 +21,7 @@ jobs:
           fetch-depth: 0
       - uses: microsoft/setup-msbuild@v2
       - name: Compilar aplicación .NET Framework
-        run: msbuild ControlViaticos/ControlViaticos.csproj /p:Configuration=Release /verbosity:minimal
+        run: msbuild ControlViaticos.sln /p:Configuration=Release /verbosity:minimal
       - name: Comprobar lógica y formularios
         shell: powershell
         run: ./tests/Run-Regression.ps1
