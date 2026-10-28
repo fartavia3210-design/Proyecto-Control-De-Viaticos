@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -23,6 +25,8 @@ namespace ControlViaticos.Presentacion
             {
                 FlowLayoutPanel fila = Fila();
                 fila.WrapContents = false;
+                fila.Dock = DockStyle.None;
+                fila.MinimumSize = new Size(270, 34);
                 buscar.Text = "Buscar";
                 buscar.AutoSize = true;
                 buscar.MinimumSize = new Size(70, 28);
@@ -50,44 +54,70 @@ namespace ControlViaticos.Presentacion
             formulario.Font = new Font("Tahoma", 10);
             formulario.AutoScroll = true;
             formulario.Controls.Clear();
-            TableLayoutPanel pagina = new TableLayoutPanel { Name = "pagina", AutoSize = true,
-                Dock = DockStyle.Top, ColumnCount = 1, Padding = new Padding(16), MinimumSize = new Size(320, 0) };
-            pagina.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+            Panel pagina = new Panel { Name = "pagina", Dock = DockStyle.Top,
+                MinimumSize = new Size(320, 0) };
+            List<Control> filas = new List<Control>();
             titulo.AutoSize = true;
             titulo.TextAlign = ContentAlignment.MiddleLeft;
-            titulo.Margin = new Padding(0, 0, 0, 18);
-            titulo.Dock = DockStyle.Fill;
-            AgregarFila(pagina, titulo);
-            if (filtros != null) AgregarFila(pagina, filtros);
+            filas.Add(titulo);
+            if (filtros != null) filas.Add(filtros);
             if (acciones != null)
             {
                 foreach (Control boton in acciones.Controls)
                 {
                     boton.AutoSize = true;
                     boton.MinimumSize = new Size(110, 34);
-                    boton.Margin = new Padding(0, 0, 12, 12);
+                    boton.Margin = new Padding(0, 0, 12, 8);
                 }
-                AgregarFila(pagina, acciones);
+                filas.Add(acciones);
             }
             if (tabla != null)
             {
-                tabla.Dock = DockStyle.Fill;
+                tabla.Height = 260;
                 tabla.RowHeadersVisible = false;
                 tabla.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
                 tabla.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-                tabla.Margin = new Padding(0, 8, 0, 12);
-                pagina.RowStyles.Add(new RowStyle(SizeType.Absolute, 280));
-                pagina.Controls.Add(tabla, 0, pagina.RowCount++);
+                filas.Add(tabla);
             }
-            if (pie != null) AgregarFila(pagina, pie);
+            if (pie != null) filas.Add(pie);
+            foreach (Control fila in filas)
+            {
+                fila.Dock = DockStyle.None;
+                pagina.Controls.Add(fila);
+            }
+            // Medir de arriba hacia abajo con el ancho real, sin depender de una
+            // altura anterior del formulario cuando una fila pasa a dos líneas.
+            bool midiendo = false;
+            EventHandler medir = delegate
+            {
+                if (midiendo) return;
+                midiendo = true;
+                try
+                {
+                    int ancho = Math.Max(288, pagina.ClientSize.Width - 32);
+                    int y = 16;
+                    foreach (Control fila in filas)
+                    {
+                        fila.Location = new Point(16, y);
+                        fila.Width = ancho;
+                        if (fila != tabla)
+                        {
+                            fila.MaximumSize = new Size(ancho, 0);
+                            fila.MinimumSize = new Size(ancho, 0);
+                            fila.PerformLayout();
+                            fila.Height = fila.GetPreferredSize(new Size(ancho, 0)).Height;
+                        }
+                        y += fila.Height + 14;
+                    }
+                    pagina.Height = y + 16;
+                }
+                finally { midiendo = false; }
+            };
+            pagina.SizeChanged += medir;
+            formulario.Layout += delegate { medir(formulario, EventArgs.Empty); };
             formulario.Controls.Add(pagina);
             formulario.ResumeLayout(true);
-        }
-
-        private static void AgregarFila(TableLayoutPanel pagina, Control control)
-        {
-            pagina.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            pagina.Controls.Add(control, 0, pagina.RowCount++);
+            medir(formulario, EventArgs.Empty);
         }
 
         public static void Menu(Form formulario, Panel menu, Panel subreportes, params Control[] opciones)
