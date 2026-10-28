@@ -209,7 +209,7 @@ namespace ControlViaticos.Presentacion
         private void cmbTipoViatico_SelectedIndexChanged(object sender, EventArgs e)
         {
             TipoViatico tipo = cmbTipoViatico.SelectedItem as TipoViatico;
-            txtMonto.Text = tipo == null ? "" : tipo.monto.ToString("N0");
+            txtMonto.Text = tipo == null ? "" : tipo.monto.ToString("N0", CultureInfo.GetCultureInfo("es-CR"));
         }
         private static void ConfigurarTabla(DataGridView tabla)
         {
@@ -222,7 +222,7 @@ namespace ControlViaticos.Presentacion
         private static void AgregarColumna(DataGridView tabla, string propiedad, string titulo, string formato = "")
         {
             tabla.Columns.Add(new DataGridViewTextBoxColumn { Name = propiedad, DataPropertyName = propiedad,
-                HeaderText = titulo, MinimumWidth = 100, DefaultCellStyle = new DataGridViewCellStyle { Format = formato } });
+                HeaderText = titulo, MinimumWidth = 100, DefaultCellStyle = new DataGridViewCellStyle { Format = formato, FormatProvider = CultureInfo.GetCultureInfo("es-CR") } });
         }
         private void FormatearLiquidacion(object sender, DataGridViewCellFormattingEventArgs e)
         {

@@ -137,7 +137,9 @@ internal static class CierreRegression
             Check(new LogicaCargaInicial().EjecutarCargaInicial(SesionActual.usuarioActual)==0, "Repetir carga no duplica ejemplos");
             using(var principal = new frmPrincipal())
             {
-                principal.Show(); Application.DoEvents(); Event(principal,"btnLiquidaciones_Click");
+                principal.Show(); Application.DoEvents();
+                Check(System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Contains(principal.Bounds), "Ventana inicial cabe en el area de trabajo");
+                Event(principal,"btnLiquidaciones_Click");
                 var panel=C<Panel>(principal,"pnlContenedor"); var actual=(frmLiquidaciones)panel.Tag;
                 C<TextBox>(actual,"txtJustificacion").Text="Borrador conservado";
                 respuesta=DialogResult.No; Event(principal,"btnEmpleados_Click");

@@ -129,7 +129,9 @@ namespace ControlViaticos.Presentacion
             formulario.AutoScaleMode = AutoScaleMode.Dpi;
             formulario.AutoScaleDimensions = new SizeF(96, 96);
             formulario.MinimumSize = new Size(760, 480);
-            formulario.ClientSize = new Size(1180, 760);
+            Rectangle area = Screen.PrimaryScreen.WorkingArea;
+            formulario.ClientSize = new Size(Math.Min(1180, Math.Max(740, area.Width - 32)),
+                Math.Min(760, Math.Max(440, area.Height - 64)));
             menu.Width = 210;
             FlowLayoutPanel lista = new FlowLayoutPanel { Dock = DockStyle.Fill, AutoScroll = true,
                 FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(10) };

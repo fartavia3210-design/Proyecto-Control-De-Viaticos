@@ -45,6 +45,9 @@ internal static class CapturasFinales
         using (frmPrincipal principal = new frmPrincipal())
         {
             principal.Show();
+            Rectangle area = Screen.PrimaryScreen.WorkingArea;
+            Size normal = new Size(Math.Min(1180, area.Width - 32), Math.Min(760, area.Height - 64));
+            Console.WriteLine("Área de trabajo: " + area + "; ventana normal: " + normal);
             foreach (string modulo in new[] { "Usuarios", "Empleados", "TiposViatico", "Liquidaciones", "Bitacora", "RepFechas", "RepEmpleado", "RepOperaciones", "CargaInicial" })
             {
                 Evento(principal, "btn" + modulo + "_Click");
@@ -53,7 +56,7 @@ internal static class CapturasFinales
                 if (modulo == "RepFechas") { C<DateTimePicker>(f, "dtpDesde").Value = fecha; C<DateTimePicker>(f, "dtpHasta").Value = fecha; Evento(f, "btnConsultar_Click"); }
                 if (modulo == "RepEmpleado") { C<ComboBox>(f, "cmbEmpleado").SelectedValue = empleado.id; Evento(f, "btnConsultar_Click"); }
                 if (modulo == "RepOperaciones") { C<ComboBox>(f, "cmbUsuario").SelectedValue = admin.id; Evento(f, "btnConsultar_Click"); }
-                principal.ClientSize = new Size(1180, 760); Guardar(principal, modulo + "-normal");
+                principal.ClientSize = normal; Guardar(principal, modulo + "-normal");
                 principal.ClientSize = new Size(780, 500); Guardar(principal, modulo + "-pequena");
                 Control destino = f.Controls.Find("lblMontoTotal", true).Length > 0 ? (Control)C<Label>(f, "lblMontoTotal") : f.Controls.Find("btnGuardar", true).Length > 0 ? C<Button>(f, "btnGuardar") : null;
                 if (destino != null) { Point posicion = f.PointToClient(destino.PointToScreen(Point.Empty));
