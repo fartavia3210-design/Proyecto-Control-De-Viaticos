@@ -16,6 +16,13 @@ namespace ControlViaticos.Presentacion
         public frmCargaInicial()
         {
             InitializeComponent();
+            lblDescripcion.AutoSize = true;
+            lblDescripcion.MaximumSize = new System.Drawing.Size(600, 0);
+            lblTiposIniciales.AutoSize = true;
+            lblTiposIniciales.MaximumSize = new System.Drawing.Size(600, 0);
+            DisenoFormularios.Pagina(this, lblTitulo,
+                DisenoFormularios.Fila(lblDescripcion, lblTiposIniciales),
+                DisenoFormularios.Fila(btnEjecutar), null);
             this.Load += new EventHandler(frmCargaInicial_Load);
         }
 

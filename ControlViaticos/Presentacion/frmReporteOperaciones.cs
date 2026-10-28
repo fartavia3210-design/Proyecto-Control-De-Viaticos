@@ -19,6 +19,9 @@ namespace ControlViaticos.Presentacion
         public frmReporteOperaciones()
         {
             InitializeComponent();
+            DisenoFormularios.Pagina(this, lblTitulo, DisenoFormularios.Fila(
+                DisenoFormularios.Campo(lblUsuario, cmbUsuario), DisenoFormularios.Campo(lblDesde, dtpDesde),
+                DisenoFormularios.Campo(lblHasta, dtpHasta)), DisenoFormularios.Fila(btnConsultar), grdOperaciones);
             ConfigurarTabla();
             this.Load += new EventHandler(frmReporteOperaciones_Load);
         }

@@ -20,6 +20,12 @@ namespace ControlViaticos.Presentacion
         public frmUsuarios()
         {
             InitializeComponent();
+            DisenoFormularios.Pagina(this, lblTitulo, DisenoFormularios.Fila(
+                DisenoFormularios.Campo(lblIdentificacion, txtIdentificacion, btnBuscar),
+                DisenoFormularios.Campo(lblNombreCompleto, txtNombreCompleto),
+                DisenoFormularios.Campo(lblNombreUsuario, txtNombreUsuario), DisenoFormularios.Campo(lblClave, txtClave),
+                DisenoFormularios.Campo(lblTipo, cmbTipo), DisenoFormularios.Campo(lblEstado, cmbEstado)),
+                DisenoFormularios.Fila(btnGuardar, btnEliminar), grdUsuarios);
             this.Load += new EventHandler(frmUsuarios_Load);
 
             //--opciones de los combos

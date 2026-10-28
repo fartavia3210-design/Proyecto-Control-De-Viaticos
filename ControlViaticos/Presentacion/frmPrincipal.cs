@@ -16,6 +16,9 @@ namespace ControlViaticos.Presentacion
         public frmPrincipal()
         {
             InitializeComponent();
+            DisenoFormularios.Menu(this, pnlMenu, pnlSubReportes, btnUsuarios, btnEmpleados,
+                btnTiposViatico, btnLiquidaciones, btnBitacora, btnReportes, pnlSubReportes,
+                btnCargaInicial, btnSalir);
             btnUsuarios.Enabled = SesionActual.EsAdministrador();
             btnCargaInicial.Enabled = SesionActual.EsAdministrador();
             this.Load += new EventHandler(frmPrincipal_Load);

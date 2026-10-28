@@ -20,6 +20,13 @@ namespace ControlViaticos.Presentacion
         public frmEmpleados()
         {
             InitializeComponent();
+            DisenoFormularios.Pagina(this, lblTitulo, DisenoFormularios.Fila(
+                DisenoFormularios.Campo(lblIdentificacion, txtIdentificacion, btnBuscar),
+                DisenoFormularios.Campo(lblCedula, txtCedula), DisenoFormularios.Campo(lblNombre, txtNombre),
+                DisenoFormularios.Campo(lblApellido1, txtApellido1), DisenoFormularios.Campo(lblApellido2, txtApellido2),
+                DisenoFormularios.Campo(lblTelefono, txtTelefono), DisenoFormularios.Campo(lblDireccion, txtDireccion),
+                DisenoFormularios.Campo(lblEstado, cmbEstado)),
+                DisenoFormularios.Fila(btnGuardar, btnEliminar), grdEmpleados);
             this.Load += new EventHandler(frmEmpleados_Load);
 
             //--opciones de los combos
@@ -186,7 +193,7 @@ namespace ControlViaticos.Presentacion
             grdEmpleados.AllowUserToAddRows = false;
             grdEmpleados.AllowUserToDeleteRows = false;
             grdEmpleados.MultiSelect = false;
-            grdEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            grdEmpleados.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
             string[] propiedades = { "id", "cedula", "nombre", "apellido1", "apellido2", "telefono", "direccion", "activo" };
             string[] titulos = { "Identificación", "Cédula", "Nombre", "Primer apellido", "Segundo apellido", "Teléfono", "Dirección", "Estado" };

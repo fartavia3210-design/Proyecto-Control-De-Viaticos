@@ -20,6 +20,10 @@ namespace ControlViaticos.Presentacion
         public frmReporteConsumosEmpleado()
         {
             InitializeComponent();
+            lblMontoTotal.AutoSize = true;
+            DisenoFormularios.Pagina(this, lblTitulo,
+                DisenoFormularios.Fila(DisenoFormularios.Campo(lblEmpleado, cmbEmpleado)),
+                DisenoFormularios.Fila(btnConsultar), grdConsumos, DisenoFormularios.Fila(lblTotal, lblMontoTotal));
             ConfigurarTabla();
             this.Load += new EventHandler(frmReporteConsumosEmpleado_Load);
         }

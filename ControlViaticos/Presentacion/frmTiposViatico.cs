@@ -21,6 +21,11 @@ namespace ControlViaticos.Presentacion
         public frmTiposViatico()
         {
             InitializeComponent();
+            DisenoFormularios.Pagina(this, lblTitulo, DisenoFormularios.Fila(
+                DisenoFormularios.Campo(lblIdentificador, txtIdentificador, btnBuscar),
+                DisenoFormularios.Campo(lblNombre, txtNombre), DisenoFormularios.Campo(lblMonto, txtMonto),
+                DisenoFormularios.Campo(lblEstado, cmbEstado)),
+                DisenoFormularios.Fila(btnGuardar, btnEliminar), grdTiposViatico);
             this.Load += new EventHandler(frmTiposViatico_Load);
 
             //--opciones de los combos

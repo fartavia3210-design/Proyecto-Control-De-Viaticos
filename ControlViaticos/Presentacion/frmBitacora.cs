@@ -18,6 +18,7 @@ namespace ControlViaticos.Presentacion
         public frmBitacora()
         {
             InitializeComponent();
+            DisenoFormularios.Pagina(this, lblTitulo, null, null, grdBitacora);
             ConfigurarTabla();
             this.Load += new EventHandler(frmBitacora_Load);
         }
