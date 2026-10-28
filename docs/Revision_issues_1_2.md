@@ -1,3 +1,5 @@
+﻿> Revisión histórica del PR #3. Para la versión de cierre, consultar [Validación de cierre](Validacion_de_cierre.md) y el contrato vigente.
+
 # Revisión de los issues 1 y 2
 
 Rama: `fix/issues-1-2-liquidaciones`. Cambios preparados para revisión, sin integrar en `main`.

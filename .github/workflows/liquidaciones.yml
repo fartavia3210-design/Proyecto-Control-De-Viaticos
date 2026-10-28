@@ -33,3 +33,10 @@ jobs:
         with:
           name: revision-visual-final
           path: screenshots/*.png
+      - uses: actions/upload-artifact@v5
+        with:
+          name: aplicacion-windows
+          path: |
+            ControlViaticos/bin/Release/ControlViaticos.exe
+            ControlViaticos/bin/Release/ControlViaticos.exe.config
+          if-no-files-found: error

@@ -22,6 +22,8 @@ La rama `release/cierre-final-viaticos` reúne la entrega de Mango y las correcc
 4. Presionar **F5**. Crear el primer administrador con datos propios e iniciar sesión.
 5. Si se necesitan ejemplos, abrir **Carga inicial** como Administrador y pulsar **Ejecutar carga inicial**. Los ejemplos no se cargan al abrir el programa.
 
+Para probar el ejecutable sin abrir Visual Studio, la última ejecución correcta de esta rama en **Actions** ofrece el artefacto `aplicacion-windows`. Descargarlo y extraer sus dos archivos en la misma carpeta; ejecutar `ControlViaticos.exe` en Windows con .NET Framework 4.7.2 o superior.
+
 Los datos se conservan al navegar y cambiar de sesión durante una ejecución. Al cerrar el programa se pierden y se solicita de nuevo el primer administrador: es el almacenamiento en memoria acordado para el curso.
 
 La carga agrega un empleado ficticio, desayuno ₡3.000, almuerzo ₡5.000, cena ₡5.000 y un usuario Normal de demostración (`usuarioEjemplo`, clave `ejemplo123`). Repetirla no reemplaza los datos existentes.
