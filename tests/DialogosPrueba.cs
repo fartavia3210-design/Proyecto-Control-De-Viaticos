@@ -42,7 +42,9 @@ internal static class DialogosPrueba
     [DllImport("user32.dll")] private static extern bool EnumWindows(Enumerar callback, IntPtr dato);
     [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr ventana, out uint proceso);
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetClassName(IntPtr ventana, StringBuilder nombre, int largo);
-    [DllImport("user32.dll")] private static extern IntPtr GetDlgItem(IntPtr ventana, int id);
+    [DllImport("user32.dll")] private static extern bool EnumChildWindows(IntPtr padre, Enumerar callback, IntPtr dato);
+    [DllImport("user32.dll")] private static extern int GetDlgCtrlID(IntPtr ventana);
+    [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetWindowText(IntPtr ventana, StringBuilder texto, int largo);
     [DllImport("user32.dll")] private static extern bool PostMessage(IntPtr ventana, uint mensaje, IntPtr wparam, IntPtr lparam);
 
     public static void Responder(DialogResult respuesta)
@@ -60,16 +62,27 @@ internal static class DialogosPrueba
                     if (vistas.Add(ventana)) Console.Error.WriteLine("VENTANA DE PRUEBA: " + clase.ToString());
                 if (clase.ToString() == "#32770")
                 {
-                    int boton = (int)respuesta;
-                    if (GetDlgItem(ventana, boton) == IntPtr.Zero) boton = 1;
-                    IntPtr control = GetDlgItem(ventana, boton);
-                    if (control != IntPtr.Zero)
+                    IntPtr preferido = IntPtr.Zero;
+                    IntPtr aceptar = IntPtr.Zero;
+                    EnumChildWindows(ventana, delegate(IntPtr hijo, IntPtr valor)
                     {
-                        // BM_CLICK reproduce la acción del botón, incluida su notificación
-                        // al diálogo, y se procesa después de terminar la enumeración.
-                        Console.Error.WriteLine("BOTON NATIVO: " + boton);
-                        PostMessage(control, 0x00F5, IntPtr.Zero, IntPtr.Zero);
-                    }
+                        StringBuilder texto = new StringBuilder(100);
+                        GetWindowText(hijo, texto, texto.Capacity);
+                        string etiqueta = texto.ToString().Replace("&", "").Trim();
+                        int id = GetDlgCtrlID(hijo);
+                        bool esAceptar = etiqueta == "OK" || etiqueta == "Aceptar";
+                        bool esSi = etiqueta == "Yes" || etiqueta == "Sí";
+                        bool esNo = etiqueta == "No";
+                        if (esAceptar) aceptar = hijo;
+                        if ((respuesta == DialogResult.OK && esAceptar) ||
+                            (respuesta == DialogResult.Yes && esSi) ||
+                            (respuesta == DialogResult.No && esNo)) preferido = hijo;
+                        lock (vistas)
+                            if (vistas.Add(hijo)) Console.Error.WriteLine("CONTROL DIÁLOGO: " + id + " / " + etiqueta);
+                        return true;
+                    }, IntPtr.Zero);
+                    IntPtr control = preferido == IntPtr.Zero ? aceptar : preferido;
+                    if (control != IntPtr.Zero) PostMessage(control, 0x00F5, IntPtr.Zero, IntPtr.Zero);
                 }
                 return true;
             }, IntPtr.Zero);
