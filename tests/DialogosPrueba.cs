@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -8,25 +9,34 @@ using System.Windows.Forms;
 internal static class DialogosPrueba
 {
     private delegate bool Enumerar(IntPtr ventana, IntPtr dato);
-    [DllImport("kernel32.dll")] private static extern uint GetCurrentThreadId();
-    [DllImport("user32.dll")] private static extern bool EnumThreadWindows(uint hilo, Enumerar callback, IntPtr dato);
+    [DllImport("user32.dll")] private static extern bool EnumWindows(Enumerar callback, IntPtr dato);
+    [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr ventana, out uint proceso);
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern int GetClassName(IntPtr ventana, StringBuilder nombre, int largo);
     [DllImport("user32.dll")] private static extern IntPtr GetDlgItem(IntPtr ventana, int id);
-    [DllImport("user32.dll")] private static extern IntPtr SendMessage(IntPtr ventana, uint mensaje, IntPtr wparam, IntPtr lparam);
+    [DllImport("user32.dll")] private static extern bool PostMessage(IntPtr ventana, uint mensaje, IntPtr wparam, IntPtr lparam);
 
     public static void Responder(DialogResult respuesta)
     {
         if (Environment.OSVersion.Platform == PlatformID.Win32NT)
         {
-            EnumThreadWindows(GetCurrentThreadId(), delegate(IntPtr ventana, IntPtr dato)
+            EnumWindows(delegate(IntPtr ventana, IntPtr dato)
             {
+                uint proceso;
+                GetWindowThreadProcessId(ventana, out proceso);
+                if (proceso != (uint)Process.GetCurrentProcess().Id) return true;
                 StringBuilder clase = new StringBuilder(100);
                 GetClassName(ventana, clase, clase.Capacity);
                 if (clase.ToString() == "#32770")
                 {
                     int boton = (int)respuesta;
                     if (GetDlgItem(ventana, boton) == IntPtr.Zero) boton = 1;
-                    SendMessage(ventana, 0x0111, new IntPtr(boton), IntPtr.Zero);
+                    IntPtr control = GetDlgItem(ventana, boton);
+                    if (control != IntPtr.Zero)
+                    {
+                        // BM_CLICK reproduce la acción del botón, incluida su notificación
+                        // al diálogo, y se procesa después de terminar la enumeración.
+                        PostMessage(control, 0x00F5, IntPtr.Zero, IntPtr.Zero);
+                    }
                 }
                 return true;
             }, IntPtr.Zero);
