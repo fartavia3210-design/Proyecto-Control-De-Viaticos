@@ -102,19 +102,23 @@ namespace ControlViaticos.Presentacion
                         fila.Width = ancho;
                         if (fila != tabla)
                         {
-                            fila.MaximumSize = new Size(ancho, 0);
-                            fila.MinimumSize = new Size(ancho, 0);
+                            Size limite = new Size(ancho, 0);
+                            if (fila.MaximumSize != limite) fila.MaximumSize = limite;
+                            if (fila.MinimumSize != limite) fila.MinimumSize = limite;
                             fila.PerformLayout();
-                            fila.Height = fila.GetPreferredSize(new Size(ancho, 0)).Height;
+                            int alto = fila.GetPreferredSize(new Size(ancho, 0)).Height;
+                            if (fila.Height != alto) fila.Height = alto;
                         }
                         y += fila.Height + 14;
                     }
-                    pagina.Height = y + 16;
+                    if (pagina.Height != y + 16) pagina.Height = y + 16;
                 }
                 finally { midiendo = false; }
             };
             pagina.SizeChanged += medir;
-            formulario.Layout += delegate { medir(formulario, EventArgs.Empty); };
+            formulario.ClientSizeChanged += medir;
+            formulario.FontChanged += medir;
+            foreach (Control fila in filas) fila.SizeChanged += medir;
             formulario.Controls.Add(pagina);
             formulario.ResumeLayout(true);
             medir(formulario, EventArgs.Empty);
