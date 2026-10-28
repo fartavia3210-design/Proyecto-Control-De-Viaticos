@@ -38,7 +38,7 @@ msbuild ControlViaticos.sln /p:Configuration=Release /verbosity:minimal
 ./tests/Capture-Comparison.ps1
 ```
 
-El ejecutor prueba liquidaciones, el cierre integral y acceso/usuarios. Las capturas quedan en `screenshots/`, carpeta excluida de Git. GitHub Actions ejecuta estas comprobaciones en Windows para los PR y las ramas `main` y `release/**`.
+El ejecutor prueba liquidaciones, el cierre integral, acceso/usuarios y estados al editar liquidaciones. Esta última suite comprueba nuevas asignaciones a empleados inactivos, conservación del historial y límites horarios sin segundos ocultos. Las capturas quedan en `screenshots/`, carpeta excluida de Git. GitHub Actions ejecuta estas comprobaciones en Windows para los PR y las ramas `main` y `release/**`.
 
 Las capturas de 125 % y 150 % simulan escalado mediante WinForms. La revisión con DPI real en los equipos del equipo se describe en la guía de aceptación.
 
@@ -49,5 +49,6 @@ Las capturas de 125 % y 150 % simulan escalado mediante WinForms. La revisión c
 - [Actualización del plan](docs/Actualizacion_del_plan.md): cierre y corrección de la regla de Cena del PDF histórico.
 - [Informe editable](docs/Informe_del_proyecto.docx) y [versión PDF](docs/Informe_del_proyecto.pdf).
 - [Validación de cierre](docs/Validacion_de_cierre.md): resultados y límites de las pruebas.
+- [Cotejo de requisitos](docs/Cotejo_de_requisitos.md): comparación con el enunciado y la explicación del profesor.
 
 El contrato inicial se conserva en `docs/historial/`. El enunciado, la rúbrica y el video originales del curso permanecen fuera del repositorio.

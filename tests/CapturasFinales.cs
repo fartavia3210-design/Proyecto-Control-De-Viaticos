@@ -17,10 +17,12 @@ internal static class CapturasFinales
         f.BringToFront();
         Application.DoEvents();
         System.Threading.Thread.Sleep(80);
-        using (Bitmap imagen = new Bitmap(f.ClientSize.Width, f.ClientSize.Height))
+        using (Bitmap imagen = new Bitmap(f.Width, f.Height))
         {
-            using (Graphics grafico = Graphics.FromImage(imagen))
-                grafico.CopyFromScreen(f.PointToScreen(Point.Empty), Point.Empty, imagen.Size);
+            // Usar las coordenadas del formulario evita mezclar pixeles físicos
+            // del escritorio con tamaños virtualizados por el DPI de Windows.
+            // También impide capturar otra aplicación que cubra esta ventana.
+            f.DrawToBitmap(imagen, new Rectangle(Point.Empty, imagen.Size));
             imagen.Save(Path.Combine(carpeta, nombre + ".png"), System.Drawing.Imaging.ImageFormat.Png);
         }
         Console.WriteLine("CAPTURA: " + nombre);

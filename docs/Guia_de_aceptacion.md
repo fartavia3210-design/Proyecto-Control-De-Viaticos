@@ -13,6 +13,9 @@ Usar una copia de `release/cierre-final-viaticos`, Visual Studio Community y Win
 7. Preparar una liquidación: empleado activo, justificación, fechas y varios detalles. Antes de guardar, ir a otro módulo y responder No: conservar la preparación. Repetir y responder Sí: descartarla sin insertar cabecera ni detalles. Repetir con X del menú.
 8. Guardar una liquidación completa. Buscarla, modificarla y volver al módulo: deben recuperarse cabecera, detalles, fechas y total. Quitar el último detalle y tratar de guardar: rechazar sin alterar lo anterior.
 9. Cambiar el precio del catálogo. El detalle anterior mantiene su monto. Desactivar empleado o tipo usados: el historial se consulta, pero no se ofrecen para una asignación nueva. No se pueden borrar mientras estén relacionados.
+   - Con un empleado desactivado, buscar una liquidación anterior e intentar agregar un concepto activo: debe rechazarse sin cambiar total, detalles ni bitácora. Corregir la justificación y conservar los consumos originales sí está permitido.
+   - Preparar un detalle mientras el empleado está activo y desactivarlo antes del guardado: Guardar también debe rechazarlo. Reactivar permite completar la operación una sola vez.
+   - No trasladar un tipo inactivo a otro empleado o fecha. El historial mantiene fecha y monto originales; quitar una fila solo afecta la preparación hasta guardar.
 10. Comprobar los límites de la tabla siguiente, tanto exactos como un minuto fuera. Probar un viaje de varios días según el ejemplo del contrato y un hospedaje sin regla de comida.
 11. Consultar consumos por fechas y por cada empleado: filas distintas, ambos días incluidos, total correcto, inactivos disponibles y nombres iguales distinguibles por ID. Un rango vacío deja cero; un filtro inválido limpia lo anterior.
 12. Cerrar sesión y entrar como Normal. Empleados, Tipos y reportes deben funcionar; Usuarios y Carga inicial deben estar restringidos.
@@ -27,6 +30,10 @@ Usar una copia de `release/cierre-final-viaticos`, Visual Studio Community y Win
 | Cena | 16:00 | 16:01 | 20:00 | 19:59 |
 
 Para cada fila usar un mismo día y mantener válido el otro extremo. En varios días, aplicar la salida al primero y la llegada al último.
+
+El formulario evalúa los minutos que muestra, sin segundos ocultos. Para comprobarlo, editar Inicio hasta el límite exacto mostrado y guardar una liquidación válida. Las pruebas automáticas incluyen valores del selector con segundos internos para las tres comidas.
+
+Para modificar un detalle, buscar la liquidación, seleccionar y quitar la fila, agregar su reemplazo y guardar el conjunto. Buscar o cancelar antes de guardar conserva el detalle anterior. Las nuevas asignaciones utilizan el precio vigente y requieren empleado y tipo activos.
 
 ## Presentación en Windows
 

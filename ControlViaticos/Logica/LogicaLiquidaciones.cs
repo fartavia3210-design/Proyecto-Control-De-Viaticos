@@ -34,13 +34,29 @@ namespace ControlViaticos.Logica
         {
             ultimoError = "";
             if (!SesionActual.HaySesionActiva()) return Rechazar("Debe iniciar sesión.");
+            Empleado empleado;
+            if (!ValidarCabecera(liquidacion, anterior, out empleado)) return false;
+            return ValidarDetalles(liquidacion, detalles, anterior, empleado);
+        }
+
+        // La cabecera valida el viaje y su beneficiario, sin modificar las listas.
+        private bool ValidarCabecera(Liquidacion liquidacion, Liquidacion anterior, out Empleado empleado)
+        {
+            empleado = null;
             if (liquidacion == null || liquidacion.id <= 0)
                 return Rechazar("El consecutivo debe ser un entero positivo.");
-            Empleado empleado = BuscarEmpleado(liquidacion.idEmpleado);
+            empleado = BuscarEmpleado(liquidacion.idEmpleado);
             if (empleado == null || (!empleado.activo && (anterior == null || anterior.idEmpleado != empleado.id)))
                 return Rechazar("Seleccione un empleado existente y activo para una nueva asignación.");
             if (liquidacion.fin <= liquidacion.inicio) return Rechazar("El fin debe ser posterior al inicio.");
             if (string.IsNullOrWhiteSpace(liquidacion.justificacion)) return Rechazar("Debe escribir la justificación.");
+            return true;
+        }
+
+        // La validación del conjunto mantiene identidad, vínculos y total coherentes.
+        private bool ValidarDetalles(Liquidacion liquidacion, List<DetalleLiquidacion> detalles,
+            Liquidacion anterior, Empleado empleado)
+        {
             if (detalles == null || detalles.Count == 0) return Rechazar("Agregue al menos un detalle antes de guardar.");
 
             List<DetalleLiquidacion> anteriores = anterior == null
@@ -59,16 +75,14 @@ namespace ControlViaticos.Logica
 
                 if (detalle.id == 0)
                 {
-                    if (!tipo.activo) return Rechazar("No se pueden asignar viáticos inactivos.");
-                    if (detalle.monto != tipo.monto)
-                        return Rechazar("El monto del catálogo cambió. Quite el detalle nuevo y agréguelo de nuevo.");
+                    if (!ValidarDetalleNuevo(detalle, empleado, tipo)) return false;
                 }
                 else
                 {
                     DetalleLiquidacion historico = anteriores.Find(d => d.id == detalle.id);
-                    if (detalle.id < 0 || historico == null || !idsUsados.Add(detalle.id) ||
-                        historico.idViatico != detalle.idViatico || historico.monto != detalle.monto)
-                        return Rechazar("El detalle guardado no coincide con esta liquidación.");
+                    if (!idsUsados.Add(detalle.id)) return Rechazar("No repita el identificador de un detalle.");
+                    if (!ValidarDetalleHistorico(detalle, historico, tipo, empleado,
+                        anterior != null && anterior.idEmpleado != liquidacion.idEmpleado)) return false;
                 }
 
                 if (!cumpleHorario(tipo.nombre, liquidacion.inicio, liquidacion.fin, detalle.fechaConsumo))
@@ -79,6 +93,32 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        private bool ValidarDetalleNuevo(DetalleLiquidacion detalle, Empleado empleado, TipoViatico tipo)
+        {
+            if (!empleado.activo) return Rechazar("No se pueden asignar nuevos viáticos a un empleado inactivo.");
+            if (!tipo.activo) return Rechazar("No se pueden asignar viáticos inactivos.");
+            if (detalle.monto != tipo.monto)
+                return Rechazar("El monto del catálogo cambió. Quite el detalle nuevo y agréguelo de nuevo.");
+            return true;
+        }
+
+        // Un registro inactivo se conserva como historial; no habilita otro pago,
+        // otra fecha de consumo ni la transferencia de un tipo inactivo a otra persona.
+        private bool ValidarDetalleHistorico(DetalleLiquidacion detalle, DetalleLiquidacion historico,
+            TipoViatico tipo, Empleado empleado, bool cambioEmpleado)
+        {
+            if (detalle.id < 0 || historico == null ||
+                historico.idViatico != detalle.idViatico || historico.monto != detalle.monto)
+                return Rechazar("El detalle guardado no coincide con esta liquidación.");
+            bool cambioFecha = historico.fechaConsumo.Date != detalle.fechaConsumo.Date;
+            if (!empleado.activo && cambioFecha)
+                return Rechazar("No se puede asignar otra fecha de consumo a un empleado inactivo.");
+            if (!tipo.activo && (cambioEmpleado || cambioFecha))
+                return Rechazar("Un viático inactivo solo puede conservarse con su empleado y fecha originales.");
+            return true;
+        }
+
+        // Solo se escriben cabecera y detalles después de validar y preparar sus copias e IDs.
         private bool GuardarConjunto(Liquidacion liquidacion, List<DetalleLiquidacion> detalles)
         {
             Liquidacion copia = CopiarLiquidacion(liquidacion);

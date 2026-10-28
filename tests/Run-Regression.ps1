@@ -5,7 +5,7 @@ try {
     $sources = @(Get-ChildItem ControlViaticos -Recurse -Filter '*.cs' |
         Where-Object { $_.FullName -notmatch '[\\/](obj|bin)[\\/]' } |
         ForEach-Object { $_.FullName })
-    foreach ($suite in @('LiquidacionesRegression', 'CierreRegression', 'AccesoUsuariosRegression')) {
+    foreach ($suite in @('LiquidacionesRegression', 'CierreRegression', 'AccesoUsuariosRegression', 'EstadosLiquidacionesRegression')) {
         $output = Join-Path $env:TEMP ("ControlViaticos-" + $suite + ".exe")
         $regressionSource = Join-Path $PSScriptRoot ($suite + '.cs')
         $dialogs = Join-Path $PSScriptRoot 'DialogosPrueba.cs'

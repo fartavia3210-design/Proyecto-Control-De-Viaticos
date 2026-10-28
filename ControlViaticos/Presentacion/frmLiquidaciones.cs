@@ -41,6 +41,14 @@ namespace ControlViaticos.Presentacion
             return false;
         }
 
+        // Los selectores muestran minutos. Validar y guardar esa misma precisión
+        // evita que los segundos ocultos rechacen, por ejemplo, una salida a las 07:00.
+        private static DateTime FechaHoraVisible(DateTimePicker selector)
+        {
+            DateTime valor = selector.Value;
+            return new DateTime(valor.Year, valor.Month, valor.Day, valor.Hour, valor.Minute, 0);
+        }
+
         private bool ConfirmarDescartar()
         {
             return !preparacionModificada || MessageBox.Show("¿Descartar la preparación sin guardar?", "Liquidaciones",
@@ -73,12 +81,17 @@ namespace ControlViaticos.Presentacion
             if (!ValidarSesion() || !LeerConsecutivo(out id)) return;
             if (!consecutivoEnEdicion.HasValue && almacen.buscarLiquidacion(id) != null)
             { Avisar("Busque la liquidación existente antes de modificar sus detalles."); return; }
+            Empleado empleado = cmbEmpleado.SelectedItem as Empleado;
+            if (empleado != null && !empleado.activo)
+            { Avisar("No se pueden asignar nuevos viáticos a un empleado inactivo."); return; }
             TipoViatico tipo = cmbTipoViatico.SelectedItem as TipoViatico;
             if (tipo == null || !tipo.activo || tipo.monto <= 0)
             { Avisar("Seleccione un tipo de viático activo con monto positivo."); return; }
             DateTime fecha = dtpFechaConsumo.Value.Date;
-            if (dtpFin.Value <= dtpInicio.Value || fecha < dtpInicio.Value.Date ||
-                fecha > dtpFin.Value.Date || !almacen.cumpleHorario(tipo.nombre, dtpInicio.Value, dtpFin.Value, fecha))
+            DateTime inicio = FechaHoraVisible(dtpInicio);
+            DateTime fin = FechaHoraVisible(dtpFin);
+            if (fin <= inicio || fecha < inicio.Date ||
+                fecha > fin.Date || !almacen.cumpleHorario(tipo.nombre, inicio, fin, fecha))
             { Avisar("Revise la fecha de consumo y el horario permitido para " + tipo.nombre + "."); return; }
             detallesPreparados.Add(new DetalleLiquidacion { idLiquidacion = id, idViatico = tipo.id,
                 monto = tipo.monto, fechaConsumo = fecha });
@@ -107,7 +120,7 @@ namespace ControlViaticos.Presentacion
             if (!consecutivoEnEdicion.HasValue && almacen.buscarLiquidacion(id) != null)
             { Avisar("Busque la liquidación existente antes de modificarla."); return; }
             Liquidacion liquidacion = new Liquidacion { id = id, idEmpleado = empleado.id,
-                inicio = dtpInicio.Value, fin = dtpFin.Value, justificacion = txtJustificacion.Text };
+                inicio = FechaHoraVisible(dtpInicio), fin = FechaHoraVisible(dtpFin), justificacion = txtJustificacion.Text };
             bool modificar = consecutivoEnEdicion.HasValue;
             bool guardada = modificar ? almacen.modificarLiquidacion(liquidacion, detallesPreparados) : almacen.AgregarLiquidacion(liquidacion, detallesPreparados);
             if (!guardada) { Avisar(almacen.ultimoError); return; }
@@ -165,6 +178,15 @@ namespace ControlViaticos.Presentacion
         private void frmLiquidaciones_Load(object sender, EventArgs e)
         {
             if (!ValidarSesion()) { Close(); return; }
+            ConfigurarTablas();
+            CargarCatalogos();
+            LimpiarPreparacion();
+            ActualizarListado();
+            ConectarCambiosDePreparacion();
+        }
+
+        private void ConfigurarTablas()
+        {
             ConfigurarTabla(grdLiquidaciones);
             AgregarColumna(grdLiquidaciones, "id", "Consecutivo");
             AgregarColumna(grdLiquidaciones, "idEmpleado", "Empleado");
@@ -177,11 +199,17 @@ namespace ControlViaticos.Presentacion
             AgregarColumna(grdDetalle, "fechaConsumo", "Fecha de consumo", "dd/MM/yyyy");
             AgregarColumna(grdDetalle, "monto", "Monto (₡)", "N0");
             grdDetalle.CellFormatting += FormatearDetalle;
+        }
+
+        private void CargarCatalogos()
+        {
             cmbTipoViatico.DisplayMember = "nombre";
             cmbTipoViatico.ValueMember = "id";
             cmbTipoViatico.DataSource = almacen.ObtenerTiposViatico().FindAll(t => t.activo);
-            LimpiarPreparacion();
-            ActualizarListado();
+        }
+
+        private void ConectarCambiosDePreparacion()
+        {
             txtJustificacion.TextChanged += MarcarCambio;
             cmbEmpleado.SelectedIndexChanged += MarcarCambio;
             dtpInicio.ValueChanged += InicioCambiado;

@@ -51,6 +51,8 @@ Los IDs relacionan objetos; la posición de un combo nunca funciona como identid
 
 Se prepara la cabecera junto con los detalles y se valida todo antes de aplicar el cambio. Se exige consecutivo positivo, empleado válido, justificación, fin posterior al inicio y al menos un detalle. Las nuevas asignaciones requieren empleado y tipos activos. Al editar se pueden conservar los registros inactivos ya relacionados.
 
+Conservar historial no permite nuevos pagos: si el empleado está inactivo, no se agregan detalles ni se cambian las fechas de sus consumos. Se puede corregir la justificación o retirar un detalle, siempre conservando al menos uno. Un tipo inactivo solo se conserva con su beneficiario, fecha y monto históricos; no se traslada a otra persona ni a otro día. La lógica comprueba estas restricciones aunque se invoque sin usar el formulario.
+
 Cada detalle guarda su fecha, comprendida dentro del viaje, y una copia del monto aplicado. Buscar devuelve copias de cabecera y detalles; editar la preparación no modifica lo guardado. Eliminar una liquidación elimina sus detalles en la misma operación. Quitar una fila de la preparación identifica esa fila, aunque otro día use el mismo tipo.
 
 Al cambiar de módulo, cancelar, buscar otro conjunto o cerrar una preparación modificada se confirma su descarte. Rechazar conserva los controles y detalles; aceptar no guarda datos parciales. La navegación cierra y libera el formulario anterior solo cuando su cierre se acepta.
@@ -69,9 +71,13 @@ El total individual se limita a `int.MaxValue`, según la validación existente.
 
 En un viaje de un día se comprueban ambas condiciones. En varios días, la salida solo limita el primero y la llegada solo limita el último. Los días intermedios permiten las tres comidas. Los límites incluyen la hora exacta.
 
+Inicio y Fin se muestran con precisión de minutos. El formulario elimina los segundos ocultos del selector antes de validar o guardar, de modo que una salida mostrada como 07:00 se evalúa como 07:00:00. La misma conversión se usa al agregar detalles y al guardar el conjunto.
+
 Ejemplo: salida el 25/10 a las 08:00 y regreso el 27/10 a las 15:00. El 25 no corresponde desayuno y sí almuerzo/cena. El 26 permite las tres comidas. El 27 permite desayuno/almuerzo y no cena. Se puede agregar hospedaje. Si se asignan un desayuno (₡3.000), un almuerzo (₡5.000), una cena (₡5.000) y hospedaje de ₡10.000 en días válidos, el conjunto suma ₡23.000. El precio de hospedaje lo define el catálogo; no forma parte de los tres ejemplos iniciales.
 
 Cena usa el límite del enunciado escrito aplicado por el PR #5. La indicación contraria del PDF del 15 de octubre es histórica y queda sustituida por esta tabla.
+
+La transcripción de la explicación (aproximadamente 49:34) dice salida a las 16:00 o después, mientras que el enunciado original dice a las 16:00 o antes. La aplicación conserva el criterio escrito. Esta discrepancia de las fuentes debe distinguirse de un fallo del cálculo; el equipo debe confirmar el criterio académico antes de sustituir la regla.
 
 ## Bitácora y reportes
 
