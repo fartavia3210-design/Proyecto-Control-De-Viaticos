@@ -32,6 +32,8 @@ namespace ControlViaticos.Presentacion
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
+            if (!ValidarSesion()) return;
+
             int identificador;
             if (!LeerIdentificador(out identificador))
             {
@@ -59,6 +61,8 @@ namespace ControlViaticos.Presentacion
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (!ValidarSesion()) return;
+
             int identificador;
             if (!LeerIdentificador(out identificador))
             {
@@ -122,6 +126,8 @@ namespace ControlViaticos.Presentacion
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
+            if (!ValidarSesion()) return;
+
             int identificador;
             if (!LeerIdentificador(out identificador))
             {
@@ -157,7 +163,15 @@ namespace ControlViaticos.Presentacion
 
         private void frmTiposViatico_Load(object sender, EventArgs e)
         {
-            ActualizarTabla();
+            if (ValidarSesion()) ActualizarTabla();
+        }
+
+        private bool ValidarSesion()
+        {
+            if (SesionActual.HaySesionActiva()) return true;
+            MessageBox.Show("Debe iniciar sesión para utilizar este catálogo.");
+            Close();
+            return false;
         }
 
         private void ConfigurarTabla()

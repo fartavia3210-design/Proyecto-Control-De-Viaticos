@@ -47,11 +47,7 @@ namespace ControlViaticos.Presentacion
             grdConsumos.DataSource = resultado;
             grdConsumos.ClearSelection();
 
-            int total = 0;
-            foreach (ConsumoReporte consumo in resultado)
-            {
-                total = total + consumo.monto;
-            }
+            long total = logicaReportes.CalcularTotal(resultado);
             lblMontoTotal.Text = "₡ " + total.ToString("N0", CultureInfo.GetCultureInfo("es-CR"));
 
             if (resultado.Count == 0)
@@ -68,7 +64,7 @@ namespace ControlViaticos.Presentacion
             }
 
             LogicaEmpleados logicaEmpleados = new LogicaEmpleados();
-            cmbEmpleado.DisplayMember = "nombre";
+            cmbEmpleado.DisplayMember = "descripcion";
             cmbEmpleado.ValueMember = "id";
             // También se incluyen empleados inactivos para consultar su historial.
             cmbEmpleado.DataSource = logicaEmpleados.ObtenerEmpleados();

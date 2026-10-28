@@ -33,6 +33,13 @@ namespace ControlViaticos.Logica
             return resultado;
         }
 
+        public long CalcularTotal(List<ConsumoReporte> consumos)
+        {
+            long total = 0;
+            foreach (ConsumoReporte consumo in consumos) total += consumo.monto;
+            return total;
+        }
+
         private static void Ordenar(List<ConsumoReporte> consumos)
         {
             consumos.Sort((a, b) =>

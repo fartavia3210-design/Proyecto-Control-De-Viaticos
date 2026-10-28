@@ -16,5 +16,16 @@ namespace ControlViaticos.Objetos
         public string telefono { get; set; }
         public string direccion { get; set; }
         public bool activo { get; set; }
+
+        public string nombreCompleto
+        {
+            get { return (nombre + " " + apellido1 + " " + apellido2).Trim(); }
+        }
+
+        // Permite distinguir homónimos sin usar la posición del combo como ID.
+        public string descripcion
+        {
+            get { return id + " - " + nombreCompleto + (activo ? "" : " (Inactivo)"); }
+        }
     }
 }
