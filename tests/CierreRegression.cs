@@ -13,14 +13,15 @@ internal static class CierreRegression
     static volatile DialogResult respuesta = DialogResult.OK;
     static void Check(bool ok, string message) { if (!ok) throw new Exception(message); Console.WriteLine("OK " + (++count) + ": " + message); }
     static T C<T>(Form f, string n) where T : Control { return (T)f.Controls.Find(n, true)[0]; }
-    static void Event(Form f, string n) { f.GetType().GetMethod(n, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(f, new object[] {f, EventArgs.Empty}); Application.DoEvents(); }
+    static void Event(Form f, string n) { Console.WriteLine("INICIO EVENTO: " + n); f.GetType().GetMethod(n, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(f, new object[] {f, EventArgs.Empty}); Application.DoEvents(); Console.WriteLine("FIN EVENTO: " + n); }
     static Empleado Emp(int id, string cedula) { return new Empleado {id=id, cedula=cedula, nombre="Ana", apellido1="Mora", apellido2="Solis", telefono="00123", direccion="San Jose", activo=true}; }
     static TipoViatico Tipo(int id, string n, int m) { return new TipoViatico {id=id, nombre=n, monto=m, activo=true}; }
     static string Money(long n) { return "₡ " + n.ToString("N0", CultureInfo.GetCultureInfo("es-CR")); }
     static void FillEmpleado(Form f, int id, string cedula) {
+        Console.WriteLine("INICIO CAMPOS EMPLEADO");
         C<TextBox>(f,"txtIdentificacion").Text=id.ToString(); C<TextBox>(f,"txtCedula").Text=cedula;
         C<TextBox>(f,"txtNombre").Text="Beatriz"; C<TextBox>(f,"txtApellido1").Text="Soto"; C<TextBox>(f,"txtApellido2").Text="Diaz";
-        C<TextBox>(f,"txtTelefono").Text="000456"; C<TextBox>(f,"txtDireccion").Text="Heredia";
+        C<TextBox>(f,"txtTelefono").Text="000456"; C<TextBox>(f,"txtDireccion").Text="Heredia"; Console.WriteLine("FIN CAMPOS EMPLEADO");
     }
     static void FillTipo(Form f, int id, string n, string m) { C<TextBox>(f,"txtIdentificador").Text=id.ToString(); C<TextBox>(f,"txtNombre").Text=n; C<TextBox>(f,"txtMonto").Text=m; }
     [STAThread] static int Main() {

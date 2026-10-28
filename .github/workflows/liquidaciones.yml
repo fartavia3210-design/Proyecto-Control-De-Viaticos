@@ -29,6 +29,7 @@ jobs:
         shell: powershell
         run: ./tests/Capture-Comparison.ps1
       - uses: actions/upload-artifact@v5
+        if: always()
         with:
           name: revision-visual-final
           path: screenshots/*.png
