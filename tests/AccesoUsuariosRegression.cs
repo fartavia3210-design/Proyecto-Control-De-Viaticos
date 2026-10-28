@@ -19,8 +19,7 @@ internal static class AccesoUsuariosRegression
         {
             Console.OutputEncoding = new System.Text.UTF8Encoding(false);
             Application.EnableVisualStyles();
-            System.Windows.Forms.Timer dialogos = new System.Windows.Forms.Timer { Interval = 30 };
-            dialogos.Tick += delegate { DialogosPrueba.Responder(DialogResult.OK); }; dialogos.Start();
+            IDisposable dialogos = DialogosPrueba.Iniciar(() => DialogResult.OK);
             LogicaUsuarios usuarios = new LogicaUsuarios(); LogicaAcceso acceso = new LogicaAcceso(); LogicaBitacora bitacora = new LogicaBitacora();
             Verificar(!usuarios.AgregarUsuario(Usuario(2, "normal")), "No crea usuarios sin administrador");
             Verificar(acceso.CrearPrimerAdministrador(Usuario(1, "admin", "Administrador")), "Crea primer administrador explicitamente");
@@ -68,7 +67,7 @@ internal static class AccesoUsuariosRegression
                 C<DateTimePicker>(reporte, "dtpDesde").Value = fecha.AddDays(2); Evento(reporte, "btnConsultar_Click");
                 Verificar(C<DataGridView>(reporte, "grdOperaciones").Rows.Count == 0, "Reporte limpia filas ante rango invalido");
             }
-            dialogos.Stop(); Console.WriteLine(total + " comprobaciones de acceso correctas."); return 0;
+            dialogos.Dispose(); Console.WriteLine(total + " comprobaciones de acceso correctas."); return 0;
         }
         catch (Exception error) { Console.Error.WriteLine(error); return 1; }
     }

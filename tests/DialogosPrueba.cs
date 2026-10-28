@@ -8,6 +8,20 @@ using System.Windows.Forms;
 // Automatización exclusiva de pruebas: nunca se compila dentro de la aplicación.
 internal static class DialogosPrueba
 {
+    public static IDisposable Iniciar(Func<DialogResult> respuesta)
+    {
+        if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+        {
+            // La automatización no depende del bucle modal de la interfaz que prueba.
+            Console.Error.WriteLine("Automatizador nativo: proceso " + Process.GetCurrentProcess().Id);
+            return new System.Threading.Timer(delegate { Responder(respuesta()); }, null, 30, 30);
+        }
+        System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer { Interval = 30 };
+        timer.Tick += delegate { Responder(respuesta()); };
+        timer.Start();
+        return timer;
+    }
+
     private delegate bool Enumerar(IntPtr ventana, IntPtr dato);
     [DllImport("user32.dll")] private static extern bool EnumWindows(Enumerar callback, IntPtr dato);
     [DllImport("user32.dll")] private static extern uint GetWindowThreadProcessId(IntPtr ventana, out uint proceso);

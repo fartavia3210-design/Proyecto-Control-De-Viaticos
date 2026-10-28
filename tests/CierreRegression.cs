@@ -10,7 +10,7 @@ using ControlViaticos.Presentacion;
 internal static class CierreRegression
 {
     static int count;
-    static DialogResult respuesta = DialogResult.OK;
+    static volatile DialogResult respuesta = DialogResult.OK;
     static void Check(bool ok, string message) { if (!ok) throw new Exception(message); Console.WriteLine("OK " + (++count) + ": " + message); }
     static T C<T>(Form f, string n) where T : Control { return (T)f.Controls.Find(n, true)[0]; }
     static void Event(Form f, string n) { f.GetType().GetMethod(n, BindingFlags.Instance | BindingFlags.NonPublic).Invoke(f, new object[] {f, EventArgs.Empty}); Application.DoEvents(); }
@@ -27,8 +27,7 @@ internal static class CierreRegression
         try {
             Console.OutputEncoding = new System.Text.UTF8Encoding(false);
             Application.EnableVisualStyles();
-            var timer = new System.Windows.Forms.Timer(); timer.Interval = 30;
-            timer.Tick += delegate { DialogosPrueba.Responder(respuesta); }; timer.Start();
+            IDisposable timer = DialogosPrueba.Iniciar(() => respuesta);
             var empleados=new LogicaEmpleados(); var tipos=new LogicaTiposViatico();
             Check(!empleados.AgregarEmpleado(Emp(42,"00042")),"Empleados rechaza alta sin sesion");
             Check(!empleados.ModificarEmpleado(Emp(42,"00042")) && !empleados.EliminarEmpleado(42),"Empleados rechaza modificar/eliminar sin sesion");
@@ -164,7 +163,7 @@ internal static class CierreRegression
                 principal.Close(); Application.DoEvents();
                 Check(!SesionActual.HaySesionActiva(), "Cerrar menu aceptado termina sesion");
             }
-            timer.Stop(); Console.WriteLine("TOTAL: "+count+" comprobaciones de cierre correctas."); return 0;
+            timer.Dispose(); Console.WriteLine("TOTAL: "+count+" comprobaciones de cierre correctas."); return 0;
         } catch(Exception ex) {Console.Error.WriteLine(ex); return 1;}
     }
 }
