@@ -20,6 +20,7 @@ namespace ControlViaticos.Presentacion
             btnCargaInicial.Enabled = SesionActual.EsAdministrador();
             this.Load += new EventHandler(frmPrincipal_Load);
             this.FormClosed += new FormClosedEventHandler(frmPrincipal_FormClosed);
+            this.FormClosing += frmPrincipal_FormClosing;
         }
 
         private void frmPrincipal_Load(object sender, EventArgs e)
@@ -62,30 +63,35 @@ namespace ControlViaticos.Presentacion
             SesionActual.CerrarSesion();
         }
 
-        //metodo para abrir ventanas dentro del panel
-        private void abrirFormHija(object formHija)
+        // Close recorre el mismo FormClosing para navegar y para salir.
+        // Si el formulario cancela, se conserva la pantalla y su preparación.
+        private bool CerrarFormularioActual()
         {
-            if (!ValidarSesion())
+            Form actual = pnlContenedor.Tag as Form;
+            if (actual == null) return true;
+            actual.Close();
+            if (!actual.IsDisposed) return false;
+            pnlContenedor.Tag = null;
+            return true;
+        }
+
+        private void frmPrincipal_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!CerrarFormularioActual()) e.Cancel = true;
+        }
+
+        private void abrirFormHija(Form siguiente)
+        {
+            if (!ValidarSesion() || !CerrarFormularioActual())
             {
-                Form formulario = formHija as Form;
-                if (formulario != null)
-                {
-                    formulario.Dispose();
-                }
+                siguiente.Dispose();
                 return;
             }
-
-            if (this.pnlContenedor.Controls.Count > 0)
-            {
-                this.pnlContenedor.Controls.RemoveAt(0);
-                //elimina todo lo del contenedor
-            }
-            Form fh = formHija as Form; // forzar objeto formhija como formulario
-            fh.TopLevel = false; // no es un formulario principal
-            fh.Dock = DockStyle.Fill; // rellenar el panel
-            this.pnlContenedor.Controls.Add(fh);
-            this.pnlContenedor.Tag = fh;
-            fh.Show();
+            siguiente.TopLevel = false;
+            siguiente.Dock = DockStyle.Fill;
+            pnlContenedor.Controls.Add(siguiente);
+            pnlContenedor.Tag = siguiente;
+            siguiente.Show();
         }
 
         private void btnUsuarios_Click(object sender, EventArgs e)

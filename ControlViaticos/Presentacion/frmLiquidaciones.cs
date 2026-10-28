@@ -14,7 +14,16 @@ namespace ControlViaticos.Presentacion
         private int? consecutivoEnEdicion;
         private bool preparacionModificada;
 
-        public frmLiquidaciones() { InitializeComponent(); }
+        public frmLiquidaciones()
+        {
+            InitializeComponent();
+            FormClosing += frmLiquidaciones_FormClosing;
+        }
+
+        private void frmLiquidaciones_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!ConfirmarDescartar()) e.Cancel = true;
+        }
 
         private bool ValidarSesion()
         {
@@ -147,7 +156,7 @@ namespace ControlViaticos.Presentacion
         {
             List<Empleado> empleados = almacen.ObtenerEmpleados().FindAll(e => e.activo || e.id == seleccionado);
             cmbEmpleado.DataSource = empleados;
-            cmbEmpleado.DisplayMember = "nombre";
+            cmbEmpleado.DisplayMember = "descripcion";
             cmbEmpleado.ValueMember = "id";
             if (seleccionado.HasValue) cmbEmpleado.SelectedValue = seleccionado.Value;
             else cmbEmpleado.SelectedIndex = -1;
@@ -168,9 +177,6 @@ namespace ControlViaticos.Presentacion
             AgregarColumna(grdDetalle, "fechaConsumo", "Fecha de consumo", "dd/MM/yyyy");
             AgregarColumna(grdDetalle, "monto", "Monto (₡)", "N0");
             grdDetalle.CellFormatting += FormatearDetalle;
-            cmbEmpleado.Format += (s, args) => { Empleado empleado = args.ListItem as Empleado;
-                if (empleado != null) args.Value = almacen.NombreEmpleado(empleado.id) + (empleado.activo ? "" : " (Inactivo)"); };
-            cmbEmpleado.FormattingEnabled = true;
             cmbTipoViatico.DisplayMember = "nombre";
             cmbTipoViatico.ValueMember = "id";
             cmbTipoViatico.DataSource = almacen.ObtenerTiposViatico().FindAll(t => t.activo);
