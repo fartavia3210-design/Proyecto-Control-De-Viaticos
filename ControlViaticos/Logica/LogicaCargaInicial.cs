@@ -62,6 +62,7 @@ namespace ControlViaticos.Logica
             return agregados;
         }
 
+        // Comprueba que haya identificadores para la carga inicial.
         private bool IdentificadoresDisponibles(List<Usuario> usuarios, List<Empleado> empleados, List<TipoViatico> tipos)
         {
             foreach (Usuario usuario in usuarios)
@@ -88,6 +89,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Prepara los usuarios de la carga inicial.
         private void PrepararUsuarios(List<Usuario> usuariosNuevos)
         {
             int idUsuario = Identificadores.Siguiente(Estructuras.listaUsuarios);
@@ -114,6 +116,7 @@ namespace ControlViaticos.Logica
 
         }
 
+        // Prepara los empleados de la carga inicial.
         private void PrepararEmpleados(List<Empleado> empleadosNuevos)
         {
             int idEmpleado = Identificadores.Siguiente(Estructuras.listaEmpleados);
@@ -143,6 +146,7 @@ namespace ControlViaticos.Logica
 
         }
 
+        // Prepara los tipos de viático de la carga inicial.
         private void PrepararTipos(List<TipoViatico> tiposNuevos)
         {
             List<TipoViatico> catalogo = new List<TipoViatico>(Estructuras.listaTiposViatico);

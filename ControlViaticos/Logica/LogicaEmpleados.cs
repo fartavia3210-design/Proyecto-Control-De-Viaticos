@@ -42,6 +42,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Busca el empleado.
         public Empleado BuscarEmpleado(int id)
         {
             foreach (Empleado empleado in Estructuras.listaEmpleados)
@@ -54,6 +55,7 @@ namespace ControlViaticos.Logica
             return null;
         }
 
+        // Valida y modifica el empleado.
         public bool ModificarEmpleado(Empleado miEmpleado)
         {
             ultimoError = "";
@@ -96,6 +98,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Valida y elimina el empleado.
         public bool EliminarEmpleado(int id)
         {
             ultimoError = "";
@@ -126,11 +129,13 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Obtiene los empleados.
         public List<Empleado> ObtenerEmpleados()
         {
             return new List<Empleado>(Estructuras.listaEmpleados);
         }
 
+        // Comprueba los datos obligatorios del registro.
         private bool DatosValidos(Empleado miEmpleado)
         {
             if (miEmpleado == null || miEmpleado.id <= 0 || string.IsNullOrWhiteSpace(miEmpleado.cedula) || string.IsNullOrWhiteSpace(miEmpleado.nombre) || string.IsNullOrWhiteSpace(miEmpleado.apellido1) || string.IsNullOrWhiteSpace(miEmpleado.apellido2) || string.IsNullOrWhiteSpace(miEmpleado.telefono) || string.IsNullOrWhiteSpace(miEmpleado.direccion))
@@ -141,6 +146,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Quita espacios sobrantes de los datos del empleado.
         private void LimpiarEspacios(Empleado miEmpleado)
         {
             miEmpleado.cedula = miEmpleado.cedula.Trim();

@@ -17,18 +17,10 @@ namespace ControlViaticos.Presentacion
         private LogicaUsuarios logicaUsuarios = new LogicaUsuarios();
         private LogicaBitacora logicaBitacora = new LogicaBitacora();
 
+        // Inicializa los controles del formulario.
         public frmUsuarios()
         {
             InitializeComponent();
-            Control campoIdentificacion = DisenoFormularios.Campo(lblIdentificacion, txtIdentificacion, btnBuscar);
-            Control campoNombreCompleto = DisenoFormularios.Campo(lblNombreCompleto, txtNombreCompleto);
-            Control campoNombreUsuario = DisenoFormularios.Campo(lblNombreUsuario, txtNombreUsuario);
-            Control campoClave = DisenoFormularios.Campo(lblClave, txtClave);
-            Control campoTipo = DisenoFormularios.Campo(lblTipo, cmbTipo);
-            Control campoEstado = DisenoFormularios.Campo(lblEstado, cmbEstado);
-            Control filaCampos = DisenoFormularios.Fila(campoIdentificacion, campoNombreCompleto, campoNombreUsuario, campoClave, campoTipo, campoEstado);
-            Control filaAcciones = DisenoFormularios.Fila(btnGuardar, btnEliminar);
-            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdUsuarios);
             this.Load += new EventHandler(frmUsuarios_Load);
 
             //--opciones de los combos
@@ -41,6 +33,7 @@ namespace ControlViaticos.Presentacion
             ConfigurarTabla();
         }
 
+        // Busca el registro y carga sus datos.
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             if (!ValidarPermiso())
@@ -75,6 +68,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Valida y guarda los datos del registro.
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             if (!ValidarPermiso())
@@ -134,6 +128,7 @@ namespace ControlViaticos.Presentacion
             LimpiarCampos();
         }
 
+        // Confirma y elimina el registro.
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (!ValidarPermiso())
@@ -171,6 +166,7 @@ namespace ControlViaticos.Presentacion
             LimpiarCampos();
         }
 
+        // Prepara los datos y permisos al abrir el formulario.
         private void frmUsuarios_Load(object sender, EventArgs e)
         {
             if (ValidarPermiso())
@@ -179,6 +175,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Configura las columnas de la tabla.
         private void ConfigurarTabla()
         {
             grdUsuarios.AutoGenerateColumns = false;
@@ -204,6 +201,7 @@ namespace ControlViaticos.Presentacion
             grdUsuarios.CellFormatting += new DataGridViewCellFormattingEventHandler(grdUsuarios_CellFormatting);
         }
 
+        // Muestra el estado del registro con un texto legible.
         private void grdUsuarios_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex >= 0 && grdUsuarios.Columns[e.ColumnIndex].Name == "activo" && e.Value is bool)
@@ -220,12 +218,14 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Actualiza los registros de la tabla.
         private void ActualizarTabla()
         {
             grdUsuarios.DataSource = logicaUsuarios.ObtenerUsuarios();
             grdUsuarios.ClearSelection();
         }
 
+        // Comprueba y obtiene una identificación positiva.
         private bool LeerIdentificacion(out int identificacion)
         {
             if (!int.TryParse(txtIdentificacion.Text, out identificacion) || identificacion <= 0)
@@ -237,6 +237,7 @@ namespace ControlViaticos.Presentacion
             return true;
         }
 
+        // Limpia los campos para ingresar otro registro.
         private void LimpiarCampos()
         {
             txtIdentificacion.Clear();
@@ -248,6 +249,7 @@ namespace ControlViaticos.Presentacion
             txtIdentificacion.Focus();
         }
 
+        // Comprueba el permiso para utilizar esta sección.
         private bool ValidarPermiso()
         {
             if (!SesionActual.EsAdministrador())

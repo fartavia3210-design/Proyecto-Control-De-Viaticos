@@ -4,6 +4,7 @@ namespace ControlViaticos.Logica
 {
     internal static class ReglasViaticos
     {
+        // Identifica la categoría del tipo de viático.
         public static string Categoria(string nombre)
         {
             string texto = "";
@@ -21,6 +22,7 @@ namespace ControlViaticos.Logica
             return "Otro";
         }
 
+        // Comprueba la fecha y el horario permitido del consumo.
         public static bool Cumple(string nombre, DateTime salida, DateTime llegada, DateTime fecha)
         {
             if (llegada <= salida || fecha.Date < salida.Date || fecha.Date > llegada.Date)

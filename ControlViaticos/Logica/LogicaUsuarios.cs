@@ -34,6 +34,7 @@ namespace ControlViaticos.Logica
             return AgregarUsuarioValidado(administrador);
         }
 
+        // Valida los datos y agrega el usuario.
         private bool AgregarUsuarioValidado(Usuario miUsuario)
         {
             if (miUsuario == null || miUsuario.id <= 0 || string.IsNullOrWhiteSpace(miUsuario.nombreCompleto) || string.IsNullOrWhiteSpace(miUsuario.nombreUsuario) || string.IsNullOrWhiteSpace(miUsuario.clave) || (miUsuario.tipo != "Normal" && miUsuario.tipo != "Administrador"))
@@ -57,6 +58,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Busca el usuario.
         public Usuario BuscarUsuario(int id)
         {
             foreach (Usuario usuario in Estructuras.listaUsuarios)
@@ -69,6 +71,7 @@ namespace ControlViaticos.Logica
             return null;
         }
 
+        // Valida y modifica el usuario.
         public bool ModificarUsuario(Usuario miUsuario)
         {
             ultimoError = "";
@@ -120,6 +123,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Valida y elimina el usuario.
         public bool EliminarUsuario(int id)
         {
             ultimoError = "";
@@ -162,11 +166,13 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Obtiene los usuarios.
         public List<Usuario> ObtenerUsuarios()
         {
             return new List<Usuario>(Estructuras.listaUsuarios);
         }
 
+        // Cuenta los administradores activos.
         private int ContarAdministradoresActivos()
         {
             int cantidad = 0;

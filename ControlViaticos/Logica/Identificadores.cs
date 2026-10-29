@@ -11,6 +11,7 @@ namespace ControlViaticos.Logica
             return Siguiente(new List<int>(registros));
         }
 
+        // Busca un identificador positivo disponible.
         public static int Siguiente(List<int> registros)
         {
             List<int> ocupados = new List<int>(registros);
@@ -34,6 +35,7 @@ namespace ControlViaticos.Logica
             return candidato;
         }
 
+        // Busca un identificador positivo disponible.
         public static int Siguiente(List<Usuario> registros)
         {
             List<int> identificaciones = new List<int>();
@@ -44,6 +46,7 @@ namespace ControlViaticos.Logica
             return Siguiente(identificaciones);
         }
 
+        // Busca un identificador positivo disponible.
         public static int Siguiente(List<Empleado> registros)
         {
             List<int> identificaciones = new List<int>();
@@ -54,6 +57,7 @@ namespace ControlViaticos.Logica
             return Siguiente(identificaciones);
         }
 
+        // Busca un identificador positivo disponible.
         public static int Siguiente(List<TipoViatico> registros)
         {
             List<int> identificaciones = new List<int>();
@@ -64,6 +68,7 @@ namespace ControlViaticos.Logica
             return Siguiente(identificaciones);
         }
 
+        // Busca un identificador positivo disponible.
         public static int Siguiente(List<DetalleLiquidacion> registros)
         {
             List<int> identificaciones = new List<int>();
@@ -74,6 +79,7 @@ namespace ControlViaticos.Logica
             return Siguiente(identificaciones);
         }
 
+        // Busca un identificador positivo disponible.
         public static int Siguiente(List<RegistroBitacora> registros)
         {
             List<int> identificaciones = new List<int>();

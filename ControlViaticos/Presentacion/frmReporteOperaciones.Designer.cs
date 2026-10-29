@@ -1,10 +1,12 @@
-﻿namespace ControlViaticos.Presentacion
+namespace ControlViaticos.Presentacion
 {
     partial class frmReporteOperaciones
     {
         /// <summary>
         /// Variable del diseñador necesaria.
         /// </summary>
+        private System.Windows.Forms.Panel pagina;
+
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.pagina = new System.Windows.Forms.Panel();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.lblUsuario = new System.Windows.Forms.Label();
             this.cmbUsuario = new System.Windows.Forms.ComboBox();
@@ -42,80 +45,53 @@
             // 
             // lblTitulo
             // 
-            this.lblTitulo.Font = new System.Drawing.Font("Tahoma", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitulo.Location = new System.Drawing.Point(0, 10);
             this.lblTitulo.Name = "lblTitulo";
             this.lblTitulo.Size = new System.Drawing.Size(1140, 80);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "Operaciones por usuario";
-            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblUsuario
             // 
-            this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUsuario.Location = new System.Drawing.Point(30, 104);
             this.lblUsuario.Name = "lblUsuario";
-            this.lblUsuario.Size = new System.Drawing.Size(152, 33);
             this.lblUsuario.TabIndex = 1;
             this.lblUsuario.Text = "Usuario:";
             // 
             // cmbUsuario
             // 
             this.cmbUsuario.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbUsuario.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbUsuario.FormattingEnabled = true;
-            this.cmbUsuario.Location = new System.Drawing.Point(150, 100);
             this.cmbUsuario.Name = "cmbUsuario";
-            this.cmbUsuario.Size = new System.Drawing.Size(250, 40);
             this.cmbUsuario.TabIndex = 2;
             // 
             // lblDesde
             // 
-            this.lblDesde.AutoSize = true;
-            this.lblDesde.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDesde.Location = new System.Drawing.Point(440, 104);
             this.lblDesde.Name = "lblDesde";
-            this.lblDesde.Size = new System.Drawing.Size(120, 33);
             this.lblDesde.TabIndex = 3;
             this.lblDesde.Text = "Desde:";
             // 
             // dtpDesde
             // 
             this.dtpDesde.CustomFormat = "dd/MM/yyyy";
-            this.dtpDesde.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpDesde.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpDesde.Location = new System.Drawing.Point(560, 100);
             this.dtpDesde.Name = "dtpDesde";
-            this.dtpDesde.Size = new System.Drawing.Size(250, 40);
             this.dtpDesde.TabIndex = 4;
             // 
             // lblHasta
             // 
-            this.lblHasta.AutoSize = true;
-            this.lblHasta.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblHasta.Location = new System.Drawing.Point(440, 164);
             this.lblHasta.Name = "lblHasta";
-            this.lblHasta.Size = new System.Drawing.Size(120, 33);
             this.lblHasta.TabIndex = 5;
             this.lblHasta.Text = "Hasta:";
             // 
             // dtpHasta
             // 
             this.dtpHasta.CustomFormat = "dd/MM/yyyy";
-            this.dtpHasta.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.dtpHasta.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpHasta.Location = new System.Drawing.Point(560, 160);
             this.dtpHasta.Name = "dtpHasta";
-            this.dtpHasta.Size = new System.Drawing.Size(250, 40);
             this.dtpHasta.TabIndex = 6;
             // 
             // btnConsultar
             // 
-            this.btnConsultar.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnConsultar.Location = new System.Drawing.Point(850, 124);
             this.btnConsultar.Name = "btnConsultar";
-            this.btnConsultar.Size = new System.Drawing.Size(190, 64);
             this.btnConsultar.TabIndex = 7;
             this.btnConsultar.Text = "Consultar";
             this.btnConsultar.UseVisualStyleBackColor = true;
@@ -126,33 +102,82 @@
             this.grdOperaciones.AllowUserToAddRows = false;
             this.grdOperaciones.AllowUserToDeleteRows = false;
             this.grdOperaciones.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdOperaciones.Location = new System.Drawing.Point(30, 235);
             this.grdOperaciones.Name = "grdOperaciones";
             this.grdOperaciones.ReadOnly = true;
             this.grdOperaciones.RowHeadersWidth = 82;
             this.grdOperaciones.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdOperaciones.Size = new System.Drawing.Size(1080, 490);
             this.grdOperaciones.TabIndex = 8;
             // 
             // frmReporteOperaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1140, 727);
-            this.Controls.Add(this.grdOperaciones);
-            this.Controls.Add(this.btnConsultar);
-            this.Controls.Add(this.dtpHasta);
-            this.Controls.Add(this.lblHasta);
-            this.Controls.Add(this.dtpDesde);
-            this.Controls.Add(this.lblDesde);
-            this.Controls.Add(this.cmbUsuario);
-            this.Controls.Add(this.lblUsuario);
-            this.Controls.Add(this.lblTitulo);
+
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmReporteOperaciones";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Operaciones por usuario";
             ((System.ComponentModel.ISupportInitialize)(this.grdOperaciones)).EndInit();
+            // Distribucion manual mediante propiedades de los controles.
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.ClientSize = new System.Drawing.Size(900, 600);
+            this.AutoScroll = true;
+            this.pagina.Name = "pagina";
+            this.pagina.Location = new System.Drawing.Point(0, 0);
+            this.pagina.Size = new System.Drawing.Size(880, 553);
+            this.pagina.MinimumSize = new System.Drawing.Size(650, 553);
+            this.pagina.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Location = new System.Drawing.Point(20, 20);
+            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTitulo.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
+            this.lblUsuario.Location = new System.Drawing.Point(20, 78);
+            this.lblUsuario.Size = new System.Drawing.Size(290, 22);
+            this.lblUsuario.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblUsuario.AutoSize = true;
+            this.cmbUsuario.Location = new System.Drawing.Point(20, 104);
+            this.cmbUsuario.Size = new System.Drawing.Size(270, 27);
+            this.cmbUsuario.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.cmbUsuario.Dock = System.Windows.Forms.DockStyle.None;
+            this.cmbUsuario.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
+            this.cmbUsuario.DropDownWidth = 440;
+            this.lblDesde.Location = new System.Drawing.Point(340, 78);
+            this.lblDesde.Size = new System.Drawing.Size(290, 22);
+            this.lblDesde.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblDesde.AutoSize = true;
+            this.dtpDesde.Location = new System.Drawing.Point(340, 104);
+            this.dtpDesde.Size = new System.Drawing.Size(270, 27);
+            this.dtpDesde.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.dtpDesde.Dock = System.Windows.Forms.DockStyle.None;
+            this.dtpDesde.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
+            this.lblHasta.Location = new System.Drawing.Point(20, 152);
+            this.lblHasta.Size = new System.Drawing.Size(290, 22);
+            this.lblHasta.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblHasta.AutoSize = true;
+            this.dtpHasta.Location = new System.Drawing.Point(20, 178);
+            this.dtpHasta.Size = new System.Drawing.Size(270, 27);
+            this.dtpHasta.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.dtpHasta.Dock = System.Windows.Forms.DockStyle.None;
+            this.dtpHasta.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left;
+            this.btnConsultar.Location = new System.Drawing.Point(20, 226);
+            this.btnConsultar.Size = new System.Drawing.Size(125, 34);
+            this.btnConsultar.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.grdOperaciones.Location = new System.Drawing.Point(20, 278);
+            this.grdOperaciones.Size = new System.Drawing.Size(840, 230);
+            this.grdOperaciones.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.grdOperaciones.Dock = System.Windows.Forms.DockStyle.None;
+            this.grdOperaciones.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.pagina.Controls.Add(this.lblTitulo);
+            this.pagina.Controls.Add(this.lblUsuario);
+            this.pagina.Controls.Add(this.cmbUsuario);
+            this.pagina.Controls.Add(this.lblDesde);
+            this.pagina.Controls.Add(this.dtpDesde);
+            this.pagina.Controls.Add(this.lblHasta);
+            this.pagina.Controls.Add(this.dtpHasta);
+            this.pagina.Controls.Add(this.btnConsultar);
+            this.pagina.Controls.Add(this.grdOperaciones);
+            this.Controls.Add(this.pagina);
+            this.grdOperaciones.RowHeadersVisible = false;
             this.ResumeLayout(false);
             this.PerformLayout();
 

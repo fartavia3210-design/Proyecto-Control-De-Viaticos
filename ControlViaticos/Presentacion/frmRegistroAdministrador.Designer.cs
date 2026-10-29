@@ -4,6 +4,7 @@ namespace ControlViaticos.Presentacion
     {
         private System.ComponentModel.IContainer components = null;
 
+        // Libera los recursos del formulario.
         protected override void Dispose(bool disposing)
         {
             if (disposing && components != null)
@@ -13,6 +14,7 @@ namespace ControlViaticos.Presentacion
             base.Dispose(disposing);
         }
 
+        // Crea los controles y configura el formulario.
         private void InitializeComponent()
         {
             this.lblTitulo = new System.Windows.Forms.Label();

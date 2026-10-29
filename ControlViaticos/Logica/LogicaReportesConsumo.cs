@@ -6,6 +6,7 @@ namespace ControlViaticos.Logica
 {
     internal class LogicaReportesConsumo
     {
+        // Obtiene los consumos del rango de fechas.
         public List<ConsumoReporte> ConsultarConsumosPorFechas(DateTime desde, DateTime hasta)
         {
             List<ConsumoReporte> resultado = new List<ConsumoReporte>();
@@ -29,6 +30,7 @@ namespace ControlViaticos.Logica
             return resultado;
         }
 
+        // Obtiene los consumos del empleado indicado.
         public List<ConsumoReporte> ConsultarConsumosPorEmpleado(int idEmpleado)
         {
             List<ConsumoReporte> resultado = new List<ConsumoReporte>();
@@ -48,6 +50,7 @@ namespace ControlViaticos.Logica
             return resultado;
         }
 
+        // Suma los montos de los consumos.
         public long CalcularTotal(List<ConsumoReporte> consumos)
         {
             long total = 0;
@@ -58,11 +61,13 @@ namespace ControlViaticos.Logica
             return total;
         }
 
+        // Ordena los consumos por fecha y consecutivo.
         private static void Ordenar(List<ConsumoReporte> consumos)
         {
             consumos.Sort(CompararConsumos);
         }
 
+        // Compara dos consumos por fecha y consecutivo.
         private static int CompararConsumos(ConsumoReporte primero, ConsumoReporte segundo)
         {
             int comparacion = primero.fechaConsumo.CompareTo(segundo.fechaConsumo);
@@ -73,6 +78,7 @@ namespace ControlViaticos.Logica
             return primero.idLiquidacion.CompareTo(segundo.idLiquidacion);
         }
 
+        // Reúne los datos del consumo para el reporte.
         private static ConsumoReporte ArmarConsumo(DetalleLiquidacion detalle)
         {
             LogicaLiquidaciones liquidaciones = new LogicaLiquidaciones();

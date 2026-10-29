@@ -18,16 +18,10 @@ namespace ControlViaticos.Presentacion
         private LogicaTiposViatico logicaTipos = new LogicaTiposViatico();
         private LogicaBitacora logicaBitacora = new LogicaBitacora();
 
+        // Inicializa los controles del formulario.
         public frmTiposViatico()
         {
             InitializeComponent();
-            Control campoIdentificador = DisenoFormularios.Campo(lblIdentificador, txtIdentificador, btnBuscar);
-            Control campoNombre = DisenoFormularios.Campo(lblNombre, txtNombre);
-            Control campoMonto = DisenoFormularios.Campo(lblMonto, txtMonto);
-            Control campoEstado = DisenoFormularios.Campo(lblEstado, cmbEstado);
-            Control filaCampos = DisenoFormularios.Fila(campoIdentificador, campoNombre, campoMonto, campoEstado);
-            Control filaAcciones = DisenoFormularios.Fila(btnGuardar, btnEliminar);
-            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdTiposViatico);
             this.Load += new EventHandler(frmTiposViatico_Load);
 
             //--opciones de los combos
@@ -37,6 +31,7 @@ namespace ControlViaticos.Presentacion
             ConfigurarTabla();
         }
 
+        // Busca el registro y carga sus datos.
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -69,6 +64,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Valida y guarda los datos del registro.
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -134,6 +130,7 @@ namespace ControlViaticos.Presentacion
             LimpiarCampos();
         }
 
+        // Confirma y elimina el registro.
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -171,6 +168,7 @@ namespace ControlViaticos.Presentacion
             LimpiarCampos();
         }
 
+        // Prepara los datos y permisos al abrir el formulario.
         private void frmTiposViatico_Load(object sender, EventArgs e)
         {
             if (ValidarSesion())
@@ -179,6 +177,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Comprueba que haya una sesión activa.
         private bool ValidarSesion()
         {
             if (SesionActual.HaySesionActiva())
@@ -190,6 +189,7 @@ namespace ControlViaticos.Presentacion
             return false;
         }
 
+        // Configura las columnas de la tabla.
         private void ConfigurarTabla()
         {
             grdTiposViatico.AutoGenerateColumns = false;
@@ -216,6 +216,7 @@ namespace ControlViaticos.Presentacion
             grdTiposViatico.CellFormatting += new DataGridViewCellFormattingEventHandler(grdTiposViatico_CellFormatting);
         }
 
+        // Muestra el estado del registro con un texto legible.
         private void grdTiposViatico_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex >= 0 && grdTiposViatico.Columns[e.ColumnIndex].Name == "activo" && e.Value is bool)
@@ -232,12 +233,14 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Actualiza los registros de la tabla.
         private void ActualizarTabla()
         {
             grdTiposViatico.DataSource = logicaTipos.ObtenerTiposViatico();
             grdTiposViatico.ClearSelection();
         }
 
+        // Comprueba y obtiene un identificador positivo.
         private bool LeerIdentificador(out int identificador)
         {
             if (!int.TryParse(txtIdentificador.Text, out identificador) || identificador <= 0)
@@ -249,6 +252,7 @@ namespace ControlViaticos.Presentacion
             return true;
         }
 
+        // Limpia los campos para ingresar otro registro.
         private void LimpiarCampos()
         {
             txtIdentificador.Clear();

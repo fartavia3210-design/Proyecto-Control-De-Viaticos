@@ -16,19 +16,15 @@ namespace ControlViaticos.Presentacion
     {
         private LogicaBitacora logicaBitacora = new LogicaBitacora();
 
+        // Inicializa los controles del formulario.
         public frmReporteOperaciones()
         {
             InitializeComponent();
-            Control campoUsuario = DisenoFormularios.Campo(lblUsuario, cmbUsuario);
-            Control campoDesde = DisenoFormularios.Campo(lblDesde, dtpDesde);
-            Control campoHasta = DisenoFormularios.Campo(lblHasta, dtpHasta);
-            Control filaCampos = DisenoFormularios.Fila(campoUsuario, campoDesde, campoHasta);
-            Control filaAcciones = DisenoFormularios.Fila(btnConsultar);
-            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdOperaciones);
             ConfigurarTabla();
             this.Load += new EventHandler(frmReporteOperaciones_Load);
         }
 
+        // Consulta y muestra el reporte y su total.
         private void btnConsultar_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -63,6 +59,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Prepara los datos y permisos al abrir el formulario.
         private void frmReporteOperaciones_Load(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -78,6 +75,7 @@ namespace ControlViaticos.Presentacion
             cmbUsuario.SelectedIndex = -1;
         }
 
+        // Comprueba que haya una sesión activa.
         private bool ValidarSesion()
         {
             if (!SesionActual.HaySesionActiva())
@@ -89,6 +87,7 @@ namespace ControlViaticos.Presentacion
             return true;
         }
 
+        // Configura las columnas de la tabla.
         private void ConfigurarTabla()
         {
             grdOperaciones.AutoGenerateColumns = false;

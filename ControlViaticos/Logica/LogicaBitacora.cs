@@ -40,11 +40,13 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Obtiene los registros de la bitácora.
         public List<RegistroBitacora> ObtenerBitacora()
         {
             return new List<RegistroBitacora>(Estructuras.listaBitacora);
         }
 
+        // Filtra las operaciones por usuario y fechas.
         public List<RegistroBitacora> ConsultarOperaciones(int idUsuario, DateTime desde, DateTime hasta)
         {
             List<RegistroBitacora> resultado = new List<RegistroBitacora>();

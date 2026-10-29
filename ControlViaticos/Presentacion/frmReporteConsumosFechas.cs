@@ -17,20 +17,16 @@ namespace ControlViaticos.Presentacion
     {
         private LogicaReportesConsumo logicaReportes = new LogicaReportesConsumo();
 
+        // Inicializa los controles del formulario.
         public frmReporteConsumosFechas()
         {
             InitializeComponent();
             lblMontoTotal.AutoSize = true;
-            Control campoDesde = DisenoFormularios.Campo(lblDesde, dtpDesde);
-            Control campoHasta = DisenoFormularios.Campo(lblHasta, dtpHasta);
-            Control filaCampos = DisenoFormularios.Fila(campoDesde, campoHasta);
-            Control filaAcciones = DisenoFormularios.Fila(btnConsultar);
-            Control filaTotal = DisenoFormularios.Fila(lblTotal, lblMontoTotal);
-            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdConsumos, filaTotal);
             ConfigurarTabla();
             this.Load += new EventHandler(frmReporteConsumosFechas_Load);
         }
 
+        // Consulta y muestra el reporte y su total.
         private void btnConsultar_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -62,11 +58,13 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Prepara los datos y permisos al abrir el formulario.
         private void frmReporteConsumosFechas_Load(object sender, EventArgs e)
         {
             ValidarSesion();
         }
 
+        // Comprueba que haya una sesión activa.
         private bool ValidarSesion()
         {
             if (!SesionActual.HaySesionActiva())
@@ -78,6 +76,7 @@ namespace ControlViaticos.Presentacion
             return true;
         }
 
+        // Configura las columnas de la tabla.
         private void ConfigurarTabla()
         {
             grdConsumos.AutoGenerateColumns = false;

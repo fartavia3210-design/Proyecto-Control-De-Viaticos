@@ -43,6 +43,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Busca el tipo de viático.
         public TipoViatico BuscarTipoViatico(int id)
         {
             foreach (TipoViatico tipo in Estructuras.listaTiposViatico)
@@ -55,6 +56,7 @@ namespace ControlViaticos.Logica
             return null;
         }
 
+        // Valida y modifica el tipo de viático.
         public bool ModificarTipoViatico(TipoViatico miTipo)
         {
             ultimoError = "";
@@ -106,6 +108,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Valida y elimina el tipo de viático.
         public bool EliminarTipoViatico(int id)
         {
             ultimoError = "";
@@ -136,11 +139,13 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Obtiene los tipos de viático.
         public List<TipoViatico> ObtenerTiposViatico()
         {
             return new List<TipoViatico>(Estructuras.listaTiposViatico);
         }
 
+        // Comprueba los datos obligatorios del registro.
         private bool DatosValidos(TipoViatico miTipo)
         {
             if (miTipo == null || miTipo.id <= 0 || string.IsNullOrWhiteSpace(miTipo.nombre) || miTipo.monto <= 0)

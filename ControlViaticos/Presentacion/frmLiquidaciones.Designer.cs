@@ -6,12 +6,14 @@ namespace ControlViaticos.Presentacion
     partial class frmLiquidaciones
     {
         private System.ComponentModel.IContainer components = null;
+        // Libera los recursos del formulario.
         protected override void Dispose(bool disposing)
         {
             if (disposing && components != null) components.Dispose();
             base.Dispose(disposing);
         }
 
+        // Crea los controles y configura el formulario.
         private void InitializeComponent()
         {
             SuspendLayout();

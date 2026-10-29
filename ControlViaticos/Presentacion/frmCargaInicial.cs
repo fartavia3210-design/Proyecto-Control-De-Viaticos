@@ -13,6 +13,7 @@ namespace ControlViaticos.Presentacion
 {
     public partial class frmCargaInicial : Form
     {
+        // Inicializa los controles del formulario.
         public frmCargaInicial()
         {
             InitializeComponent();
@@ -20,12 +21,10 @@ namespace ControlViaticos.Presentacion
             lblDescripcion.MaximumSize = new System.Drawing.Size(600, 0);
             lblTiposIniciales.AutoSize = true;
             lblTiposIniciales.MaximumSize = new System.Drawing.Size(600, 0);
-            Control filaDescripcion = DisenoFormularios.Fila(lblDescripcion, lblTiposIniciales);
-            Control filaAcciones = DisenoFormularios.Fila(btnEjecutar);
-            DisenoFormularios.Pagina(this, lblTitulo, filaDescripcion, filaAcciones, null);
             this.Load += new EventHandler(frmCargaInicial_Load);
         }
 
+        // Ejecuta la carga inicial y muestra el resultado.
         private void btnEjecutar_Click(object sender, EventArgs e)
         {
             if (!ValidarPermiso())
@@ -57,11 +56,13 @@ namespace ControlViaticos.Presentacion
             MessageBox.Show("Carga inicial completada. Se agregaron " + agregados + " registros entre usuarios, empleados y tipos de viático. Los registros existentes se conservaron.");
         }
 
+        // Prepara los datos y permisos al abrir el formulario.
         private void frmCargaInicial_Load(object sender, EventArgs e)
         {
             ValidarPermiso();
         }
 
+        // Comprueba el permiso para utilizar esta sección.
         private bool ValidarPermiso()
         {
             if (!SesionActual.EsAdministrador())

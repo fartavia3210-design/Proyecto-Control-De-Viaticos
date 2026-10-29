@@ -7,11 +7,13 @@ namespace ControlViaticos.Presentacion
 {
     public partial class frmRegistroAdministrador : Form
     {
+        // Inicializa los controles del formulario.
         public frmRegistroAdministrador()
         {
             InitializeComponent();
         }
 
+        // Valida y crea el primer administrador.
         private void btnCrear_Click(object sender, EventArgs e)
         {
             int identificacion;
@@ -49,6 +51,7 @@ namespace ControlViaticos.Presentacion
             Close();
         }
 
+        // Cierra el menú principal.
         private void btnSalir_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;

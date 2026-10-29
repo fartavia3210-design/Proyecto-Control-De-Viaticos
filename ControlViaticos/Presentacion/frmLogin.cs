@@ -6,11 +6,13 @@ namespace ControlViaticos.Presentacion
 {
     public partial class frmLogin : Form
     {
+        // Inicializa los controles del formulario.
         public frmLogin()
         {
             InitializeComponent();
         }
 
+        // Valida el acceso y abre el menú principal.
         private void Ok_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtUsuario.Text) || string.IsNullOrWhiteSpace(txtClave.Text))
@@ -43,6 +45,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Cierra la aplicación.
         private void Salir_Click(object sender, EventArgs e)
         {
             Application.Exit();

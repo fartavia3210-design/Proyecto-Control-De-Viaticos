@@ -1,4 +1,4 @@
-﻿namespace ControlViaticos.Presentacion
+namespace ControlViaticos.Presentacion
 {
     partial class frmPrincipal
     {
@@ -70,9 +70,7 @@
             // btnSalir
             //
             this.btnSalir.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSalir.Location = new System.Drawing.Point(12, 720);
             this.btnSalir.Name = "btnSalir";
-            this.btnSalir.Size = new System.Drawing.Size(236, 48);
             this.btnSalir.TabIndex = 8;
             this.btnSalir.Text = "Salir";
             this.btnSalir.UseVisualStyleBackColor = true;
@@ -81,9 +79,7 @@
             // btnCargaInicial
             //
             this.btnCargaInicial.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCargaInicial.Location = new System.Drawing.Point(12, 650);
             this.btnCargaInicial.Name = "btnCargaInicial";
-            this.btnCargaInicial.Size = new System.Drawing.Size(236, 48);
             this.btnCargaInicial.TabIndex = 7;
             this.btnCargaInicial.Text = "Carga inicial";
             this.btnCargaInicial.UseVisualStyleBackColor = true;
@@ -95,9 +91,7 @@
             this.pnlSubReportes.Controls.Add(this.btnRepOperaciones);
             this.pnlSubReportes.Controls.Add(this.btnRepEmpleado);
             this.pnlSubReportes.Controls.Add(this.btnRepFechas);
-            this.pnlSubReportes.Location = new System.Drawing.Point(12, 433);
             this.pnlSubReportes.Name = "pnlSubReportes";
-            this.pnlSubReportes.Size = new System.Drawing.Size(236, 195);
             this.pnlSubReportes.TabIndex = 6;
             this.pnlSubReportes.Visible = false;
             //
@@ -106,11 +100,8 @@
             this.btnRepOperaciones.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnRepOperaciones.FlatAppearance.BorderSize = 0;
             this.btnRepOperaciones.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRepOperaciones.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRepOperaciones.ForeColor = System.Drawing.Color.White;
-            this.btnRepOperaciones.Location = new System.Drawing.Point(0, 130);
             this.btnRepOperaciones.Name = "btnRepOperaciones";
-            this.btnRepOperaciones.Size = new System.Drawing.Size(236, 62);
             this.btnRepOperaciones.TabIndex = 2;
             this.btnRepOperaciones.Text = "Operaciones";
             this.btnRepOperaciones.UseVisualStyleBackColor = false;
@@ -121,11 +112,8 @@
             this.btnRepEmpleado.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnRepEmpleado.FlatAppearance.BorderSize = 0;
             this.btnRepEmpleado.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRepEmpleado.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRepEmpleado.ForeColor = System.Drawing.Color.White;
-            this.btnRepEmpleado.Location = new System.Drawing.Point(0, 65);
             this.btnRepEmpleado.Name = "btnRepEmpleado";
-            this.btnRepEmpleado.Size = new System.Drawing.Size(236, 62);
             this.btnRepEmpleado.TabIndex = 1;
             this.btnRepEmpleado.Text = "Por empleado";
             this.btnRepEmpleado.UseVisualStyleBackColor = false;
@@ -136,11 +124,8 @@
             this.btnRepFechas.BackColor = System.Drawing.SystemColors.Highlight;
             this.btnRepFechas.FlatAppearance.BorderSize = 0;
             this.btnRepFechas.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRepFechas.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRepFechas.ForeColor = System.Drawing.Color.White;
-            this.btnRepFechas.Location = new System.Drawing.Point(0, 0);
             this.btnRepFechas.Name = "btnRepFechas";
-            this.btnRepFechas.Size = new System.Drawing.Size(236, 62);
             this.btnRepFechas.TabIndex = 0;
             this.btnRepFechas.Text = "Por fechas";
             this.btnRepFechas.UseVisualStyleBackColor = false;
@@ -149,9 +134,7 @@
             // btnReportes
             //
             this.btnReportes.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReportes.Location = new System.Drawing.Point(12, 373);
             this.btnReportes.Name = "btnReportes";
-            this.btnReportes.Size = new System.Drawing.Size(236, 48);
             this.btnReportes.TabIndex = 5;
             this.btnReportes.Text = "Reportes";
             this.btnReportes.UseVisualStyleBackColor = true;
@@ -160,9 +143,7 @@
             // btnBitacora
             //
             this.btnBitacora.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBitacora.Location = new System.Drawing.Point(12, 313);
             this.btnBitacora.Name = "btnBitacora";
-            this.btnBitacora.Size = new System.Drawing.Size(236, 48);
             this.btnBitacora.TabIndex = 4;
             this.btnBitacora.Text = "Bitácora";
             this.btnBitacora.UseVisualStyleBackColor = true;
@@ -171,9 +152,7 @@
             // btnLiquidaciones
             //
             this.btnLiquidaciones.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLiquidaciones.Location = new System.Drawing.Point(12, 253);
             this.btnLiquidaciones.Name = "btnLiquidaciones";
-            this.btnLiquidaciones.Size = new System.Drawing.Size(236, 48);
             this.btnLiquidaciones.TabIndex = 3;
             this.btnLiquidaciones.Text = "Liquidaciones";
             this.btnLiquidaciones.UseVisualStyleBackColor = true;
@@ -182,9 +161,7 @@
             // btnTiposViatico
             //
             this.btnTiposViatico.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTiposViatico.Location = new System.Drawing.Point(12, 193);
             this.btnTiposViatico.Name = "btnTiposViatico";
-            this.btnTiposViatico.Size = new System.Drawing.Size(236, 48);
             this.btnTiposViatico.TabIndex = 2;
             this.btnTiposViatico.Text = "Tipos de viático";
             this.btnTiposViatico.UseVisualStyleBackColor = true;
@@ -193,9 +170,7 @@
             // btnEmpleados
             //
             this.btnEmpleados.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEmpleados.Location = new System.Drawing.Point(12, 133);
             this.btnEmpleados.Name = "btnEmpleados";
-            this.btnEmpleados.Size = new System.Drawing.Size(236, 48);
             this.btnEmpleados.TabIndex = 1;
             this.btnEmpleados.Text = "Empleados";
             this.btnEmpleados.UseVisualStyleBackColor = true;
@@ -204,9 +179,7 @@
             // btnUsuarios
             //
             this.btnUsuarios.Font = new System.Drawing.Font("Tahoma", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUsuarios.Location = new System.Drawing.Point(12, 73);
             this.btnUsuarios.Name = "btnUsuarios";
-            this.btnUsuarios.Size = new System.Drawing.Size(236, 48);
             this.btnUsuarios.TabIndex = 0;
             this.btnUsuarios.Text = "Usuarios";
             this.btnUsuarios.UseVisualStyleBackColor = true;
@@ -225,8 +198,6 @@
             // titulo
             //
             this.titulo.AutoSize = true;
-            this.titulo.Font = new System.Drawing.Font("Tahoma", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.titulo.Location = new System.Drawing.Point(20, 16);
             this.titulo.Name = "titulo";
             this.titulo.Size = new System.Drawing.Size(441, 45);
             this.titulo.TabIndex = 0;
@@ -244,14 +215,68 @@
             // frmPrincipal
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1400, 800);
             this.Controls.Add(this.pnlContenedor);
             this.Controls.Add(this.pnlTitulo);
             this.Controls.Add(this.pnlMenu);
             this.Name = "frmPrincipal";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menú Control de Viáticos";
+            // Propiedades del menu configuradas en este formulario.
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.MinimumSize = new System.Drawing.Size(760, 480);
+            this.Size = new System.Drawing.Size(900, 480);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Location = new System.Drawing.Point(20, 20);
+            this.pnlMenu.Width = 200;
+            this.pnlMenu.AutoScroll = true;
+            this.pnlTitulo.Height = 60;
+            this.titulo.Font = new System.Drawing.Font("Tahoma", 14F, System.Drawing.FontStyle.Bold);
+            this.titulo.Location = new System.Drawing.Point(16, 18);
+            this.btnUsuarios.Location = new System.Drawing.Point(12, 12);
+            this.btnUsuarios.Size = new System.Drawing.Size(168, 40);
+            this.btnEmpleados.Location = new System.Drawing.Point(12, 60);
+            this.btnEmpleados.Size = new System.Drawing.Size(168, 40);
+            this.btnTiposViatico.Location = new System.Drawing.Point(12, 108);
+            this.btnTiposViatico.Size = new System.Drawing.Size(168, 40);
+            this.btnLiquidaciones.Location = new System.Drawing.Point(12, 156);
+            this.btnLiquidaciones.Size = new System.Drawing.Size(168, 40);
+            this.btnBitacora.Location = new System.Drawing.Point(12, 204);
+            this.btnBitacora.Size = new System.Drawing.Size(168, 40);
+            this.btnReportes.Location = new System.Drawing.Point(12, 252);
+            this.btnReportes.Size = new System.Drawing.Size(168, 40);
+            this.pnlSubReportes.Location = new System.Drawing.Point(12, 300);
+            this.pnlSubReportes.Size = new System.Drawing.Size(168, 132);
+            this.btnRepFechas.Location = new System.Drawing.Point(0, 0);
+            this.btnRepFechas.Size = new System.Drawing.Size(168, 40);
+            this.btnRepFechas.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.btnRepEmpleado.Location = new System.Drawing.Point(0, 44);
+            this.btnRepEmpleado.Size = new System.Drawing.Size(168, 40);
+            this.btnRepEmpleado.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.btnRepOperaciones.Location = new System.Drawing.Point(0, 88);
+            this.btnRepOperaciones.Size = new System.Drawing.Size(168, 40);
+            this.btnRepOperaciones.Font = new System.Drawing.Font("Tahoma", 9F);
+            this.btnCargaInicial.Location = new System.Drawing.Point(12, 444);
+            this.btnCargaInicial.Size = new System.Drawing.Size(168, 40);
+            this.btnSalir.Location = new System.Drawing.Point(12, 492);
+            this.btnSalir.Size = new System.Drawing.Size(168, 40);
+            this.btnUsuarios.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnUsuarios.Height = 44;
+            this.btnEmpleados.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnEmpleados.Height = 44;
+            this.btnTiposViatico.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnTiposViatico.Height = 44;
+            this.btnLiquidaciones.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnLiquidaciones.Height = 44;
+            this.btnBitacora.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnBitacora.Height = 44;
+            this.btnReportes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnReportes.Height = 44;
+            this.btnCargaInicial.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnCargaInicial.Height = 44;
+            this.btnSalir.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnSalir.Height = 44;
+            this.pnlSubReportes.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlMenu.AutoScrollMinSize = new System.Drawing.Size(0, 510);
             this.pnlMenu.ResumeLayout(false);
             this.pnlSubReportes.ResumeLayout(false);
             this.pnlTitulo.ResumeLayout(false);

@@ -15,14 +15,15 @@ namespace ControlViaticos.Presentacion
     {
         private LogicaBitacora logicaBitacora = new LogicaBitacora();
 
+        // Inicializa los controles del formulario.
         public frmBitacora()
         {
             InitializeComponent();
-            DisenoFormularios.Pagina(this, lblTitulo, null, null, grdBitacora);
             ConfigurarTabla();
             this.Load += new EventHandler(frmBitacora_Load);
         }
 
+        // Prepara los datos y permisos al abrir el formulario.
         private void frmBitacora_Load(object sender, EventArgs e)
         {
             if (!SesionActual.HaySesionActiva())
@@ -36,6 +37,7 @@ namespace ControlViaticos.Presentacion
             grdBitacora.ClearSelection();
         }
 
+        // Configura las columnas de la tabla.
         private void ConfigurarTabla()
         {
             grdBitacora.AutoGenerateColumns = false;

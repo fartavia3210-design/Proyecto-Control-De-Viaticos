@@ -25,7 +25,7 @@ namespace ControlViaticos.Objetos
             }
         }
 
-        // Permite distinguir homónimos sin usar la posición del combo como ID.
+        // Permite distinguir nombres iguales sin usar la posición del combo como ID.
         public string descripcion
         {
             get

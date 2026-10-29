@@ -8,6 +8,7 @@ namespace ControlViaticos.Logica
     {
         public string ultimoError = "";
 
+        // Valida y agrega la liquidación.
         public bool AgregarLiquidacion(Liquidacion liquidacion, List<DetalleLiquidacion> detalles)
         {
             if (!Validar(liquidacion, detalles, null))
@@ -22,9 +23,11 @@ namespace ControlViaticos.Logica
             return GuardarConjunto(liquidacion, detalles);
         }
 
+        // Valida y modifica la liquidación.
         public bool modificarLiquidacion(Liquidacion liquidacion, List<DetalleLiquidacion> detalles)
         {
             Liquidacion anterior;
+
             if (liquidacion == null)
             {
                 anterior = null;
@@ -44,20 +47,25 @@ namespace ControlViaticos.Logica
             return GuardarConjunto(liquidacion, detalles);
         }
 
+        // Guarda el motivo del rechazo y devuelve falso.
         private bool Rechazar(string mensaje)
         {
             ultimoError = mensaje;
             return false;
         }
 
+        // Comprueba la sesión y los datos de la liquidación.
         private bool Validar(Liquidacion liquidacion, List<DetalleLiquidacion> detalles, Liquidacion anterior)
         {
             ultimoError = "";
+
             if (!SesionActual.HaySesionActiva())
             {
                 return Rechazar("Debe iniciar sesión.");
             }
+
             Empleado empleado;
+
             if (!ValidarCabecera(liquidacion, anterior, out empleado))
             {
                 return false;
@@ -155,6 +163,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Valida el empleado, el tipo y el monto del nuevo consumo.
         private bool ValidarDetalleNuevo(DetalleLiquidacion detalle, Empleado empleado, TipoViatico tipo)
         {
             if (!empleado.activo)
@@ -218,6 +227,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Valida y elimina la liquidación.
         public bool eliminarLiquidacion(int id)
         {
             ultimoError = "";
@@ -234,6 +244,7 @@ namespace ControlViaticos.Logica
             return true;
         }
 
+        // Busca la liquidación.
         public Liquidacion buscarLiquidacion(int id)
         {
             foreach (Liquidacion liquidacion in Estructuras.listaLiquidaciones)
@@ -246,6 +257,7 @@ namespace ControlViaticos.Logica
             return null;
         }
 
+        // Obtiene las liquidaciones.
         public List<Liquidacion> ObtenerLiquidaciones()
         {
             List<Liquidacion> resultado = new List<Liquidacion>();
@@ -256,11 +268,13 @@ namespace ControlViaticos.Logica
             return resultado;
         }
 
+        // Obtiene los detalles de la liquidación.
         public List<DetalleLiquidacion> ObtenerDetalles(int idLiquidacion)
         {
             return CopiarDetalles(DetallesDeLiquidacion(idLiquidacion));
         }
 
+        // Crea una copia de la liquidación.
         private static Liquidacion CopiarLiquidacion(Liquidacion l)
         {
 
@@ -273,6 +287,7 @@ namespace ControlViaticos.Logica
             return copia;
         }
 
+        // Crea copias de los detalles.
         private static List<DetalleLiquidacion> CopiarDetalles(List<DetalleLiquidacion> detalles)
         {
             List<DetalleLiquidacion> resultado = new List<DetalleLiquidacion>();
@@ -289,6 +304,7 @@ namespace ControlViaticos.Logica
             return resultado;
         }
 
+        // Suma los montos de la liquidación.
         public int calcularTotal(int idLiquidacion)
         {
             int total = 0;
@@ -299,6 +315,7 @@ namespace ControlViaticos.Logica
             return total;
         }
 
+        // Obtiene los empleados.
         public List<Empleado> ObtenerEmpleados()
 
         {
@@ -306,18 +323,22 @@ namespace ControlViaticos.Logica
             return new List<Empleado>(Estructuras.listaEmpleados);
 
         }
+        // Obtiene los tipos de viático.
         public List<TipoViatico> ObtenerTiposViatico()
         {
             return new List<TipoViatico>(Estructuras.listaTiposViatico);
         }
+        // Busca el empleado.
         public Empleado BuscarEmpleado(int id)
         {
             return new LogicaEmpleados().BuscarEmpleado(id);
         }
+        // Busca el tipo de viático.
         public TipoViatico BuscarTipoViatico(int id)
         {
             return new LogicaTiposViatico().BuscarTipoViatico(id);
         }
+        // Obtiene el nombre del empleado para mostrarlo.
         public string NombreEmpleado(int id)
         {
             Empleado e = BuscarEmpleado(id);
@@ -330,6 +351,7 @@ namespace ControlViaticos.Logica
                 return (e.nombre + " " + e.apellido1 + " " + e.apellido2).Trim();
             }
         }
+        // Obtiene el nombre del viático para mostrarlo.
         public string NombreViatico(int id)
         {
             TipoViatico t = BuscarTipoViatico(id);
@@ -343,16 +365,19 @@ namespace ControlViaticos.Logica
             }
         }
 
+        // Comprueba el horario permitido para el consumo.
         public bool cumpleHorario(string viatico, DateTime salida, DateTime llegada)
         {
             return cumpleHorario(viatico, salida, llegada, salida.Date);
         }
 
+        // Comprueba el horario permitido para el consumo.
         public bool cumpleHorario(string viatico, DateTime salida, DateTime llegada, DateTime fechaConsumo)
         {
             return ReglasViaticos.Cumple(viatico, salida, llegada, fechaConsumo);
         }
 
+        // Busca un detalle por su identificador.
         private DetalleLiquidacion BuscarDetalle(List<DetalleLiquidacion> detalles, int id)
         {
             foreach (DetalleLiquidacion detalle in detalles)
@@ -365,6 +390,7 @@ namespace ControlViaticos.Logica
             return null;
         }
 
+        // Obtiene los detalles de la liquidación indicada.
         private List<DetalleLiquidacion> DetallesDeLiquidacion(int id)
         {
             List<DetalleLiquidacion> resultado = new List<DetalleLiquidacion>();
@@ -378,6 +404,7 @@ namespace ControlViaticos.Logica
             return resultado;
         }
 
+        // Retira los detalles de la liquidación indicada.
         private void QuitarDetalles(int id)
         {
             // Recorrer hacia atras permite quitar filas sin saltarse la siguiente.
@@ -390,6 +417,7 @@ namespace ControlViaticos.Logica
             }
         }
 
+        // Retira la cabecera de la liquidación indicada.
         private void QuitarCabecera(int id)
         {
             for (int i = Estructuras.listaLiquidaciones.Count - 1; i >= 0; i--)

@@ -13,10 +13,10 @@ namespace ControlViaticos.Presentacion
 {
     public partial class frmPrincipal : Form
     {
+        // Inicializa los controles del formulario.
         public frmPrincipal()
         {
             InitializeComponent();
-            DisenoFormularios.Menu(this, pnlMenu, pnlSubReportes, btnUsuarios, btnEmpleados, btnTiposViatico, btnLiquidaciones, btnBitacora, btnReportes, pnlSubReportes, btnCargaInicial, btnSalir);
             btnUsuarios.Enabled = SesionActual.EsAdministrador();
             btnCargaInicial.Enabled = SesionActual.EsAdministrador();
             this.Load += new EventHandler(frmPrincipal_Load);
@@ -24,11 +24,13 @@ namespace ControlViaticos.Presentacion
             this.FormClosing += frmPrincipal_FormClosing;
         }
 
+        // Prepara los datos y permisos al abrir el formulario.
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
             ValidarSesion();
         }
 
+        // Comprueba que haya una sesión activa.
         private bool ValidarSesion()
         {
             if (!SesionActual.HaySesionActiva())
@@ -43,6 +45,7 @@ namespace ControlViaticos.Presentacion
             return true;
         }
 
+        // Comprueba la sesión y el permiso de administrador.
         private bool ValidarAdministrador()
         {
             if (!ValidarSesion())
@@ -59,6 +62,7 @@ namespace ControlViaticos.Presentacion
             return true;
         }
 
+        // Cierra la sesión al cerrar el menú.
         private void frmPrincipal_FormClosed(object sender, FormClosedEventArgs e)
         {
             SesionActual.CerrarSesion();
@@ -82,6 +86,7 @@ namespace ControlViaticos.Presentacion
             return true;
         }
 
+        // Comprueba que se pueda cerrar el formulario abierto.
         private void frmPrincipal_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!CerrarFormularioActual())
@@ -90,6 +95,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Abre el formulario seleccionado dentro del menú.
         private void abrirFormHija(Form siguiente)
         {
             if (!ValidarSesion() || !CerrarFormularioActual())
@@ -104,6 +110,7 @@ namespace ControlViaticos.Presentacion
             siguiente.Show();
         }
 
+        // Comprueba el acceso y abre usuarios.
         private void btnUsuarios_Click(object sender, EventArgs e)
         {
             if (!ValidarAdministrador())
@@ -115,30 +122,35 @@ namespace ControlViaticos.Presentacion
             abrirFormHija(new frmUsuarios());
         }
 
+        // Comprueba el acceso y abre empleados.
         private void btnEmpleados_Click(object sender, EventArgs e)
         {
             pnlSubReportes.Visible = false;
             abrirFormHija(new frmEmpleados());
         }
 
+        // Comprueba el acceso y abre tipos de viático.
         private void btnTiposViatico_Click(object sender, EventArgs e)
         {
             pnlSubReportes.Visible = false;
             abrirFormHija(new frmTiposViatico());
         }
 
+        // Comprueba el acceso y abre liquidaciones.
         private void btnLiquidaciones_Click(object sender, EventArgs e)
         {
             pnlSubReportes.Visible = false;
             abrirFormHija(new frmLiquidaciones());
         }
 
+        // Comprueba el acceso y abre bitácora.
         private void btnBitacora_Click(object sender, EventArgs e)
         {
             pnlSubReportes.Visible = false;
             abrirFormHija(new frmBitacora());
         }
 
+        // Muestra u oculta las opciones de reportes.
         private void btnReportes_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -149,24 +161,28 @@ namespace ControlViaticos.Presentacion
             pnlSubReportes.Visible = !pnlSubReportes.Visible;
         }
 
+        // Comprueba el acceso y abre consumos por fechas.
         private void btnRepFechas_Click(object sender, EventArgs e)
         {
             pnlSubReportes.Visible = false;
             abrirFormHija(new frmReporteConsumosFechas());
         }
 
+        // Comprueba el acceso y abre consumos por empleado.
         private void btnRepEmpleado_Click(object sender, EventArgs e)
         {
             pnlSubReportes.Visible = false;
             abrirFormHija(new frmReporteConsumosEmpleado());
         }
 
+        // Comprueba el acceso y abre operaciones por usuario.
         private void btnRepOperaciones_Click(object sender, EventArgs e)
         {
             pnlSubReportes.Visible = false;
             abrirFormHija(new frmReporteOperaciones());
         }
 
+        // Comprueba el acceso y abre carga inicial.
         private void btnCargaInicial_Click(object sender, EventArgs e)
         {
             if (!ValidarAdministrador())
@@ -178,6 +194,7 @@ namespace ControlViaticos.Presentacion
             abrirFormHija(new frmCargaInicial());
         }
 
+        // Cierra el menú principal.
         private void btnSalir_Click(object sender, EventArgs e)
         {
             this.Close();

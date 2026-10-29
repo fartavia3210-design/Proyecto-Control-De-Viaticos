@@ -1,10 +1,12 @@
-﻿namespace ControlViaticos.Presentacion
+namespace ControlViaticos.Presentacion
 {
     partial class frmEmpleados
     {
         /// <summary>
         /// Variable del diseñador necesaria.
         /// </summary>
+        private System.Windows.Forms.Panel pagina;
+
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
@@ -28,6 +30,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.pagina = new System.Windows.Forms.Panel();
             this.lblTitulo = new System.Windows.Forms.Label();
             this.lblIdentificacion = new System.Windows.Forms.Label();
             this.txtIdentificacion = new System.Windows.Forms.TextBox();
@@ -49,183 +52,217 @@
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.grdEmpleados = new System.Windows.Forms.DataGridView();
+            this.pagina.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdEmpleados)).BeginInit();
             this.SuspendLayout();
             // 
+            // pagina
+            // 
+            this.pagina.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pagina.Controls.Add(this.lblTitulo);
+            this.pagina.Controls.Add(this.lblIdentificacion);
+            this.pagina.Controls.Add(this.txtIdentificacion);
+            this.pagina.Controls.Add(this.btnBuscar);
+            this.pagina.Controls.Add(this.lblCedula);
+            this.pagina.Controls.Add(this.txtCedula);
+            this.pagina.Controls.Add(this.lblNombre);
+            this.pagina.Controls.Add(this.txtNombre);
+            this.pagina.Controls.Add(this.lblApellido1);
+            this.pagina.Controls.Add(this.txtApellido1);
+            this.pagina.Controls.Add(this.lblApellido2);
+            this.pagina.Controls.Add(this.txtApellido2);
+            this.pagina.Controls.Add(this.lblTelefono);
+            this.pagina.Controls.Add(this.txtTelefono);
+            this.pagina.Controls.Add(this.lblDireccion);
+            this.pagina.Controls.Add(this.txtDireccion);
+            this.pagina.Controls.Add(this.lblEstado);
+            this.pagina.Controls.Add(this.cmbEstado);
+            this.pagina.Controls.Add(this.btnGuardar);
+            this.pagina.Controls.Add(this.btnEliminar);
+            this.pagina.Controls.Add(this.grdEmpleados);
+            this.pagina.Location = new System.Drawing.Point(0, 0);
+            this.pagina.MinimumSize = new System.Drawing.Size(650, 701);
+            this.pagina.Name = "pagina";
+            this.pagina.Size = new System.Drawing.Size(967, 701);
+            this.pagina.TabIndex = 0;
+            // 
             // lblTitulo
             // 
-            this.lblTitulo.Font = new System.Drawing.Font("Tahoma", 22F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitulo.Location = new System.Drawing.Point(0, 10);
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Tahoma", 16F, System.Drawing.FontStyle.Bold);
+            this.lblTitulo.Location = new System.Drawing.Point(20, 20);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(1140, 80);
+            this.lblTitulo.Size = new System.Drawing.Size(133, 27);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "Empleados";
-            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTitulo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // lblIdentificacion
             // 
             this.lblIdentificacion.AutoSize = true;
-            this.lblIdentificacion.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblIdentificacion.Location = new System.Drawing.Point(30, 104);
+            this.lblIdentificacion.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblIdentificacion.Location = new System.Drawing.Point(20, 78);
             this.lblIdentificacion.Name = "lblIdentificacion";
-            this.lblIdentificacion.Size = new System.Drawing.Size(285, 33);
+            this.lblIdentificacion.Size = new System.Drawing.Size(92, 17);
             this.lblIdentificacion.TabIndex = 1;
             this.lblIdentificacion.Text = "Identificación:";
             // 
             // txtIdentificacion
             // 
-            this.txtIdentificacion.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtIdentificacion.Location = new System.Drawing.Point(340, 100);
+            this.txtIdentificacion.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtIdentificacion.Location = new System.Drawing.Point(20, 104);
             this.txtIdentificacion.Name = "txtIdentificacion";
-            this.txtIdentificacion.Size = new System.Drawing.Size(205, 40);
+            this.txtIdentificacion.Size = new System.Drawing.Size(185, 24);
             this.txtIdentificacion.TabIndex = 2;
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBuscar.Location = new System.Drawing.Point(551, 100);
+            this.btnBuscar.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.btnBuscar.Location = new System.Drawing.Point(212, 102);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(59, 40);
+            this.btnBuscar.Size = new System.Drawing.Size(82, 30);
             this.btnBuscar.TabIndex = 3;
-            this.btnBuscar.Text = "...";
+            this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
             this.btnBuscar.Click += new System.EventHandler(this.btnBuscar_Click);
             // 
             // lblCedula
             // 
             this.lblCedula.AutoSize = true;
-            this.lblCedula.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCedula.Location = new System.Drawing.Point(30, 169);
+            this.lblCedula.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblCedula.Location = new System.Drawing.Point(340, 78);
             this.lblCedula.Name = "lblCedula";
-            this.lblCedula.Size = new System.Drawing.Size(133, 33);
+            this.lblCedula.Size = new System.Drawing.Size(54, 17);
             this.lblCedula.TabIndex = 4;
             this.lblCedula.Text = "Cédula:";
             // 
             // txtCedula
             // 
-            this.txtCedula.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtCedula.Location = new System.Drawing.Point(340, 165);
+            this.txtCedula.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtCedula.Location = new System.Drawing.Point(340, 104);
             this.txtCedula.Name = "txtCedula";
-            this.txtCedula.Size = new System.Drawing.Size(270, 40);
+            this.txtCedula.Size = new System.Drawing.Size(270, 24);
             this.txtCedula.TabIndex = 5;
             // 
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNombre.Location = new System.Drawing.Point(30, 234);
+            this.lblNombre.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblNombre.Location = new System.Drawing.Point(20, 152);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(133, 33);
+            this.lblNombre.Size = new System.Drawing.Size(62, 17);
             this.lblNombre.TabIndex = 6;
             this.lblNombre.Text = "Nombre:";
             // 
             // txtNombre
             // 
-            this.txtNombre.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNombre.Location = new System.Drawing.Point(340, 230);
+            this.txtNombre.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtNombre.Location = new System.Drawing.Point(20, 178);
             this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(270, 40);
+            this.txtNombre.Size = new System.Drawing.Size(270, 24);
             this.txtNombre.TabIndex = 7;
             // 
             // lblApellido1
             // 
             this.lblApellido1.AutoSize = true;
-            this.lblApellido1.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblApellido1.Location = new System.Drawing.Point(30, 299);
+            this.lblApellido1.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblApellido1.Location = new System.Drawing.Point(340, 152);
             this.lblApellido1.Name = "lblApellido1";
-            this.lblApellido1.Size = new System.Drawing.Size(304, 33);
+            this.lblApellido1.Size = new System.Drawing.Size(100, 17);
             this.lblApellido1.TabIndex = 8;
             this.lblApellido1.Text = "Primer apellido:";
             // 
             // txtApellido1
             // 
-            this.txtApellido1.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtApellido1.Location = new System.Drawing.Point(340, 295);
+            this.txtApellido1.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtApellido1.Location = new System.Drawing.Point(340, 178);
             this.txtApellido1.Name = "txtApellido1";
-            this.txtApellido1.Size = new System.Drawing.Size(270, 40);
+            this.txtApellido1.Size = new System.Drawing.Size(270, 24);
             this.txtApellido1.TabIndex = 9;
             // 
             // lblApellido2
             // 
             this.lblApellido2.AutoSize = true;
-            this.lblApellido2.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblApellido2.Location = new System.Drawing.Point(640, 104);
+            this.lblApellido2.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblApellido2.Location = new System.Drawing.Point(20, 226);
             this.lblApellido2.Name = "lblApellido2";
-            this.lblApellido2.Size = new System.Drawing.Size(323, 33);
+            this.lblApellido2.Size = new System.Drawing.Size(116, 17);
             this.lblApellido2.TabIndex = 10;
             this.lblApellido2.Text = "Segundo apellido:";
             // 
             // txtApellido2
             // 
-            this.txtApellido2.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtApellido2.Location = new System.Drawing.Point(915, 100);
+            this.txtApellido2.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtApellido2.Location = new System.Drawing.Point(20, 252);
             this.txtApellido2.Name = "txtApellido2";
-            this.txtApellido2.Size = new System.Drawing.Size(205, 40);
+            this.txtApellido2.Size = new System.Drawing.Size(270, 24);
             this.txtApellido2.TabIndex = 11;
             // 
             // lblTelefono
             // 
             this.lblTelefono.AutoSize = true;
-            this.lblTelefono.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTelefono.Location = new System.Drawing.Point(640, 169);
+            this.lblTelefono.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblTelefono.Location = new System.Drawing.Point(340, 226);
             this.lblTelefono.Name = "lblTelefono";
-            this.lblTelefono.Size = new System.Drawing.Size(171, 33);
+            this.lblTelefono.Size = new System.Drawing.Size(65, 17);
             this.lblTelefono.TabIndex = 12;
             this.lblTelefono.Text = "Teléfono:";
             // 
             // txtTelefono
             // 
-            this.txtTelefono.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtTelefono.Location = new System.Drawing.Point(915, 165);
+            this.txtTelefono.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtTelefono.Location = new System.Drawing.Point(340, 252);
             this.txtTelefono.Name = "txtTelefono";
-            this.txtTelefono.Size = new System.Drawing.Size(205, 40);
+            this.txtTelefono.Size = new System.Drawing.Size(270, 24);
             this.txtTelefono.TabIndex = 13;
             // 
             // lblDireccion
             // 
             this.lblDireccion.AutoSize = true;
-            this.lblDireccion.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDireccion.Location = new System.Drawing.Point(640, 234);
+            this.lblDireccion.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblDireccion.Location = new System.Drawing.Point(20, 300);
             this.lblDireccion.Name = "lblDireccion";
-            this.lblDireccion.Size = new System.Drawing.Size(190, 33);
+            this.lblDireccion.Size = new System.Drawing.Size(69, 17);
             this.lblDireccion.TabIndex = 14;
             this.lblDireccion.Text = "Dirección:";
             // 
             // txtDireccion
             // 
-            this.txtDireccion.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDireccion.Location = new System.Drawing.Point(915, 230);
+            this.txtDireccion.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.txtDireccion.Location = new System.Drawing.Point(20, 326);
             this.txtDireccion.Name = "txtDireccion";
-            this.txtDireccion.Size = new System.Drawing.Size(205, 40);
+            this.txtDireccion.Size = new System.Drawing.Size(270, 24);
             this.txtDireccion.TabIndex = 15;
             // 
             // lblEstado
             // 
             this.lblEstado.AutoSize = true;
-            this.lblEstado.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEstado.Location = new System.Drawing.Point(640, 299);
+            this.lblEstado.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.lblEstado.Location = new System.Drawing.Point(340, 300);
             this.lblEstado.Name = "lblEstado";
-            this.lblEstado.Size = new System.Drawing.Size(133, 33);
+            this.lblEstado.Size = new System.Drawing.Size(55, 17);
             this.lblEstado.TabIndex = 16;
             this.lblEstado.Text = "Estado:";
             // 
             // cmbEstado
             // 
             this.cmbEstado.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEstado.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cmbEstado.DropDownWidth = 440;
+            this.cmbEstado.Font = new System.Drawing.Font("Tahoma", 10F);
             this.cmbEstado.FormattingEnabled = true;
-            this.cmbEstado.Location = new System.Drawing.Point(915, 295);
+            this.cmbEstado.Location = new System.Drawing.Point(340, 326);
             this.cmbEstado.Name = "cmbEstado";
-            this.cmbEstado.Size = new System.Drawing.Size(205, 40);
+            this.cmbEstado.Size = new System.Drawing.Size(270, 24);
             this.cmbEstado.TabIndex = 17;
             // 
             // btnGuardar
             // 
             this.btnGuardar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btnGuardar.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGuardar.Location = new System.Drawing.Point(330, 365);
+            this.btnGuardar.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.btnGuardar.Location = new System.Drawing.Point(20, 374);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(190, 64);
+            this.btnGuardar.Size = new System.Drawing.Size(125, 34);
             this.btnGuardar.TabIndex = 18;
             this.btnGuardar.Text = "Guardar";
             this.btnGuardar.UseVisualStyleBackColor = false;
@@ -234,10 +271,10 @@
             // btnEliminar
             // 
             this.btnEliminar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.btnEliminar.Font = new System.Drawing.Font("Tahoma", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnEliminar.Location = new System.Drawing.Point(620, 365);
+            this.btnEliminar.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.btnEliminar.Location = new System.Drawing.Point(160, 374);
             this.btnEliminar.Name = "btnEliminar";
-            this.btnEliminar.Size = new System.Drawing.Size(190, 64);
+            this.btnEliminar.Size = new System.Drawing.Size(125, 34);
             this.btnEliminar.TabIndex = 19;
             this.btnEliminar.Text = "Eliminar";
             this.btnEliminar.UseVisualStyleBackColor = false;
@@ -247,48 +284,34 @@
             // 
             this.grdEmpleados.AllowUserToAddRows = false;
             this.grdEmpleados.AllowUserToDeleteRows = false;
+            this.grdEmpleados.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.grdEmpleados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdEmpleados.Location = new System.Drawing.Point(30, 450);
+            this.grdEmpleados.Font = new System.Drawing.Font("Tahoma", 10F);
+            this.grdEmpleados.Location = new System.Drawing.Point(20, 426);
             this.grdEmpleados.Name = "grdEmpleados";
             this.grdEmpleados.ReadOnly = true;
+            this.grdEmpleados.RowHeadersVisible = false;
             this.grdEmpleados.RowHeadersWidth = 82;
             this.grdEmpleados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdEmpleados.Size = new System.Drawing.Size(1080, 275);
+            this.grdEmpleados.Size = new System.Drawing.Size(927, 230);
             this.grdEmpleados.TabIndex = 20;
             // 
             // frmEmpleados
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1140, 727);
-            this.Controls.Add(this.grdEmpleados);
-            this.Controls.Add(this.btnEliminar);
-            this.Controls.Add(this.btnGuardar);
-            this.Controls.Add(this.cmbEstado);
-            this.Controls.Add(this.lblEstado);
-            this.Controls.Add(this.txtDireccion);
-            this.Controls.Add(this.lblDireccion);
-            this.Controls.Add(this.txtTelefono);
-            this.Controls.Add(this.lblTelefono);
-            this.Controls.Add(this.txtApellido2);
-            this.Controls.Add(this.lblApellido2);
-            this.Controls.Add(this.txtApellido1);
-            this.Controls.Add(this.lblApellido1);
-            this.Controls.Add(this.txtNombre);
-            this.Controls.Add(this.lblNombre);
-            this.Controls.Add(this.txtCedula);
-            this.Controls.Add(this.lblCedula);
-            this.Controls.Add(this.btnBuscar);
-            this.Controls.Add(this.txtIdentificacion);
-            this.Controls.Add(this.lblIdentificacion);
-            this.Controls.Add(this.lblTitulo);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(987, 729);
+            this.Controls.Add(this.pagina);
+            this.Font = new System.Drawing.Font("Tahoma", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmEmpleados";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Empleados";
+            this.pagina.ResumeLayout(false);
+            this.pagina.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.grdEmpleados)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

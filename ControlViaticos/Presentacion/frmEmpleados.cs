@@ -17,20 +17,10 @@ namespace ControlViaticos.Presentacion
         private LogicaEmpleados logicaEmpleados = new LogicaEmpleados();
         private LogicaBitacora logicaBitacora = new LogicaBitacora();
 
+        // Inicializa los controles del formulario.
         public frmEmpleados()
         {
             InitializeComponent();
-            Control campoIdentificacion = DisenoFormularios.Campo(lblIdentificacion, txtIdentificacion, btnBuscar);
-            Control campoCedula = DisenoFormularios.Campo(lblCedula, txtCedula);
-            Control campoNombre = DisenoFormularios.Campo(lblNombre, txtNombre);
-            Control campoApellido1 = DisenoFormularios.Campo(lblApellido1, txtApellido1);
-            Control campoApellido2 = DisenoFormularios.Campo(lblApellido2, txtApellido2);
-            Control campoTelefono = DisenoFormularios.Campo(lblTelefono, txtTelefono);
-            Control campoDireccion = DisenoFormularios.Campo(lblDireccion, txtDireccion);
-            Control campoEstado = DisenoFormularios.Campo(lblEstado, cmbEstado);
-            Control filaCampos = DisenoFormularios.Fila(campoIdentificacion, campoCedula, campoNombre, campoApellido1, campoApellido2, campoTelefono, campoDireccion, campoEstado);
-            Control filaAcciones = DisenoFormularios.Fila(btnGuardar, btnEliminar);
-            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdEmpleados);
             this.Load += new EventHandler(frmEmpleados_Load);
 
             //--opciones de los combos
@@ -40,6 +30,7 @@ namespace ControlViaticos.Presentacion
             ConfigurarTabla();
         }
 
+        // Busca el registro y carga sus datos.
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -76,6 +67,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Valida y guarda los datos del registro.
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -137,6 +129,7 @@ namespace ControlViaticos.Presentacion
             LimpiarCampos();
         }
 
+        // Confirma y elimina el registro.
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -174,6 +167,7 @@ namespace ControlViaticos.Presentacion
             LimpiarCampos();
         }
 
+        // Prepara los datos y permisos al abrir el formulario.
         private void frmEmpleados_Load(object sender, EventArgs e)
         {
             if (ValidarSesion())
@@ -182,6 +176,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Comprueba que haya una sesión activa.
         private bool ValidarSesion()
         {
             if (SesionActual.HaySesionActiva())
@@ -193,6 +188,7 @@ namespace ControlViaticos.Presentacion
             return false;
         }
 
+        // Configura las columnas de la tabla.
         private void ConfigurarTabla()
         {
             grdEmpleados.AutoGenerateColumns = false;
@@ -220,6 +216,7 @@ namespace ControlViaticos.Presentacion
             grdEmpleados.CellFormatting += new DataGridViewCellFormattingEventHandler(grdEmpleados_CellFormatting);
         }
 
+        // Muestra el estado del registro con un texto legible.
         private void grdEmpleados_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.ColumnIndex >= 0 && grdEmpleados.Columns[e.ColumnIndex].Name == "activo" && e.Value is bool)
@@ -236,12 +233,14 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Actualiza los registros de la tabla.
         private void ActualizarTabla()
         {
             grdEmpleados.DataSource = logicaEmpleados.ObtenerEmpleados();
             grdEmpleados.ClearSelection();
         }
 
+        // Comprueba y obtiene una identificación positiva.
         private bool LeerIdentificacion(out int identificacion)
         {
             if (!int.TryParse(txtIdentificacion.Text, out identificacion) || identificacion <= 0)
@@ -253,6 +252,7 @@ namespace ControlViaticos.Presentacion
             return true;
         }
 
+        // Limpia los campos para ingresar otro registro.
         private void LimpiarCampos()
         {
             txtIdentificacion.Clear();

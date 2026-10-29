@@ -14,12 +14,14 @@ namespace ControlViaticos.Presentacion
         private int? consecutivoEnEdicion;
         private bool preparacionModificada;
 
+        // Inicializa los controles del formulario.
         public frmLiquidaciones()
         {
             InitializeComponent();
             FormClosing += frmLiquidaciones_FormClosing;
         }
 
+        // Solicita confirmar el descarte antes de cerrar.
         private void frmLiquidaciones_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (!ConfirmarDescartar())
@@ -28,6 +30,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Comprueba que haya una sesión activa.
         private bool ValidarSesion()
         {
             if (SesionActual.HaySesionActiva())
@@ -38,6 +41,7 @@ namespace ControlViaticos.Presentacion
             return false;
         }
 
+        // Muestra un mensaje informativo.
         private void Avisar(string mensaje)
 
         {
@@ -46,6 +50,7 @@ namespace ControlViaticos.Presentacion
 
         }
 
+        // Comprueba y obtiene un consecutivo positivo.
         private bool LeerConsecutivo(out int id)
         {
             if (int.TryParse(txtConsecutivo.Text, out id) && id > 0)
@@ -64,11 +69,13 @@ namespace ControlViaticos.Presentacion
             return new DateTime(valor.Year, valor.Month, valor.Day, valor.Hour, valor.Minute, 0);
         }
 
+        // Pide confirmar el descarte de los cambios pendientes.
         private bool ConfirmarDescartar()
         {
             return !preparacionModificada || MessageBox.Show("¿Descartar la preparación sin guardar?", "Liquidaciones", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
+        // Busca el registro y carga sus datos.
         private void btnBuscar_Click(object sender, EventArgs e)
         {
             int id;
@@ -102,6 +109,7 @@ namespace ControlViaticos.Presentacion
             preparacionModificada = false;
         }
 
+        // Valida y prepara un nuevo detalle.
         private void btnAgregarDetalle_Click(object sender, EventArgs e)
         {
             int id;
@@ -145,6 +153,7 @@ namespace ControlViaticos.Presentacion
             ActualizarDetalles();
         }
 
+        // Quita el detalle seleccionado de la preparación.
         private void btnQuitarDetalle_Click(object sender, EventArgs e)
         {
             if (!ValidarSesion())
@@ -167,6 +176,7 @@ namespace ControlViaticos.Presentacion
             ActualizarDetalles();
         }
 
+        // Valida y guarda los datos del registro.
         private void btnGuardar_Click(object sender, EventArgs e)
         {
             int id;
@@ -211,6 +221,7 @@ namespace ControlViaticos.Presentacion
             Avisar("Liquidación guardada con todos sus detalles.");
         }
 
+        // Confirma y elimina el registro.
         private void btnEliminar_Click(object sender, EventArgs e)
         {
             int id;
@@ -229,6 +240,7 @@ namespace ControlViaticos.Presentacion
             ActualizarListado();
         }
 
+        // Descarta la preparación si el usuario confirma.
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             if (ConfirmarDescartar())
@@ -237,6 +249,7 @@ namespace ControlViaticos.Presentacion
             }
         }
 
+        // Limpia los datos y detalles preparados.
         private void LimpiarPreparacion()
         {
             consecutivoEnEdicion = null;
@@ -253,6 +266,7 @@ namespace ControlViaticos.Presentacion
             preparacionModificada = false;
         }
 
+        // Carga los empleados disponibles y conserva el seleccionado.
         private void CargarEmpleados(int? seleccionado)
         {
             List<Empleado> empleados = new List<Empleado>();
@@ -273,6 +287,7 @@ namespace ControlViaticos.Presentacion
             else cmbEmpleado.SelectedIndex = -1;
         }
 
+        // Prepara los datos y permisos al abrir el formulario.
         private void frmLiquidaciones_Load(object sender, EventArgs e)
         {
             if (!ValidarSesion()) { Close(); return; }
@@ -283,6 +298,7 @@ namespace ControlViaticos.Presentacion
             ConectarCambiosDePreparacion();
         }
 
+        // Configura las tablas de liquidaciones y detalles.
         private void ConfigurarTablas()
         {
             ConfigurarTabla(grdLiquidaciones);
@@ -299,6 +315,7 @@ namespace ControlViaticos.Presentacion
             grdDetalle.CellFormatting += FormatearDetalle;
         }
 
+        // Carga los tipos de viático activos.
         private void CargarCatalogos()
         {
             cmbTipoViatico.DisplayMember = "nombre";
@@ -314,6 +331,7 @@ namespace ControlViaticos.Presentacion
             cmbTipoViatico.DataSource = tiposActivos;
         }
 
+        // Conecta los eventos que detectan cambios pendientes.
         private void ConectarCambiosDePreparacion()
         {
             txtJustificacion.TextChanged += MarcarCambio;
@@ -322,6 +340,7 @@ namespace ControlViaticos.Presentacion
             dtpFin.ValueChanged += MarcarCambio;
         }
 
+        // Indica que hay cambios sin guardar.
         private void MarcarCambio(object sender, EventArgs e)
 
         {
@@ -329,6 +348,7 @@ namespace ControlViaticos.Presentacion
             preparacionModificada = true;
 
         }
+        // Ajusta la fecha de consumo al cambiar el inicio de la gira.
         private void InicioCambiado(object sender, EventArgs e)
         {
             if (detallesPreparados.Count == 0 || dtpFechaConsumo.Value.Date < dtpInicio.Value.Date || dtpFechaConsumo.Value.Date > dtpFin.Value.Date)
@@ -337,10 +357,12 @@ namespace ControlViaticos.Presentacion
             }
             preparacionModificada = true;
         }
+        // Actualiza la lista de liquidaciones en pantalla.
         private void ActualizarListado()
         {
             grdLiquidaciones.DataSource = almacen.ObtenerLiquidaciones();
         }
+        // Actualiza los detalles en pantalla y suma sus montos.
         private void ActualizarDetalles()
         {
             grdDetalle.DataSource = null;
@@ -352,6 +374,7 @@ namespace ControlViaticos.Presentacion
             }
             lblMontoTotal.Text = "₡ " + total.ToString("N0", CultureInfo.GetCultureInfo("es-CR"));
         }
+        // Muestra el monto del viático seleccionado.
         private void cmbTipoViatico_SelectedIndexChanged(object sender, EventArgs e)
         {
             TipoViatico tipo = cmbTipoViatico.SelectedItem as TipoViatico;
@@ -364,6 +387,7 @@ namespace ControlViaticos.Presentacion
                 txtMonto.Text = tipo.monto.ToString("N0", CultureInfo.GetCultureInfo("es-CR"));
             }
         }
+        // Configura las columnas de la tabla.
         private static void ConfigurarTabla(DataGridView tabla)
         {
             tabla.AutoGenerateColumns = false;
@@ -372,6 +396,7 @@ namespace ControlViaticos.Presentacion
             tabla.RowHeadersVisible = false;
             tabla.MultiSelect = false;
         }
+        // Agrega una columna con su título y formato.
         private static void AgregarColumna(DataGridView tabla, string propiedad, string titulo, string formato = "")
         {
             DataGridViewTextBoxColumn columna = new DataGridViewTextBoxColumn();
@@ -383,6 +408,7 @@ namespace ControlViaticos.Presentacion
             columna.DefaultCellStyle.FormatProvider = CultureInfo.GetCultureInfo("es-CR");
             tabla.Columns.Add(columna);
         }
+        // Muestra el nombre del empleado en la tabla.
         private void FormatearLiquidacion(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex >= 0 && grdLiquidaciones.Columns[e.ColumnIndex].Name == "idEmpleado")
@@ -395,6 +421,7 @@ namespace ControlViaticos.Presentacion
                 }
             }
         }
+        // Muestra el nombre del viático en la tabla.
         private void FormatearDetalle(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex >= 0 && grdDetalle.Columns[e.ColumnIndex].Name == "idViatico")
