@@ -32,14 +32,69 @@ namespace ControlViaticos.Logica
             List<Usuario> usuariosNuevos = new List<Usuario>();
             List<Empleado> empleadosNuevos = new List<Empleado>();
             List<TipoViatico> tiposNuevos = new List<TipoViatico>();
-            List<TipoViatico> catalogo = new List<TipoViatico>(Estructuras.listaTiposViatico);
-            int agregados = 0;
-            int idUsuario = Identificadores.Siguiente(Estructuras.listaUsuarios, u => u.id);
+            PrepararUsuarios(usuariosNuevos);
+            PrepararEmpleados(empleadosNuevos);
+            PrepararTipos(tiposNuevos);
+            int agregados = usuariosNuevos.Count + empleadosNuevos.Count + tiposNuevos.Count;
+
+            if (!IdentificadoresDisponibles(usuariosNuevos, empleadosNuevos, tiposNuevos))
+            {
+                ultimoError = "No quedan identificadores disponibles. No se aplicó la carga.";
+                return -2;
+            }
+            foreach (Usuario nuevo in usuariosNuevos)
+            {
+                if (!logicaUsuarios.AgregarUsuario(nuevo))
+                {
+                    ultimoError = logicaUsuarios.ultimoError;
+                    return -2;
+                }
+            }
+            Estructuras.listaEmpleados.AddRange(empleadosNuevos);
+            Estructuras.listaTiposViatico.AddRange(tiposNuevos);
+
+            if (agregados > 0)
+            {
+                LogicaBitacora logicaBitacora = new LogicaBitacora();
+                logicaBitacora.RegistrarOperacion(encontrado, "Carga inicial", "Agregó " + agregados + " registros de ejemplo");
+            }
+
+            return agregados;
+        }
+
+        private bool IdentificadoresDisponibles(List<Usuario> usuarios, List<Empleado> empleados, List<TipoViatico> tipos)
+        {
+            foreach (Usuario usuario in usuarios)
+            {
+                if (usuario.id == 0)
+                {
+                    return false;
+                }
+            }
+            foreach (Empleado empleado in empleados)
+            {
+                if (empleado.id == 0)
+                {
+                    return false;
+                }
+            }
+            foreach (TipoViatico tipo in tipos)
+            {
+                if (tipo.id == 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void PrepararUsuarios(List<Usuario> usuariosNuevos)
+        {
+            int idUsuario = Identificadores.Siguiente(Estructuras.listaUsuarios);
             bool existeUsuario = false;
             foreach (Usuario usuario in Estructuras.listaUsuarios)
             {
-                if (usuario.nombreUsuario != null &&
-                    string.Equals(usuario.nombreUsuario.Trim(), "usuarioEjemplo", StringComparison.OrdinalIgnoreCase))
+                if (usuario.nombreUsuario != null && string.Equals(usuario.nombreUsuario.Trim(), "usuarioEjemplo", StringComparison.OrdinalIgnoreCase))
                 {
                     existeUsuario = true;
                 }
@@ -55,15 +110,17 @@ namespace ControlViaticos.Logica
                 nuevoUsuario.tipo = "Normal";
                 nuevoUsuario.activo = true;
                 usuariosNuevos.Add(nuevoUsuario);
-                agregados++;
             }
 
-            int idEmpleado = Identificadores.Siguiente(Estructuras.listaEmpleados, e => e.id);
+        }
+
+        private void PrepararEmpleados(List<Empleado> empleadosNuevos)
+        {
+            int idEmpleado = Identificadores.Siguiente(Estructuras.listaEmpleados);
             bool existeEmpleado = false;
             foreach (Empleado empleado in Estructuras.listaEmpleados)
             {
-                if (empleado.cedula != null &&
-                    string.Equals(empleado.cedula.Trim(), "000000001", StringComparison.OrdinalIgnoreCase))
+                if (empleado.cedula != null && string.Equals(empleado.cedula.Trim(), "000000001", StringComparison.OrdinalIgnoreCase))
                 {
                     existeEmpleado = true;
                 }
@@ -82,19 +139,22 @@ namespace ControlViaticos.Logica
                 nuevoEmpleado.direccion = "Dirección de ejemplo";
                 nuevoEmpleado.activo = true;
                 empleadosNuevos.Add(nuevoEmpleado);
-                agregados++;
             }
 
+        }
+
+        private void PrepararTipos(List<TipoViatico> tiposNuevos)
+        {
+            List<TipoViatico> catalogo = new List<TipoViatico>(Estructuras.listaTiposViatico);
             string[] nombres = { "Desayuno", "Almuerzo", "Cena" };
             int[] montos = { 3000, 5000, 5000 };
             for (int i = 0; i < nombres.Length; i++)
             {
-                int idViatico = Identificadores.Siguiente(catalogo, t => t.id);
+                int idViatico = Identificadores.Siguiente(catalogo);
                 bool existeViatico = false;
                 foreach (TipoViatico viatico in catalogo)
                 {
-                    if (viatico.nombre != null &&
-                        string.Equals(viatico.nombre.Trim(), nombres[i], StringComparison.OrdinalIgnoreCase))
+                    if (viatico.nombre != null && string.Equals(viatico.nombre.Trim(), nombres[i], StringComparison.OrdinalIgnoreCase))
                     {
                         existeViatico = true;
                     }
@@ -109,33 +169,9 @@ namespace ControlViaticos.Logica
                     nuevoViatico.activo = true;
                     catalogo.Add(nuevoViatico);
                     tiposNuevos.Add(nuevoViatico);
-                    agregados++;
                 }
             }
 
-            if (usuariosNuevos.Exists(u => u.id == 0) || empleadosNuevos.Exists(e => e.id == 0) ||
-                tiposNuevos.Exists(t => t.id == 0))
-            {
-                ultimoError = "No quedan identificadores disponibles. No se aplicó la carga.";
-                return -2;
-            }
-            foreach (Usuario nuevo in usuariosNuevos)
-                if (!logicaUsuarios.AgregarUsuario(nuevo))
-                {
-                    ultimoError = logicaUsuarios.ultimoError;
-                    return -2;
-                }
-            Estructuras.listaEmpleados.AddRange(empleadosNuevos);
-            Estructuras.listaTiposViatico.AddRange(tiposNuevos);
-
-            if (agregados > 0)
-            {
-                LogicaBitacora logicaBitacora = new LogicaBitacora();
-                logicaBitacora.RegistrarOperacion(encontrado, "Carga inicial",
-                    "Agregó " + agregados + " registros de ejemplo");
-            }
-
-            return agregados;
         }
     }
 }

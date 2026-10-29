@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ControlViaticos.Objetos;
 
@@ -30,8 +30,7 @@ namespace ControlViaticos.Logica
                     ultimoError = "Ya existe un empleado con esa identificación.";
                     return false;
                 }
-                if (string.Equals(empleado.cedula.Trim(), miEmpleado.cedula.Trim(),
-                    StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(empleado.cedula.Trim(), miEmpleado.cedula.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     ultimoError = "Ya existe un empleado con esa cédula.";
                     return false;
@@ -79,9 +78,7 @@ namespace ControlViaticos.Logica
             // Al comprobar la cédula se excluye el propio empleado.
             foreach (Empleado empleado in Estructuras.listaEmpleados)
             {
-                if (empleado.id != miEmpleado.id &&
-                    string.Equals(empleado.cedula.Trim(), miEmpleado.cedula.Trim(),
-                        StringComparison.OrdinalIgnoreCase))
+                if (empleado.id != miEmpleado.id && string.Equals(empleado.cedula.Trim(), miEmpleado.cedula.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     ultimoError = "Ya existe otro empleado con esa cédula.";
                     return false;
@@ -136,13 +133,7 @@ namespace ControlViaticos.Logica
 
         private bool DatosValidos(Empleado miEmpleado)
         {
-            if (miEmpleado == null || miEmpleado.id <= 0 ||
-                string.IsNullOrWhiteSpace(miEmpleado.cedula) ||
-                string.IsNullOrWhiteSpace(miEmpleado.nombre) ||
-                string.IsNullOrWhiteSpace(miEmpleado.apellido1) ||
-                string.IsNullOrWhiteSpace(miEmpleado.apellido2) ||
-                string.IsNullOrWhiteSpace(miEmpleado.telefono) ||
-                string.IsNullOrWhiteSpace(miEmpleado.direccion))
+            if (miEmpleado == null || miEmpleado.id <= 0 || string.IsNullOrWhiteSpace(miEmpleado.cedula) || string.IsNullOrWhiteSpace(miEmpleado.nombre) || string.IsNullOrWhiteSpace(miEmpleado.apellido1) || string.IsNullOrWhiteSpace(miEmpleado.apellido2) || string.IsNullOrWhiteSpace(miEmpleado.telefono) || string.IsNullOrWhiteSpace(miEmpleado.direccion))
             {
                 ultimoError = "Complete todos los datos y use una identificación positiva.";
                 return false;

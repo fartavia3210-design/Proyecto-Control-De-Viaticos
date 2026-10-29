@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,9 +20,9 @@ namespace ControlViaticos.Presentacion
             lblDescripcion.MaximumSize = new System.Drawing.Size(600, 0);
             lblTiposIniciales.AutoSize = true;
             lblTiposIniciales.MaximumSize = new System.Drawing.Size(600, 0);
-            DisenoFormularios.Pagina(this, lblTitulo,
-                DisenoFormularios.Fila(lblDescripcion, lblTiposIniciales),
-                DisenoFormularios.Fila(btnEjecutar), null);
+            Control filaDescripcion = DisenoFormularios.Fila(lblDescripcion, lblTiposIniciales);
+            Control filaAcciones = DisenoFormularios.Fila(btnEjecutar);
+            DisenoFormularios.Pagina(this, lblTitulo, filaDescripcion, filaAcciones, null);
             this.Load += new EventHandler(frmCargaInicial_Load);
         }
 
@@ -54,8 +54,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            MessageBox.Show("Carga inicial completada. Se agregaron " + agregados +
-                " registros entre usuarios, empleados y tipos de viático. Los registros existentes se conservaron.");
+            MessageBox.Show("Carga inicial completada. Se agregaron " + agregados + " registros entre usuarios, empleados y tipos de viático. Los registros existentes se conservaron.");
         }
 
         private void frmCargaInicial_Load(object sender, EventArgs e)

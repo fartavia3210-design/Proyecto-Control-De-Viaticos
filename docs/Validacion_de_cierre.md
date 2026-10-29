@@ -4,6 +4,14 @@ Fecha: 28 de octubre de 2026. Rama: `release/cierre-final-viaticos`.
 
 ## Resultado comprobado
 
+### Simplificación del estilo de programación
+
+La revisión local posterior conserva las reglas y sustituye las lambdas de búsqueda, filtrado y eliminación por recorridos explícitos. Los identificadores tienen sobrecargas específicas, sin métodos genéricos ni parámetros Func. Los objetos se completan propiedad por propiedad y las condiciones abreviadas se desarrollan en bloques con llaves. Las firmas y llamadas mantienen sus parámetros en una sola línea.
+
+La carga inicial separa la preparación de usuarios, empleados y tipos. Los constructores preparan campos y filas con variables nombradas. La distribución visual conserva sus medidas y desplazamiento mediante un método de evento nombrado, sin delegado anónimo. Las clases de objetos, lógica y presentación permanecen separadas.
+
+La validación de esta simplificación se ejecuta con las mismas 197 comprobaciones. El registro local es `screenshots/validacion-estilo.log`; las 50 capturas se generan con el script habitual y el registro `screenshots/capturas-estilo.log`. La compilación de verificación utiliza `bin/VerificacionEstilo` para evitar reemplazar un ejecutable abierto. Estos cambios requieren reiniciar la aplicación para observarse y todavía no se publican automáticamente en GitHub.
+
 La aplicación compiló localmente en Windows en configuración Release y completó **197 comprobaciones automáticas** sobre la base `9459dab` y las correcciones locales posteriores:
 
 | Suite | Comprobaciones |

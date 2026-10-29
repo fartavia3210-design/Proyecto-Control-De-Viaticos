@@ -32,9 +32,7 @@ namespace ControlViaticos.Logica
 
             foreach (Usuario usuario in Estructuras.listaUsuarios)
             {
-                if (string.Equals(usuario.nombreUsuario, nombreUsuario.Trim(),
-                        StringComparison.OrdinalIgnoreCase) &&
-                    usuario.clave == clave && usuario.activo)
+                if (string.Equals(usuario.nombreUsuario, nombreUsuario.Trim(), StringComparison.OrdinalIgnoreCase) && usuario.clave == clave && usuario.activo)
                 {
                     return usuario;
                 }

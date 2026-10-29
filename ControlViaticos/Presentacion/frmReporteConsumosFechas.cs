@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,9 +21,12 @@ namespace ControlViaticos.Presentacion
         {
             InitializeComponent();
             lblMontoTotal.AutoSize = true;
-            DisenoFormularios.Pagina(this, lblTitulo, DisenoFormularios.Fila(
-                DisenoFormularios.Campo(lblDesde, dtpDesde), DisenoFormularios.Campo(lblHasta, dtpHasta)),
-                DisenoFormularios.Fila(btnConsultar), grdConsumos, DisenoFormularios.Fila(lblTotal, lblMontoTotal));
+            Control campoDesde = DisenoFormularios.Campo(lblDesde, dtpDesde);
+            Control campoHasta = DisenoFormularios.Campo(lblHasta, dtpHasta);
+            Control filaCampos = DisenoFormularios.Fila(campoDesde, campoHasta);
+            Control filaAcciones = DisenoFormularios.Fila(btnConsultar);
+            Control filaTotal = DisenoFormularios.Fila(lblTotal, lblMontoTotal);
+            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdConsumos, filaTotal);
             ConfigurarTabla();
             this.Load += new EventHandler(frmReporteConsumosFechas_Load);
         }
@@ -46,8 +49,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            List<ConsumoReporte> resultado = logicaReportes.ConsultarConsumosPorFechas(
-                dtpDesde.Value.Date, dtpHasta.Value.Date);
+            List<ConsumoReporte> resultado = logicaReportes.ConsultarConsumosPorFechas( dtpDesde.Value.Date, dtpHasta.Value.Date);
             grdConsumos.DataSource = resultado;
             grdConsumos.ClearSelection();
 

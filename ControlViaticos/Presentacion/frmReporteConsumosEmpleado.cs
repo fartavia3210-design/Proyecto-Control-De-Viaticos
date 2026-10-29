@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,9 +21,11 @@ namespace ControlViaticos.Presentacion
         {
             InitializeComponent();
             lblMontoTotal.AutoSize = true;
-            DisenoFormularios.Pagina(this, lblTitulo,
-                DisenoFormularios.Fila(DisenoFormularios.Campo(lblEmpleado, cmbEmpleado)),
-                DisenoFormularios.Fila(btnConsultar), grdConsumos, DisenoFormularios.Fila(lblTotal, lblMontoTotal));
+            Control campoEmpleado = DisenoFormularios.Campo(lblEmpleado, cmbEmpleado);
+            Control filaCampos = DisenoFormularios.Fila(campoEmpleado);
+            Control filaAcciones = DisenoFormularios.Fila(btnConsultar);
+            Control filaTotal = DisenoFormularios.Fila(lblTotal, lblMontoTotal);
+            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdConsumos, filaTotal);
             ConfigurarTabla();
             this.Load += new EventHandler(frmReporteConsumosEmpleado_Load);
         }

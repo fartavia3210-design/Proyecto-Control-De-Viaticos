@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,13 +20,17 @@ namespace ControlViaticos.Presentacion
         public frmEmpleados()
         {
             InitializeComponent();
-            DisenoFormularios.Pagina(this, lblTitulo, DisenoFormularios.Fila(
-                DisenoFormularios.Campo(lblIdentificacion, txtIdentificacion, btnBuscar),
-                DisenoFormularios.Campo(lblCedula, txtCedula), DisenoFormularios.Campo(lblNombre, txtNombre),
-                DisenoFormularios.Campo(lblApellido1, txtApellido1), DisenoFormularios.Campo(lblApellido2, txtApellido2),
-                DisenoFormularios.Campo(lblTelefono, txtTelefono), DisenoFormularios.Campo(lblDireccion, txtDireccion),
-                DisenoFormularios.Campo(lblEstado, cmbEstado)),
-                DisenoFormularios.Fila(btnGuardar, btnEliminar), grdEmpleados);
+            Control campoIdentificacion = DisenoFormularios.Campo(lblIdentificacion, txtIdentificacion, btnBuscar);
+            Control campoCedula = DisenoFormularios.Campo(lblCedula, txtCedula);
+            Control campoNombre = DisenoFormularios.Campo(lblNombre, txtNombre);
+            Control campoApellido1 = DisenoFormularios.Campo(lblApellido1, txtApellido1);
+            Control campoApellido2 = DisenoFormularios.Campo(lblApellido2, txtApellido2);
+            Control campoTelefono = DisenoFormularios.Campo(lblTelefono, txtTelefono);
+            Control campoDireccion = DisenoFormularios.Campo(lblDireccion, txtDireccion);
+            Control campoEstado = DisenoFormularios.Campo(lblEstado, cmbEstado);
+            Control filaCampos = DisenoFormularios.Fila(campoIdentificacion, campoCedula, campoNombre, campoApellido1, campoApellido2, campoTelefono, campoDireccion, campoEstado);
+            Control filaAcciones = DisenoFormularios.Fila(btnGuardar, btnEliminar);
+            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdEmpleados);
             this.Load += new EventHandler(frmEmpleados_Load);
 
             //--opciones de los combos
@@ -38,7 +42,10 @@ namespace ControlViaticos.Presentacion
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (!ValidarSesion()) return;
+            if (!ValidarSesion())
+            {
+                return;
+            }
 
             int identificacion;
             if (!LeerIdentificacion(out identificacion))
@@ -71,7 +78,10 @@ namespace ControlViaticos.Presentacion
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (!ValidarSesion()) return;
+            if (!ValidarSesion())
+            {
+                return;
+            }
 
             int identificacion;
             if (!LeerIdentificacion(out identificacion))
@@ -79,13 +89,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtCedula.Text) ||
-                string.IsNullOrWhiteSpace(txtNombre.Text) ||
-                string.IsNullOrWhiteSpace(txtApellido1.Text) ||
-                string.IsNullOrWhiteSpace(txtApellido2.Text) ||
-                string.IsNullOrWhiteSpace(txtTelefono.Text) ||
-                string.IsNullOrWhiteSpace(txtDireccion.Text) ||
-                cmbEstado.SelectedIndex == -1)
+            if (string.IsNullOrWhiteSpace(txtCedula.Text) || string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtApellido1.Text) || string.IsNullOrWhiteSpace(txtApellido2.Text) || string.IsNullOrWhiteSpace(txtTelefono.Text) || string.IsNullOrWhiteSpace(txtDireccion.Text) || cmbEstado.SelectedIndex == -1)
             {
                 MessageBox.Show("Debe completar cédula, nombre, apellidos, teléfono, dirección y estado.");
                 return;
@@ -121,14 +125,12 @@ namespace ControlViaticos.Presentacion
 
             if (esNuevo)
             {
-                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Empleados",
-                    "Creó empleado " + empleado.nombre + " (ID " + empleado.id + ")");
+                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Empleados", "Creó empleado " + empleado.nombre + " (ID " + empleado.id + ")");
                 MessageBox.Show("Empleado creado correctamente.");
             }
             else
             {
-                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Empleados",
-                    "Modificó empleado " + empleado.nombre + " (ID " + empleado.id + ")");
+                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Empleados", "Modificó empleado " + empleado.nombre + " (ID " + empleado.id + ")");
                 MessageBox.Show("Empleado modificado correctamente.");
             }
             ActualizarTabla();
@@ -137,7 +139,10 @@ namespace ControlViaticos.Presentacion
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (!ValidarSesion()) return;
+            if (!ValidarSesion())
+            {
+                return;
+            }
 
             int identificacion;
             if (!LeerIdentificacion(out identificacion))
@@ -152,9 +157,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            if (MessageBox.Show("¿Eliminar al empleado " + encontrado.nombre + "?",
-                "Confirmar eliminación", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) != DialogResult.Yes)
+            if (MessageBox.Show("¿Eliminar al empleado " + encontrado.nombre + "?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
             }
@@ -165,8 +168,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Empleados",
-                "Eliminó empleado " + encontrado.nombre + " (ID " + encontrado.id + ")");
+            logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Empleados", "Eliminó empleado " + encontrado.nombre + " (ID " + encontrado.id + ")");
             MessageBox.Show("Empleado eliminado correctamente.");
             ActualizarTabla();
             LimpiarCampos();
@@ -174,12 +176,18 @@ namespace ControlViaticos.Presentacion
 
         private void frmEmpleados_Load(object sender, EventArgs e)
         {
-            if (ValidarSesion()) ActualizarTabla();
+            if (ValidarSesion())
+            {
+                ActualizarTabla();
+            }
         }
 
         private bool ValidarSesion()
         {
-            if (SesionActual.HaySesionActiva()) return true;
+            if (SesionActual.HaySesionActiva())
+            {
+                return true;
+            }
             MessageBox.Show("Debe iniciar sesión para utilizar este catálogo.");
             Close();
             return false;
@@ -214,8 +222,7 @@ namespace ControlViaticos.Presentacion
 
         private void grdEmpleados_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.ColumnIndex >= 0 && grdEmpleados.Columns[e.ColumnIndex].Name == "activo" &&
-                e.Value is bool)
+            if (e.ColumnIndex >= 0 && grdEmpleados.Columns[e.ColumnIndex].Name == "activo" && e.Value is bool)
             {
                 if ((bool)e.Value)
                 {

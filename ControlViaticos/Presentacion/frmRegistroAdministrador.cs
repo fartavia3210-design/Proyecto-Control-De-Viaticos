@@ -21,9 +21,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtNombreCompleto.Text) ||
-                string.IsNullOrWhiteSpace(txtUsuario.Text) ||
-                string.IsNullOrWhiteSpace(txtClave.Text))
+            if (string.IsNullOrWhiteSpace(txtNombreCompleto.Text) || string.IsNullOrWhiteSpace(txtUsuario.Text) || string.IsNullOrWhiteSpace(txtClave.Text))
             {
                 MessageBox.Show("Debe completar nombre, usuario y contraseña.");
                 return;

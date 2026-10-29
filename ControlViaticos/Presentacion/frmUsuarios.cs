@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,12 +20,15 @@ namespace ControlViaticos.Presentacion
         public frmUsuarios()
         {
             InitializeComponent();
-            DisenoFormularios.Pagina(this, lblTitulo, DisenoFormularios.Fila(
-                DisenoFormularios.Campo(lblIdentificacion, txtIdentificacion, btnBuscar),
-                DisenoFormularios.Campo(lblNombreCompleto, txtNombreCompleto),
-                DisenoFormularios.Campo(lblNombreUsuario, txtNombreUsuario), DisenoFormularios.Campo(lblClave, txtClave),
-                DisenoFormularios.Campo(lblTipo, cmbTipo), DisenoFormularios.Campo(lblEstado, cmbEstado)),
-                DisenoFormularios.Fila(btnGuardar, btnEliminar), grdUsuarios);
+            Control campoIdentificacion = DisenoFormularios.Campo(lblIdentificacion, txtIdentificacion, btnBuscar);
+            Control campoNombreCompleto = DisenoFormularios.Campo(lblNombreCompleto, txtNombreCompleto);
+            Control campoNombreUsuario = DisenoFormularios.Campo(lblNombreUsuario, txtNombreUsuario);
+            Control campoClave = DisenoFormularios.Campo(lblClave, txtClave);
+            Control campoTipo = DisenoFormularios.Campo(lblTipo, cmbTipo);
+            Control campoEstado = DisenoFormularios.Campo(lblEstado, cmbEstado);
+            Control filaCampos = DisenoFormularios.Fila(campoIdentificacion, campoNombreCompleto, campoNombreUsuario, campoClave, campoTipo, campoEstado);
+            Control filaAcciones = DisenoFormularios.Fila(btnGuardar, btnEliminar);
+            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdUsuarios);
             this.Load += new EventHandler(frmUsuarios_Load);
 
             //--opciones de los combos
@@ -85,10 +88,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtNombreCompleto.Text) ||
-                string.IsNullOrWhiteSpace(txtNombreUsuario.Text) ||
-                string.IsNullOrWhiteSpace(txtClave.Text) ||
-                cmbTipo.SelectedIndex == -1 || cmbEstado.SelectedIndex == -1)
+            if (string.IsNullOrWhiteSpace(txtNombreCompleto.Text) || string.IsNullOrWhiteSpace(txtNombreUsuario.Text) || string.IsNullOrWhiteSpace(txtClave.Text) || cmbTipo.SelectedIndex == -1 || cmbEstado.SelectedIndex == -1)
             {
                 MessageBox.Show("Debe completar nombre, usuario, clave, tipo y estado.");
                 return;
@@ -122,14 +122,12 @@ namespace ControlViaticos.Presentacion
 
             if (esNuevo)
             {
-                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Usuarios",
-                    "Creó usuario " + usuario.nombreUsuario + " (ID " + usuario.id + ")");
+                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Usuarios", "Creó usuario " + usuario.nombreUsuario + " (ID " + usuario.id + ")");
                 MessageBox.Show("Usuario creado correctamente.");
             }
             else
             {
-                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Usuarios",
-                    "Modificó usuario " + usuario.nombreUsuario + " (ID " + usuario.id + ")");
+                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Usuarios", "Modificó usuario " + usuario.nombreUsuario + " (ID " + usuario.id + ")");
                 MessageBox.Show("Usuario modificado correctamente.");
             }
             ActualizarTabla();
@@ -156,9 +154,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            if (MessageBox.Show("¿Eliminar al usuario " + encontrado.nombreUsuario + "?",
-                "Confirmar eliminación", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) != DialogResult.Yes)
+            if (MessageBox.Show("¿Eliminar al usuario " + encontrado.nombreUsuario + "?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
             }
@@ -169,8 +165,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Usuarios",
-                "Eliminó usuario " + encontrado.nombreUsuario + " (ID " + encontrado.id + ")");
+            logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Usuarios", "Eliminó usuario " + encontrado.nombreUsuario + " (ID " + encontrado.id + ")");
             MessageBox.Show("Usuario eliminado correctamente.");
             ActualizarTabla();
             LimpiarCampos();
@@ -211,8 +206,7 @@ namespace ControlViaticos.Presentacion
 
         private void grdUsuarios_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.ColumnIndex >= 0 && grdUsuarios.Columns[e.ColumnIndex].Name == "activo" &&
-                e.Value is bool)
+            if (e.ColumnIndex >= 0 && grdUsuarios.Columns[e.ColumnIndex].Name == "activo" && e.Value is bool)
             {
                 if ((bool)e.Value)
                 {

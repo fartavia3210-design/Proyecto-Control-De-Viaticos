@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,11 +21,13 @@ namespace ControlViaticos.Presentacion
         public frmTiposViatico()
         {
             InitializeComponent();
-            DisenoFormularios.Pagina(this, lblTitulo, DisenoFormularios.Fila(
-                DisenoFormularios.Campo(lblIdentificador, txtIdentificador, btnBuscar),
-                DisenoFormularios.Campo(lblNombre, txtNombre), DisenoFormularios.Campo(lblMonto, txtMonto),
-                DisenoFormularios.Campo(lblEstado, cmbEstado)),
-                DisenoFormularios.Fila(btnGuardar, btnEliminar), grdTiposViatico);
+            Control campoIdentificador = DisenoFormularios.Campo(lblIdentificador, txtIdentificador, btnBuscar);
+            Control campoNombre = DisenoFormularios.Campo(lblNombre, txtNombre);
+            Control campoMonto = DisenoFormularios.Campo(lblMonto, txtMonto);
+            Control campoEstado = DisenoFormularios.Campo(lblEstado, cmbEstado);
+            Control filaCampos = DisenoFormularios.Fila(campoIdentificador, campoNombre, campoMonto, campoEstado);
+            Control filaAcciones = DisenoFormularios.Fila(btnGuardar, btnEliminar);
+            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdTiposViatico);
             this.Load += new EventHandler(frmTiposViatico_Load);
 
             //--opciones de los combos
@@ -37,7 +39,10 @@ namespace ControlViaticos.Presentacion
 
         private void btnBuscar_Click(object sender, EventArgs e)
         {
-            if (!ValidarSesion()) return;
+            if (!ValidarSesion())
+            {
+                return;
+            }
 
             int identificador;
             if (!LeerIdentificador(out identificador))
@@ -66,7 +71,10 @@ namespace ControlViaticos.Presentacion
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            if (!ValidarSesion()) return;
+            if (!ValidarSesion())
+            {
+                return;
+            }
 
             int identificador;
             if (!LeerIdentificador(out identificador))
@@ -74,8 +82,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(txtNombre.Text) ||
-                string.IsNullOrWhiteSpace(txtMonto.Text) || cmbEstado.SelectedIndex == -1)
+            if (string.IsNullOrWhiteSpace(txtNombre.Text) || string.IsNullOrWhiteSpace(txtMonto.Text) || cmbEstado.SelectedIndex == -1)
             {
                 MessageBox.Show("Debe completar nombre, monto y estado.");
                 return;
@@ -115,14 +122,12 @@ namespace ControlViaticos.Presentacion
 
             if (esNuevo)
             {
-                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Tipos de viático",
-                    "Creó tipo de viático " + tipo.nombre + " (ID " + tipo.id + ")");
+                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Tipos de viático", "Creó tipo de viático " + tipo.nombre + " (ID " + tipo.id + ")");
                 MessageBox.Show("Tipo de viático creado correctamente.");
             }
             else
             {
-                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Tipos de viático",
-                    "Modificó tipo de viático " + tipo.nombre + " (ID " + tipo.id + ")");
+                logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Tipos de viático", "Modificó tipo de viático " + tipo.nombre + " (ID " + tipo.id + ")");
                 MessageBox.Show("Tipo de viático modificado correctamente.");
             }
             ActualizarTabla();
@@ -131,7 +136,10 @@ namespace ControlViaticos.Presentacion
 
         private void btnEliminar_Click(object sender, EventArgs e)
         {
-            if (!ValidarSesion()) return;
+            if (!ValidarSesion())
+            {
+                return;
+            }
 
             int identificador;
             if (!LeerIdentificador(out identificador))
@@ -146,9 +154,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            if (MessageBox.Show("¿Eliminar el tipo de viático " + encontrado.nombre + "?",
-                "Confirmar eliminación", MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question) != DialogResult.Yes)
+            if (MessageBox.Show("¿Eliminar el tipo de viático " + encontrado.nombre + "?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
             {
                 return;
             }
@@ -159,8 +165,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Tipos de viático",
-                "Eliminó tipo de viático " + encontrado.nombre + " (ID " + encontrado.id + ")");
+            logicaBitacora.RegistrarOperacion(SesionActual.usuarioActual, "Tipos de viático", "Eliminó tipo de viático " + encontrado.nombre + " (ID " + encontrado.id + ")");
             MessageBox.Show("Tipo de viático eliminado correctamente.");
             ActualizarTabla();
             LimpiarCampos();
@@ -168,12 +173,18 @@ namespace ControlViaticos.Presentacion
 
         private void frmTiposViatico_Load(object sender, EventArgs e)
         {
-            if (ValidarSesion()) ActualizarTabla();
+            if (ValidarSesion())
+            {
+                ActualizarTabla();
+            }
         }
 
         private bool ValidarSesion()
         {
-            if (SesionActual.HaySesionActiva()) return true;
+            if (SesionActual.HaySesionActiva())
+            {
+                return true;
+            }
             MessageBox.Show("Debe iniciar sesión para utilizar este catálogo.");
             Close();
             return false;
@@ -207,8 +218,7 @@ namespace ControlViaticos.Presentacion
 
         private void grdTiposViatico_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (e.ColumnIndex >= 0 && grdTiposViatico.Columns[e.ColumnIndex].Name == "activo" &&
-                e.Value is bool)
+            if (e.ColumnIndex >= 0 && grdTiposViatico.Columns[e.ColumnIndex].Name == "activo" && e.Value is bool)
             {
                 if ((bool)e.Value)
                 {

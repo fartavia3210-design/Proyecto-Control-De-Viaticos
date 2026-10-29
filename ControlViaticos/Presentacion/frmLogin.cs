@@ -13,8 +13,7 @@ namespace ControlViaticos.Presentacion
 
         private void Ok_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtUsuario.Text) ||
-                string.IsNullOrWhiteSpace(txtClave.Text))
+            if (string.IsNullOrWhiteSpace(txtUsuario.Text) || string.IsNullOrWhiteSpace(txtClave.Text))
             {
                 MessageBox.Show("Debe completar usuario y contraseña.");
                 return;

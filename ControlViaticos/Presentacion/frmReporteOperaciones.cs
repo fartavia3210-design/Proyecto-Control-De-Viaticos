@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -19,9 +19,12 @@ namespace ControlViaticos.Presentacion
         public frmReporteOperaciones()
         {
             InitializeComponent();
-            DisenoFormularios.Pagina(this, lblTitulo, DisenoFormularios.Fila(
-                DisenoFormularios.Campo(lblUsuario, cmbUsuario), DisenoFormularios.Campo(lblDesde, dtpDesde),
-                DisenoFormularios.Campo(lblHasta, dtpHasta)), DisenoFormularios.Fila(btnConsultar), grdOperaciones);
+            Control campoUsuario = DisenoFormularios.Campo(lblUsuario, cmbUsuario);
+            Control campoDesde = DisenoFormularios.Campo(lblDesde, dtpDesde);
+            Control campoHasta = DisenoFormularios.Campo(lblHasta, dtpHasta);
+            Control filaCampos = DisenoFormularios.Fila(campoUsuario, campoDesde, campoHasta);
+            Control filaAcciones = DisenoFormularios.Fila(btnConsultar);
+            DisenoFormularios.Pagina(this, lblTitulo, filaCampos, filaAcciones, grdOperaciones);
             ConfigurarTabla();
             this.Load += new EventHandler(frmReporteOperaciones_Load);
         }
@@ -50,8 +53,7 @@ namespace ControlViaticos.Presentacion
                 return;
             }
 
-            List<RegistroBitacora> resultado = logicaBitacora.ConsultarOperaciones(
-                seleccionado.id, dtpDesde.Value.Date, dtpHasta.Value.Date);
+            List<RegistroBitacora> resultado = logicaBitacora.ConsultarOperaciones( seleccionado.id, dtpDesde.Value.Date, dtpHasta.Value.Date);
             grdOperaciones.DataSource = resultado;
             grdOperaciones.ClearSelection();
 

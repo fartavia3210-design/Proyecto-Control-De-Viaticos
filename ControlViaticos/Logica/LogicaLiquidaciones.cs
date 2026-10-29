@@ -10,17 +10,37 @@ namespace ControlViaticos.Logica
 
         public bool AgregarLiquidacion(Liquidacion liquidacion, List<DetalleLiquidacion> detalles)
         {
-            if (!Validar(liquidacion, detalles, null)) return false;
+            if (!Validar(liquidacion, detalles, null))
+            {
+                return false;
+            }
+
             if (buscarLiquidacion(liquidacion.id) != null)
+            {
                 return Rechazar("Ya existe una liquidación con ese consecutivo.");
+            }
             return GuardarConjunto(liquidacion, detalles);
         }
 
         public bool modificarLiquidacion(Liquidacion liquidacion, List<DetalleLiquidacion> detalles)
         {
-            Liquidacion anterior = liquidacion == null ? null : buscarLiquidacion(liquidacion.id);
-            if (anterior == null) return Rechazar("La liquidación no existe.");
-            if (!Validar(liquidacion, detalles, anterior)) return false;
+            Liquidacion anterior;
+            if (liquidacion == null)
+            {
+                anterior = null;
+            }
+            else
+            {
+                anterior = buscarLiquidacion(liquidacion.id);
+            }
+            if (anterior == null)
+            {
+                return Rechazar("La liquidación no existe.");
+            }
+            if (!Validar(liquidacion, detalles, anterior))
+            {
+                return false;
+            }
             return GuardarConjunto(liquidacion, detalles);
         }
 
@@ -33,9 +53,15 @@ namespace ControlViaticos.Logica
         private bool Validar(Liquidacion liquidacion, List<DetalleLiquidacion> detalles, Liquidacion anterior)
         {
             ultimoError = "";
-            if (!SesionActual.HaySesionActiva()) return Rechazar("Debe iniciar sesión.");
+            if (!SesionActual.HaySesionActiva())
+            {
+                return Rechazar("Debe iniciar sesión.");
+            }
             Empleado empleado;
-            if (!ValidarCabecera(liquidacion, anterior, out empleado)) return false;
+            if (!ValidarCabecera(liquidacion, anterior, out empleado))
+            {
+                return false;
+            }
             return ValidarDetalles(liquidacion, detalles, anterior, empleado);
         }
 
@@ -44,77 +70,125 @@ namespace ControlViaticos.Logica
         {
             empleado = null;
             if (liquidacion == null || liquidacion.id <= 0)
+            {
                 return Rechazar("El consecutivo debe ser un entero positivo.");
+            }
             empleado = BuscarEmpleado(liquidacion.idEmpleado);
+
             if (empleado == null || (!empleado.activo && (anterior == null || anterior.idEmpleado != empleado.id)))
+            {
                 return Rechazar("Seleccione un empleado existente y activo para una nueva asignación.");
-            if (liquidacion.fin <= liquidacion.inicio) return Rechazar("El fin debe ser posterior al inicio.");
-            if (string.IsNullOrWhiteSpace(liquidacion.justificacion)) return Rechazar("Debe escribir la justificación.");
+            }
+            if (liquidacion.fin <= liquidacion.inicio)
+            {
+                return Rechazar("El fin debe ser posterior al inicio.");
+            }
+            if (string.IsNullOrWhiteSpace(liquidacion.justificacion))
+            {
+                return Rechazar("Debe escribir la justificación.");
+            }
             return true;
         }
 
         // La validación del conjunto mantiene identidad, vínculos y total coherentes.
-        private bool ValidarDetalles(Liquidacion liquidacion, List<DetalleLiquidacion> detalles,
-            Liquidacion anterior, Empleado empleado)
+        private bool ValidarDetalles(Liquidacion liquidacion, List<DetalleLiquidacion> detalles,Liquidacion anterior, Empleado empleado)
         {
-            if (detalles == null || detalles.Count == 0) return Rechazar("Agregue al menos un detalle antes de guardar.");
+            if (detalles == null || detalles.Count == 0)
+            {
+                return Rechazar("Agregue al menos un detalle antes de guardar.");
+            }
 
-            List<DetalleLiquidacion> anteriores = anterior == null
-                ? new List<DetalleLiquidacion>() : ObtenerDetalles(anterior.id);
-            HashSet<int> idsUsados = new HashSet<int>();
+            List<DetalleLiquidacion> anteriores = new List<DetalleLiquidacion>();
+            if (anterior != null)
+            {
+                anteriores = ObtenerDetalles(anterior.id);
+            }
+            List<int> idsUsados = new List<int>();
             long total = 0;
             foreach (DetalleLiquidacion detalle in detalles)
             {
                 if (detalle == null || detalle.idLiquidacion != liquidacion.id || detalle.monto <= 0)
+                {
                     return Rechazar("Los detalles deben pertenecer a la liquidación y tener un monto positivo.");
-                if (detalle.fechaConsumo.Date < liquidacion.inicio.Date ||
-                    detalle.fechaConsumo.Date > liquidacion.fin.Date)
+                }
+                if (detalle.fechaConsumo.Date < liquidacion.inicio.Date || detalle.fechaConsumo.Date > liquidacion.fin.Date)
+                {
                     return Rechazar("La fecha de consumo debe estar dentro del viaje.");
+                }
                 TipoViatico tipo = BuscarTipoViatico(detalle.idViatico);
-                if (tipo == null) return Rechazar("Uno de los tipos de viático ya no existe.");
+                if (tipo == null)
+                {
+                    return Rechazar("Uno de los tipos de viático ya no existe.");
+                }
 
                 if (detalle.id == 0)
                 {
-                    if (!ValidarDetalleNuevo(detalle, empleado, tipo)) return false;
+                    if (!ValidarDetalleNuevo(detalle, empleado, tipo))
+                    {
+                        return false;
+                    }
                 }
                 else
                 {
-                    DetalleLiquidacion historico = anteriores.Find(d => d.id == detalle.id);
-                    if (!idsUsados.Add(detalle.id)) return Rechazar("No repita el identificador de un detalle.");
-                    if (!ValidarDetalleHistorico(detalle, historico, tipo, empleado,
-                        anterior != null && anterior.idEmpleado != liquidacion.idEmpleado)) return false;
+                    DetalleLiquidacion historico = BuscarDetalle(anteriores, detalle.id);
+                    if (idsUsados.Contains(detalle.id))
+                    {
+                        return Rechazar("No repita el identificador de un detalle.");
+                    }
+                    idsUsados.Add(detalle.id);
+                    if (!ValidarDetalleHistorico(detalle, historico, tipo, empleado, anterior != null && anterior.idEmpleado != liquidacion.idEmpleado))
+                    {
+                        return false;
+                    }
                 }
 
                 if (!cumpleHorario(tipo.nombre, liquidacion.inicio, liquidacion.fin, detalle.fechaConsumo))
+                {
                     return Rechazar("El horario del viaje no permite " + tipo.nombre + " en la fecha elegida.");
+                }
                 total += detalle.monto;
-                if (total > int.MaxValue) return Rechazar("El total supera el monto máximo permitido.");
+                if (total > int.MaxValue)
+                {
+                    return Rechazar("El total supera el monto máximo permitido.");
+                }
             }
             return true;
         }
 
         private bool ValidarDetalleNuevo(DetalleLiquidacion detalle, Empleado empleado, TipoViatico tipo)
         {
-            if (!empleado.activo) return Rechazar("No se pueden asignar nuevos viáticos a un empleado inactivo.");
-            if (!tipo.activo) return Rechazar("No se pueden asignar viáticos inactivos.");
+            if (!empleado.activo)
+            {
+                return Rechazar("No se pueden asignar nuevos viáticos a un empleado inactivo.");
+            }
+            if (!tipo.activo)
+            {
+                return Rechazar("No se pueden asignar viáticos inactivos.");
+            }
             if (detalle.monto != tipo.monto)
+            {
                 return Rechazar("El monto del catálogo cambió. Quite el detalle nuevo y agréguelo de nuevo.");
+            }
             return true;
         }
 
         // Un registro inactivo se conserva como historial; no habilita otro pago,
         // otra fecha de consumo ni la transferencia de un tipo inactivo a otra persona.
-        private bool ValidarDetalleHistorico(DetalleLiquidacion detalle, DetalleLiquidacion historico,
-            TipoViatico tipo, Empleado empleado, bool cambioEmpleado)
+        private bool ValidarDetalleHistorico(DetalleLiquidacion detalle, DetalleLiquidacion historico, TipoViatico tipo, Empleado empleado, bool cambioEmpleado)
         {
-            if (detalle.id < 0 || historico == null ||
-                historico.idViatico != detalle.idViatico || historico.monto != detalle.monto)
+            if (detalle.id < 0 || historico == null || historico.idViatico != detalle.idViatico || historico.monto != detalle.monto)
+            {
                 return Rechazar("El detalle guardado no coincide con esta liquidación.");
+            }
             bool cambioFecha = historico.fechaConsumo.Date != detalle.fechaConsumo.Date;
             if (!empleado.activo && cambioFecha)
+            {
                 return Rechazar("No se puede asignar otra fecha de consumo a un empleado inactivo.");
+            }
             if (!tipo.activo && (cambioEmpleado || cambioFecha))
+            {
                 return Rechazar("Un viático inactivo solo puede conservarse con su empleado y fecha originales.");
+            }
             return true;
         }
 
@@ -128,14 +202,17 @@ namespace ControlViaticos.Logica
             {
                 if (detalle.id == 0)
                 {
-                    detalle.id = Identificadores.Siguiente(ocupados, d => d.id);
-                    if (detalle.id == 0) return Rechazar("No quedan identificadores de detalle disponibles.");
+                    detalle.id = Identificadores.Siguiente(ocupados);
+                    if (detalle.id == 0)
+                    {
+                        return Rechazar("No quedan identificadores de detalle disponibles.");
+                    }
                     ocupados.Add(detalle);
                 }
                 detalle.fechaConsumo = detalle.fechaConsumo.Date;
             }
-            Estructuras.listaLiquidaciones.RemoveAll(l => l.id == copia.id);
-            Estructuras.listaDetalles.RemoveAll(d => d.idLiquidacion == copia.id);
+            QuitarCabecera(copia.id);
+            QuitarDetalles(copia.id);
             Estructuras.listaLiquidaciones.Add(copia);
             Estructuras.listaDetalles.AddRange(copias);
             return true;
@@ -144,66 +221,126 @@ namespace ControlViaticos.Logica
         public bool eliminarLiquidacion(int id)
         {
             ultimoError = "";
-            if (!SesionActual.HaySesionActiva()) return Rechazar("Debe iniciar sesión.");
-            if (buscarLiquidacion(id) == null) return Rechazar("La liquidación no existe.");
-            Estructuras.listaDetalles.RemoveAll(d => d.idLiquidacion == id);
-            Estructuras.listaLiquidaciones.RemoveAll(l => l.id == id);
+            if (!SesionActual.HaySesionActiva())
+            {
+                return Rechazar("Debe iniciar sesión.");
+            }
+            if (buscarLiquidacion(id) == null)
+            {
+                return Rechazar("La liquidación no existe.");
+            }
+            QuitarDetalles(id);
+            QuitarCabecera(id);
             return true;
         }
 
         public Liquidacion buscarLiquidacion(int id)
         {
             foreach (Liquidacion liquidacion in Estructuras.listaLiquidaciones)
-                if (liquidacion.id == id) return CopiarLiquidacion(liquidacion);
+            {
+                if (liquidacion.id == id)
+                {
+                    return CopiarLiquidacion(liquidacion);
+                }
+            }
             return null;
         }
 
         public List<Liquidacion> ObtenerLiquidaciones()
         {
             List<Liquidacion> resultado = new List<Liquidacion>();
-            foreach (Liquidacion liquidacion in Estructuras.listaLiquidaciones) resultado.Add(CopiarLiquidacion(liquidacion));
+            foreach (Liquidacion liquidacion in Estructuras.listaLiquidaciones)
+            {
+                resultado.Add(CopiarLiquidacion(liquidacion));
+            }
             return resultado;
         }
 
         public List<DetalleLiquidacion> ObtenerDetalles(int idLiquidacion)
         {
-            return CopiarDetalles(Estructuras.listaDetalles.FindAll(d => d.idLiquidacion == idLiquidacion));
+            return CopiarDetalles(DetallesDeLiquidacion(idLiquidacion));
         }
 
         private static Liquidacion CopiarLiquidacion(Liquidacion l)
         {
-            return new Liquidacion { id = l.id, idEmpleado = l.idEmpleado, inicio = l.inicio, fin = l.fin, justificacion = l.justificacion };
+
+            Liquidacion copia = new Liquidacion();
+            copia.id = l.id;
+            copia.idEmpleado = l.idEmpleado;
+            copia.inicio = l.inicio;
+            copia.fin = l.fin;
+            copia.justificacion = l.justificacion;
+            return copia;
         }
 
         private static List<DetalleLiquidacion> CopiarDetalles(List<DetalleLiquidacion> detalles)
         {
             List<DetalleLiquidacion> resultado = new List<DetalleLiquidacion>();
             foreach (DetalleLiquidacion d in detalles)
-                resultado.Add(new DetalleLiquidacion { id = d.id, idLiquidacion = d.idLiquidacion,
-                    idViatico = d.idViatico, monto = d.monto, fechaConsumo = d.fechaConsumo });
+            {
+                DetalleLiquidacion nuevoDetalle = new DetalleLiquidacion();
+                nuevoDetalle.id = d.id;
+                nuevoDetalle.idLiquidacion = d.idLiquidacion;
+                nuevoDetalle.idViatico = d.idViatico;
+                nuevoDetalle.monto = d.monto;
+                nuevoDetalle.fechaConsumo = d.fechaConsumo;
+                resultado.Add(nuevoDetalle);
+            }
             return resultado;
         }
 
         public int calcularTotal(int idLiquidacion)
         {
             int total = 0;
-            foreach (DetalleLiquidacion detalle in ObtenerDetalles(idLiquidacion)) total = checked(total + detalle.monto);
+            foreach (DetalleLiquidacion detalle in ObtenerDetalles(idLiquidacion))
+            {
+                total = checked(total + detalle.monto);
+            }
             return total;
         }
 
-        public List<Empleado> ObtenerEmpleados() { return new List<Empleado>(Estructuras.listaEmpleados); }
-        public List<TipoViatico> ObtenerTiposViatico() { return new List<TipoViatico>(Estructuras.listaTiposViatico); }
-        public Empleado BuscarEmpleado(int id) { return Estructuras.listaEmpleados.Find(e => e.id == id); }
-        public TipoViatico BuscarTipoViatico(int id) { return Estructuras.listaTiposViatico.Find(t => t.id == id); }
+        public List<Empleado> ObtenerEmpleados()
+
+        {
+
+            return new List<Empleado>(Estructuras.listaEmpleados);
+
+        }
+        public List<TipoViatico> ObtenerTiposViatico()
+        {
+            return new List<TipoViatico>(Estructuras.listaTiposViatico);
+        }
+        public Empleado BuscarEmpleado(int id)
+        {
+            return new LogicaEmpleados().BuscarEmpleado(id);
+        }
+        public TipoViatico BuscarTipoViatico(int id)
+        {
+            return new LogicaTiposViatico().BuscarTipoViatico(id);
+        }
         public string NombreEmpleado(int id)
         {
             Empleado e = BuscarEmpleado(id);
-            return e == null ? "Empleado no disponible (" + id + ")" : (e.nombre + " " + e.apellido1 + " " + e.apellido2).Trim();
+            if (e == null)
+            {
+                return "Empleado no disponible (" + id + ")";
+            }
+            else
+            {
+                return (e.nombre + " " + e.apellido1 + " " + e.apellido2).Trim();
+            }
         }
         public string NombreViatico(int id)
         {
             TipoViatico t = BuscarTipoViatico(id);
-            return t == null ? "Viático no disponible (" + id + ")" : t.nombre;
+            if (t == null)
+            {
+                return "Viático no disponible (" + id + ")";
+            }
+            else
+            {
+                return t.nombre;
+            }
         }
 
         public bool cumpleHorario(string viatico, DateTime salida, DateTime llegada)
@@ -214,6 +351,54 @@ namespace ControlViaticos.Logica
         public bool cumpleHorario(string viatico, DateTime salida, DateTime llegada, DateTime fechaConsumo)
         {
             return ReglasViaticos.Cumple(viatico, salida, llegada, fechaConsumo);
+        }
+
+        private DetalleLiquidacion BuscarDetalle(List<DetalleLiquidacion> detalles, int id)
+        {
+            foreach (DetalleLiquidacion detalle in detalles)
+            {
+                if (detalle.id == id)
+                {
+                    return detalle;
+                }
+            }
+            return null;
+        }
+
+        private List<DetalleLiquidacion> DetallesDeLiquidacion(int id)
+        {
+            List<DetalleLiquidacion> resultado = new List<DetalleLiquidacion>();
+            foreach (DetalleLiquidacion detalle in Estructuras.listaDetalles)
+            {
+                if (detalle.idLiquidacion == id)
+                {
+                    resultado.Add(detalle);
+                }
+            }
+            return resultado;
+        }
+
+        private void QuitarDetalles(int id)
+        {
+            // Recorrer hacia atras permite quitar filas sin saltarse la siguiente.
+            for (int i = Estructuras.listaDetalles.Count - 1; i >= 0; i--)
+            {
+                if (Estructuras.listaDetalles[i].idLiquidacion == id)
+                {
+                    Estructuras.listaDetalles.RemoveAt(i);
+                }
+            }
+        }
+
+        private void QuitarCabecera(int id)
+        {
+            for (int i = Estructuras.listaLiquidaciones.Count - 1; i >= 0; i--)
+            {
+                if (Estructuras.listaLiquidaciones[i].id == id)
+                {
+                    Estructuras.listaLiquidaciones.RemoveAt(i);
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,13 +19,24 @@ namespace ControlViaticos.Objetos
 
         public string nombreCompleto
         {
-            get { return (nombre + " " + apellido1 + " " + apellido2).Trim(); }
+            get
+            {
+                return (nombre + " " + apellido1 + " " + apellido2).Trim();
+            }
         }
 
         // Permite distinguir homónimos sin usar la posición del combo como ID.
         public string descripcion
         {
-            get { return id + " - " + nombreCompleto + (activo ? "" : " (Inactivo)"); }
+            get
+            {
+                string texto = id + " - " + nombreCompleto;
+                if (!activo)
+                {
+                    texto = texto + " (Inactivo)";
+                }
+                return texto;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ControlViaticos.Objetos;
 
@@ -12,6 +12,7 @@ namespace ControlViaticos.Logica
         public bool AgregarTipoViatico(TipoViatico miTipo)
         {
             ultimoError = "";
+
             if (!SesionActual.HaySesionActiva())
             {
                 ultimoError = "Debe iniciar sesión para agregar tipos de viático.";
@@ -30,8 +31,7 @@ namespace ControlViaticos.Logica
                     ultimoError = "Ya existe un tipo de viático con ese identificador.";
                     return false;
                 }
-                if (string.Equals(tipo.nombre.Trim(), miTipo.nombre.Trim(),
-                    StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(tipo.nombre.Trim(), miTipo.nombre.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     ultimoError = "Ya existe un tipo de viático con ese nombre.";
                     return false;
@@ -79,9 +79,7 @@ namespace ControlViaticos.Logica
             // Al comprobar el nombre se excluye el propio tipo.
             foreach (TipoViatico tipo in Estructuras.listaTiposViatico)
             {
-                if (tipo.id != miTipo.id &&
-                    string.Equals(tipo.nombre.Trim(), miTipo.nombre.Trim(),
-                        StringComparison.OrdinalIgnoreCase))
+                if (tipo.id != miTipo.id && string.Equals(tipo.nombre.Trim(), miTipo.nombre.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     ultimoError = "Ya existe otro tipo de viático con ese nombre.";
                     return false;
@@ -145,8 +143,7 @@ namespace ControlViaticos.Logica
 
         private bool DatosValidos(TipoViatico miTipo)
         {
-            if (miTipo == null || miTipo.id <= 0 ||
-                string.IsNullOrWhiteSpace(miTipo.nombre) || miTipo.monto <= 0)
+            if (miTipo == null || miTipo.id <= 0 || string.IsNullOrWhiteSpace(miTipo.nombre) || miTipo.monto <= 0)
             {
                 ultimoError = "Complete el nombre, use un identificador positivo y un monto mayor que cero.";
                 return false;

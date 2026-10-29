@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,9 +16,7 @@ namespace ControlViaticos.Presentacion
         public frmPrincipal()
         {
             InitializeComponent();
-            DisenoFormularios.Menu(this, pnlMenu, pnlSubReportes, btnUsuarios, btnEmpleados,
-                btnTiposViatico, btnLiquidaciones, btnBitacora, btnReportes, pnlSubReportes,
-                btnCargaInicial, btnSalir);
+            DisenoFormularios.Menu(this, pnlMenu, pnlSubReportes, btnUsuarios, btnEmpleados, btnTiposViatico, btnLiquidaciones, btnBitacora, btnReportes, pnlSubReportes, btnCargaInicial, btnSalir);
             btnUsuarios.Enabled = SesionActual.EsAdministrador();
             btnCargaInicial.Enabled = SesionActual.EsAdministrador();
             this.Load += new EventHandler(frmPrincipal_Load);
@@ -71,16 +69,25 @@ namespace ControlViaticos.Presentacion
         private bool CerrarFormularioActual()
         {
             Form actual = pnlContenedor.Tag as Form;
-            if (actual == null) return true;
+            if (actual == null)
+            {
+                return true;
+            }
             actual.Close();
-            if (!actual.IsDisposed) return false;
+            if (!actual.IsDisposed)
+            {
+                return false;
+            }
             pnlContenedor.Tag = null;
             return true;
         }
 
         private void frmPrincipal_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (!CerrarFormularioActual()) e.Cancel = true;
+            if (!CerrarFormularioActual())
+            {
+                e.Cancel = true;
+            }
         }
 
         private void abrirFormHija(Form siguiente)

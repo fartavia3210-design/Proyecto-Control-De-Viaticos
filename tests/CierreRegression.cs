@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
@@ -129,8 +129,8 @@ internal static class CierreRegression
             }
             Check(ls.cumpleHorario("Hospedaje", fecha.AddHours(23), fecha.AddDays(1).AddHours(1), fecha), "Hospedaje no aplica ventanas de comida");
             Check(!ls.cumpleHorario("Hospedaje", fecha, fecha.AddDays(1), fecha.AddDays(2)), "Incluso conceptos sin horario rechazan fecha fuera del viaje");
-            Check(Identificadores.Siguiente(new[] {1, 3, int.MaxValue}, x => x)==2, "Generador usa un hueco sin desbordar por ID maximo");
-            Check(Identificadores.Siguiente(new[] {int.MaxValue}, x => x)==1, "Generador mantiene IDs positivos con maximo existente");
+            Check(Identificadores.Siguiente(new[] {1, 3, int.MaxValue})==2, "Generador usa un hueco sin desbordar por ID maximo");
+            Check(Identificadores.Siguiente(new[] {int.MaxValue})==1, "Generador mantiene IDs positivos con maximo existente");
             Estructuras.listaUsuarios.Add(new Usuario {id=int.MaxValue,nombreUsuario="max",activo=true,tipo="Normal",clave="max"});
             Estructuras.listaTiposViatico.Add(Tipo(int.MaxValue,"Maximo",1));
             Check(new LogicaCargaInicial().EjecutarCargaInicial(SesionActual.usuarioActual)>0, "Carga inicial compatible con identificadores externos maximos");

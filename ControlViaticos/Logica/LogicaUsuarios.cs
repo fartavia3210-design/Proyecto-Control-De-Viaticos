@@ -25,8 +25,7 @@ namespace ControlViaticos.Logica
         internal bool AgregarPrimerAdministrador(Usuario administrador)
         {
             ultimoError = "";
-            if (Estructuras.listaUsuarios.Count > 0 || administrador == null ||
-                administrador.tipo != "Administrador" || !administrador.activo)
+            if (Estructuras.listaUsuarios.Count > 0 || administrador == null || administrador.tipo != "Administrador" || !administrador.activo)
             {
                 ultimoError = "La configuración inicial requiere una lista vacía y un administrador activo.";
                 return false;
@@ -37,11 +36,7 @@ namespace ControlViaticos.Logica
 
         private bool AgregarUsuarioValidado(Usuario miUsuario)
         {
-            if (miUsuario == null || miUsuario.id <= 0 ||
-                string.IsNullOrWhiteSpace(miUsuario.nombreCompleto) ||
-                string.IsNullOrWhiteSpace(miUsuario.nombreUsuario) ||
-                string.IsNullOrWhiteSpace(miUsuario.clave) ||
-                (miUsuario.tipo != "Normal" && miUsuario.tipo != "Administrador"))
+            if (miUsuario == null || miUsuario.id <= 0 || string.IsNullOrWhiteSpace(miUsuario.nombreCompleto) || string.IsNullOrWhiteSpace(miUsuario.nombreUsuario) || string.IsNullOrWhiteSpace(miUsuario.clave) || (miUsuario.tipo != "Normal" && miUsuario.tipo != "Administrador"))
             {
                 ultimoError = "Complete todos los datos, use una identificación positiva y seleccione un tipo válido.";
                 return false;
@@ -49,9 +44,7 @@ namespace ControlViaticos.Logica
 
             foreach (Usuario usuario in Estructuras.listaUsuarios)
             {
-                if (usuario.id == miUsuario.id ||
-                    string.Equals(usuario.nombreUsuario, miUsuario.nombreUsuario.Trim(),
-                        StringComparison.OrdinalIgnoreCase))
+                if (usuario.id == miUsuario.id || string.Equals(usuario.nombreUsuario, miUsuario.nombreUsuario.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     ultimoError = "Ya existe un usuario con esa identificación o nombre de usuario.";
                     return false;
@@ -85,11 +78,7 @@ namespace ControlViaticos.Logica
                 return false;
             }
 
-            if (miUsuario == null || miUsuario.id <= 0 ||
-                string.IsNullOrWhiteSpace(miUsuario.nombreCompleto) ||
-                string.IsNullOrWhiteSpace(miUsuario.nombreUsuario) ||
-                string.IsNullOrWhiteSpace(miUsuario.clave) ||
-                (miUsuario.tipo != "Normal" && miUsuario.tipo != "Administrador"))
+            if (miUsuario == null || miUsuario.id <= 0 || string.IsNullOrWhiteSpace(miUsuario.nombreCompleto) || string.IsNullOrWhiteSpace(miUsuario.nombreUsuario) || string.IsNullOrWhiteSpace(miUsuario.clave) || (miUsuario.tipo != "Normal" && miUsuario.tipo != "Administrador"))
             {
                 ultimoError = "Complete todos los datos, use una identificación positiva y seleccione un tipo válido.";
                 return false;
@@ -102,16 +91,13 @@ namespace ControlViaticos.Logica
                 return false;
             }
 
-            if (encontrado.id == SesionActual.usuarioActual.id &&
-                (!miUsuario.activo || miUsuario.tipo != "Administrador"))
+            if (encontrado.id == SesionActual.usuarioActual.id && (!miUsuario.activo || miUsuario.tipo != "Administrador"))
             {
                 ultimoError = "No puede desactivar su cuenta ni quitarse el rol de administrador durante la sesión.";
                 return false;
             }
 
-            if (encontrado.tipo == "Administrador" && encontrado.activo &&
-                (!miUsuario.activo || miUsuario.tipo != "Administrador") &&
-                ContarAdministradoresActivos() <= 1)
+            if (encontrado.tipo == "Administrador" && encontrado.activo && (!miUsuario.activo || miUsuario.tipo != "Administrador") && ContarAdministradoresActivos() <= 1)
             {
                 ultimoError = "Debe permanecer al menos un administrador activo.";
                 return false;
@@ -119,9 +105,7 @@ namespace ControlViaticos.Logica
 
             foreach (Usuario usuario in Estructuras.listaUsuarios)
             {
-                if (usuario.id != miUsuario.id &&
-                    string.Equals(usuario.nombreUsuario, miUsuario.nombreUsuario.Trim(),
-                        StringComparison.OrdinalIgnoreCase))
+                if (usuario.id != miUsuario.id && string.Equals(usuario.nombreUsuario, miUsuario.nombreUsuario.Trim(), StringComparison.OrdinalIgnoreCase))
                 {
                     ultimoError = "Ya existe otro usuario con ese nombre de usuario.";
                     return false;
@@ -158,8 +142,7 @@ namespace ControlViaticos.Logica
                 return false;
             }
 
-            if (encontrado.tipo == "Administrador" && encontrado.activo &&
-                ContarAdministradoresActivos() <= 1)
+            if (encontrado.tipo == "Administrador" && encontrado.activo && ContarAdministradoresActivos() <= 1)
             {
                 ultimoError = "Debe permanecer al menos un administrador activo.";
                 return false;
